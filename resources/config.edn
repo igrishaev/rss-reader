@@ -1,0 +1,20 @@
+{:http
+ {:port 18088
+  :host "127.0.0.1"}
+
+ :db-pool
+ {:auto-commit        true
+  :read-only          false
+  :connection-timeout 30000
+  :validation-timeout 5000
+  :idle-timeout       600000
+  :max-lifetime       1800000
+  :minimum-idle       10
+  :maximum-pool-size  10
+  :pool-name          "rss-pool"
+  :adapter            "postgresql"
+  :username           "user"
+  :password           "pass"
+  :database-name      "rss"
+  :server-name        "127.0.0.1"
+  :port-number        15432}}
