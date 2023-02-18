@@ -49,7 +49,7 @@ CREATE TABLE subscriptions (
     updated_at     TIMESTAMP WITHOUT TIME ZONE,
     user_id        UUID NOT NULL,
     feed_id        UUID NOT NULL,
-    unread_count   INTEGER NOT NULL DEFAULT 3600,
+    unread_count   INTEGER NOT NULL DEFAULT 0,
     UNIQUE (feed_id, user_id)
 );
 
@@ -78,6 +78,7 @@ CREATE TABLE messages (
     updated_at        TIMESTAMP WITHOUT TIME ZONE,
     entry_id          UUID NOT NULL,
     subscription_id   UUID NOT NULL,
+    date_read_at      TIMESTAMP WITHOUT TIME ZONE,
     UNIQUE (entry_id, subscription_id)
 );
 

@@ -6,6 +6,26 @@
 
 
 ;;
+;; User
+;;
+
+(defn upsert-user
+  ([^String email]
+   (upsert-user email nil))
+
+  ([^String email fields]
+   (let [row
+         (-> fields
+             (assoc :email email
+                    :updated_at :%now))]
+     (db/execute-one {:insert-into [:users]
+                      :values [row]
+                      :on-conflict [:email]
+                      :do-update-set (keys row)
+                      :returning [:*]}))))
+
+
+;;
 ;; Feed
 ;;
 
@@ -69,6 +89,24 @@
 
 
 ;;
+;; Subscription
+;;
+
+
+(defn upsert-subscription
+  [^UUID feed-id ^UUID user-id]
+  (let [row
+        {:feed_id feed-id
+         :user_id user-id
+         :updated_at :%now}]
+    (db/execute-one {:insert-into [:subscriptions]
+                     :values [row]
+                     :on-conflict [:feed_id :user_id]
+                     :do-update-set (keys row)
+                     :returning [:*]})))
+
+
+;;
 ;; Categories
 ;;
 
@@ -85,6 +123,26 @@
                  :on-conflict [:parent_id :category]
                  :do-nothing true
                  :returning [:*]})))
+
+
+;;
+;; Sync
+;;
+
+(defn create-messages-for-subscription
+  [^UUID subscription-id]
+  (db/execute
+   {:insert-into [[:messages [:entry_id :subscription_id]]
+                  {:select [:e.id subscription-id]
+                   :from [[:subscriptions :s]]
+                   :join [[:feeds :f] [:= :s.feed_id :f.id]
+                          [:entries :e] [:= :e.feed_id :f.id]]
+                   :where [:= :s.id subscription-id]
+                   :limit 1000}]
+    :on-conflict [:entry_id :subscription_id]
+    :do-nothing true
+    :returning [:*]}))
+
 
 
 #_
