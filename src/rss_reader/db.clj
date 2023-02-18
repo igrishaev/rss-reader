@@ -28,16 +28,28 @@
   (mount/stop (var db)))
 
 
-(defn execute [query-map]
-  (jdbc/execute! db
-                 (honey/format query-map)
-                 {:builder-fn rs/as-unqualified-maps}))
+(defn execute
+  ([query-map]
+   (execute query-map nil))
+
+  ([query-map options]
+   (jdbc/execute!
+    db
+    (honey/format query-map)
+    (assoc options
+           :builder-fn rs/as-unqualified-maps))))
 
 
-(defn execute-one [query-map]
-  (jdbc/execute-one! db
-                     (honey/format query-map)
-                     {:builder-fn rs/as-unqualified-maps}))
+(defn execute-one
+  ([query-map]
+   (execute-one query-map nil))
+
+  ([query-map options]
+   (jdbc/execute-one!
+    db
+    (honey/format query-map)
+    (assoc options
+           :builder-fn rs/as-unqualified-maps))))
 
 
 (defmacro with-tx [[opt] & body]

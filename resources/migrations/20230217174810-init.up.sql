@@ -16,7 +16,7 @@ create table feeds (
     id         UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
     updated_at TIMESTAMP WITHOUT TIME ZONE,
-    user_id             UUID,
+    user_id             UUID NOT NULL,
     url_source          TEXT NOT NULL,
     url_website         TEXT,
     url_favicon         TEXT,

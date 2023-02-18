@@ -1,0 +1,605 @@
+{:description "Лучшие публикации за последние 24 часа",
+ :encoding nil,
+ :feed-type "rss_2.0",
+ :entries
+ ({:description
+   {:type "text/html",
+    :mode nil,
+    :value
+    "Компьютерные сети изменили мир и подарили нам возможность не выбирать «меньшее из зол» из ограниченного числа сложившихся по жизни контактов, а найти по-настоящему любимого человека, даже если он прячется от нас на другом материке. Разумеется, мы можем отказаться от этой возможности и пойти по воспетому российской эстрадой садистско-мазохистскому сценарию «слепила из того, что было, а потом, что было, то и полюбила». И все будут только рады, если у нас всё получится. Но, если мы подведем статистику известных нам счастливых пар, сложившихся по этому сценарию, и трезво оценим вероятность успешного исхода, то, вероятно, путь поиска своего счастья в мировой паутине покажется нам более перспективным. И в этой статье я хочу рассказать вам о тех проблемах с которыми на этом пути можно столкнуться. <a href=\"https://habr.com/ru/post/497464/?utm_source=habrahabr&#38;utm_medium=rss&#38;utm_campaign=497464#habracut\">Читать дальше &#8594;</a>"},
+   :updated-date nil,
+   :comments nil,
+   :extra nil,
+   :published-date #inst "2023-02-17T12:28:14.000-00:00",
+   :title
+   "Всё, что вы НЕ хотели бы знать о сервисах онлайн знакомств… [много букОв и иллюстраций + регулярно дополняется]",
+   :author "pragmatik",
+   :categories
+   ({:name "Монетизация веб-сервисов", :taxonomy-url nil}
+    {:name "Социальные сети и сообщества", :taxonomy-url nil}
+    {:name "сайт знакомств", :taxonomy-url nil}),
+   :link
+   "https://habr.com/ru/post/497464/?utm_source=habrahabr&utm_medium=rss&utm_campaign=497464",
+   :contributors nil,
+   :uri "https://habr.com/ru/post/497464/",
+   :contents nil,
+   :authors nil,
+   :enclosures nil}
+  {:description
+   {:type "text/html",
+    :mode nil,
+    :value
+    "<p>Сегодняшний рассказ будет про несколько органических проблем современных сетевых технологий. <br><br>В жизни любого инженера бывают периоды как долгой кропотливой проработки архитектуры, так и долгих кропотливых расследований инцидентов или проблем. Нет, бывают, конечно, и озарения, стремительные лёгкие открытия, но обычно слова «кропотливый» и «методичный» — неизменные спутники нашей работы. И увы — не всегда этот процесс завершается яркой кульминацией и впрыском дофамина.</p><p></p> <a href=\"https://habr.com/ru/post/717634/?utm_source=habrahabr&#38;utm_medium=rss&#38;utm_campaign=717634#habracut\">Читать далее</a>"},
+   :updated-date nil,
+   :comments nil,
+   :extra nil,
+   :published-date #inst "2023-02-17T18:46:28.000-00:00",
+   :title "Сеть виновата",
+   :author "eucariot",
+   :categories
+   ({:name "Блог компании Southbridge", :taxonomy-url nil}
+    {:name "Системное программирование", :taxonomy-url nil}
+    {:name "IT-инфраструктура", :taxonomy-url nil}
+    {:name "Сетевые технологии", :taxonomy-url nil}
+    {:name "DevOps", :taxonomy-url nil}
+    {:name "сети", :taxonomy-url nil}
+    {:name "ethernet", :taxonomy-url nil}
+    {:name "ip", :taxonomy-url nil}
+    {:name "ecmp", :taxonomy-url nil}
+    {:name "networks", :taxonomy-url nil}
+    {:name "network technologies", :taxonomy-url nil}
+    {:name "сетевые технологии", :taxonomy-url nil}),
+   :link
+   "https://habr.com/ru/post/717634/?utm_source=habrahabr&utm_medium=rss&utm_campaign=717634",
+   :contributors nil,
+   :uri "https://habr.com/ru/post/717634/",
+   :contents nil,
+   :authors nil,
+   :enclosures nil}
+  {:description
+   {:type "text/html",
+    :mode nil,
+    :value
+    "<p>Привет! В декабре вновь прошел опрос русскоязычного PHP-сообщества. Помогали составлять его и распространять ребята, которые развивают городские и региональные PHP-комьюнити, а также руководят каналами и подкастами про PHP.</p><p><strong>Удалось собрать 1215 ответов.</strong> Расспросили сообщество, на какой версии PHP сидят в командах, какой фреймворк выбирают для рабочих, а какой для личных проектов, многие ли посматривают на Go. И не только.</p><p>- <a href=\"https://phpcommunity.ru/2021-php\">Итоги 2021</a></p><p>- <a href=\"https://phpcommunity.ru/never-forget-2020\">Итоги 2020</a></p><p></p> <a href=\"https://habr.com/ru/post/716316/?utm_source=habrahabr&#38;utm_medium=rss&#38;utm_campaign=716316#habracut\">Читать далее</a>"},
+   :updated-date nil,
+   :comments nil,
+   :extra nil,
+   :published-date #inst "2023-02-17T12:32:34.000-00:00",
+   :title
+   "Итоги третьего ежегодного опроса PHP-сообщества (и по традиции — слон)",
+   :author "jm_sub",
+   :categories
+   ({:name "Блог компании Skyeng", :taxonomy-url nil}
+    {:name "PHP", :taxonomy-url nil}
+    {:name "Управление сообществом", :taxonomy-url nil}
+    {:name "Исследования и прогнозы в IT", :taxonomy-url nil}
+    {:name "php", :taxonomy-url nil}
+    {:name "laravel", :taxonomy-url nil}
+    {:name "symfony", :taxonomy-url nil}
+    {:name "yii", :taxonomy-url nil}),
+   :link
+   "https://habr.com/ru/post/716316/?utm_source=habrahabr&utm_medium=rss&utm_campaign=716316",
+   :contributors nil,
+   :uri "https://habr.com/ru/post/716316/",
+   :contents nil,
+   :authors nil,
+   :enclosures nil}
+  {:description
+   {:type "text/html",
+    :mode nil,
+    :value
+    "<a href=\"https://habr.com/ru/company/ruvds/blog/716398/\"><div style=\"text-align:center;\"><img src=\"https://habrastorage.org/webt/l9/xu/go/l9xugo67kzob57f6iohwqjying8.jpeg\"></div></a><i><font color=\"#999999\">Картинка <a href=\"https://www.freepik.com/free-vector/bathtub-with-foam-poster_3796473.htm#query=foam&#38;position=38&#38;from_view=search&#38;track=sph\" rel=\"nofollow noopener noreferrer\">Macrovector, Freepik</a></font></i><br>\n<br>\nТак уж случилось, что ряд лет назад автор статьи заинтересовался темой вспенивания, а также пены как таковой. А положило начало интереса к этому вопросу достаточно любопытное видео, в котором демонстрировался аппарат, выпускающий облака различной формы, наполненные гелием. Результаты изучения этой темы дали много новых знаний и привели к любопытным выводам, о которых ниже. <a href=\"https://habr.com/ru/post/716398/?utm_source=habrahabr&#38;utm_medium=rss&#38;utm_campaign=716398#habracut\">Читать дальше &#8594;</a>"},
+   :updated-date nil,
+   :comments nil,
+   :extra nil,
+   :published-date #inst "2023-02-17T13:00:02.000-00:00",
+   :title "Про пену: что это, как получить и «что мне с этого будет»?",
+   :author "DAN_SEA",
+   :categories
+   ({:name "Блог компании RUVDS.com", :taxonomy-url nil}
+    {:name "Научно-популярное", :taxonomy-url nil}
+    {:name "3D-принтеры", :taxonomy-url nil}
+    {:name "Физика", :taxonomy-url nil}
+    {:name "Химия", :taxonomy-url nil}
+    {:name "ruvds_статьи", :taxonomy-url nil}
+    {:name "пена", :taxonomy-url nil}
+    {:name "способы получения пены", :taxonomy-url nil}
+    {:name "применение пены", :taxonomy-url nil}),
+   :link
+   "https://habr.com/ru/post/716398/?utm_source=habrahabr&utm_medium=rss&utm_campaign=716398",
+   :contributors nil,
+   :uri "https://habr.com/ru/post/716398/",
+   :contents nil,
+   :authors nil,
+   :enclosures nil}
+  {:description
+   {:type "text/html",
+    :mode nil,
+    :value
+    "<p>Скорость засветки у электронно-лучевого литографа на порядки меньше скорости засветки у лазерного генератора фотошаблонов.</p><p>На один фотошаблон может потребоваться до нескольких суток, а если учесть что полный комплект фотошаблонов для микросхемы может состоять из 80 шт. этих фотошаблонов, то срок производства комплекта фотошаблонов (масок) может занять несколько месяцев.</p><p>Учитывая стоимость электронно-лучевого литографа (порядка 15 млн. USD), становиться понятно, почему комплект масок для техпроцесса 130 нм может стоить 500 тыс. USD, а для продвинутого техпроцесса 7-14 нм может легко уйти за 10 млн. USD.</p><p>Может стоит ускориться?</p><p></p> <a href=\"https://habr.com/ru/post/717736/?utm_source=habrahabr&#38;utm_medium=rss&#38;utm_campaign=717736#habracut\">Как это делают можно узнать под катом</a>"},
+   :updated-date nil,
+   :comments nil,
+   :extra nil,
+   :published-date #inst "2023-02-18T00:01:34.000-00:00",
+   :title
+   "[recovery mode] Технология электронно-много-лучевой литографии",
+   :author "KonstantinC",
+   :categories
+   ({:name "Производство и разработка электроники", :taxonomy-url nil}
+    {:name "микроэлектроника", :taxonomy-url nil}
+    {:name "литография", :taxonomy-url nil}
+    {:name "литограф", :taxonomy-url nil}
+    {:name "электронно-лучевая литография", :taxonomy-url nil}),
+   :link
+   "https://habr.com/ru/post/717736/?utm_source=habrahabr&utm_medium=rss&utm_campaign=717736",
+   :contributors nil,
+   :uri "https://habr.com/ru/post/717736/",
+   :contents nil,
+   :authors nil,
+   :enclosures nil}
+  {:description
+   {:type "text/html",
+    :mode nil,
+    :value
+    "<div style=\"text-align:center;\"><img src=\"https://habrastorage.org/webt/r0/he/5x/r0he5xgae-8b02pbm7mxz_iqs4w.png\"></div><br>\nКонсоль Linux обычно имеет дисплей с клавиатурой и используется для подключения к главному компьютеру для обмена данными и отображения результатов обработки. В большинстве случаев сама обработка выполняется хост-компьютером. Однако есть гики, которые хотят на консоли просматривать веб-страницы, и есть программное обеспечение, такие как текстовые браузеры типа «Browsh», которые могут отображать веб-сайты в графическом виде без графического интерфейса.<br>\n<br>\nБольшинство основных дистрибутивов Linux поставляются с предустановленными Firefox или Falkon. И идея текстового браузера для консоли Linux может показаться абсурдной. В конце концов, первые браузеры были основаны на графическом интерфейсе, а современный Интернет так вообще состоит из графики и JavaScript — элементов, с которыми консольным браузерам трудно или даже невозможно работать. Но именно эта несовместимость с современной Сетью делает консольные браузеры такими привлекательными для некоторых пользователей. Для этого есть несколько причин. Интерфейсы таких браузеров чрезвычайно просты в компоновке и работают очень быстро. Текстовые браузеры требуют меньше пропускной способности для работы, и загружают страницы намного быстрее, чем графические. Кроме того, графические браузеры потребляют больше ресурсов ЦП для Javascript, CSS и т. д. Также изображения, автоматически воспроизводимые видео и звуковые эффекты могут отвлекать внимание пользователя.<br>\n<br>\nНо как можно сохранить малое потребление ресурсов ЦП текстовых браузеров, при этом отображая графику через консоль?<br>\n<br>\nЧерез Carbonyl.<br> <a href=\"https://habr.com/ru/post/715134/?utm_source=habrahabr&#38;utm_medium=rss&#38;utm_campaign=715134#habracut\">Читать дальше &#8594;</a>"},
+   :updated-date nil,
+   :comments nil,
+   :extra nil,
+   :published-date #inst "2023-02-17T14:00:51.000-00:00",
+   :title
+   "[Перевод] Carbonyl — графический веб-браузер для Linux-консолей",
+   :author "TilekSamiev",
+   :categories
+   ({:name "Блог компании Timeweb Cloud", :taxonomy-url nil}
+    {:name "Настройка Linux", :taxonomy-url nil}
+    {:name "Браузеры", :taxonomy-url nil}
+    {:name "Разработка под Linux", :taxonomy-url nil}
+    {:name "Лайфхаки для гиков", :taxonomy-url nil}
+    {:name "timeweb_статьи_перевод", :taxonomy-url nil}
+    {:name "carbonyl", :taxonomy-url nil}
+    {:name "браузеры", :taxonomy-url nil}
+    {:name "linux", :taxonomy-url nil}
+    {:name "JavaScript", :taxonomy-url nil}
+    {:name "HTML", :taxonomy-url nil}
+    {:name "Chromium", :taxonomy-url nil}
+    {:name "WebGL", :taxonomy-url nil}
+    {:name "WebGPU", :taxonomy-url nil}
+    {:name "YouTube", :taxonomy-url nil}
+    {:name "SSH", :taxonomy-url nil}
+    {:name "Google", :taxonomy-url nil}
+    {:name "DOOM", :taxonomy-url nil}),
+   :link
+   "https://habr.com/ru/post/715134/?utm_source=habrahabr&utm_medium=rss&utm_campaign=715134",
+   :contributors nil,
+   :uri "https://habr.com/ru/post/715134/",
+   :contents nil,
+   :authors nil,
+   :enclosures nil}
+  {:description
+   {:type "text/html",
+    :mode nil,
+    :value
+    "<p>К моим словам прошу относиться со здоровой долей скепсиса, ибо я не нейтив-спикер, а просто ИТшный переводчик-редактор <span class=\"habrahidden\">(пусть даже и с 20-летним опытом)</span>.  </p><p>В последние полгода англо-русские переводы по понятным причинам практически исчезли, и по работе на проверку приходят в основном русско-английские, зачастую на «рунглише». Отмечу, что «рунглишевые» ошибки в присылаемых материалах более или менее однотипные, поэтому я и предположил, что коллегам может быть полезно, если эти ошибки кто-то разложит по полкам. </p><p>Эту памятку или «дорожную карту» я опубликовал в своем <a href=\"https://t.me/alliancepro\" rel=\"noopener noreferrer nofollow\"><u>телеграм-канале</u></a> несколько месяцев назад, многократно её обкатал на проектах, и убедился в ее применимости — поэтому вешаю ниже. </p><p><strong>Шагов в этой памятке 5:</strong></p><p></p> <a href=\"https://habr.com/ru/post/717694/?utm_source=habrahabr&#38;utm_medium=rss&#38;utm_campaign=717694#habracut\">Читать далее</a>"},
+   :updated-date nil,
+   :comments nil,
+   :extra nil,
+   :published-date #inst "2023-02-17T14:49:24.000-00:00",
+   :title "5 шагов для устранения «рунглиша» из ИТ-переводов",
+   :author "bartov-e",
+   :categories
+   ({:name "Локализация продуктов", :taxonomy-url nil}
+    {:name "Изучение языков", :taxonomy-url nil}
+    {:name "Подготовка технической документации", :taxonomy-url nil}
+    {:name "английский язык", :taxonomy-url nil}
+    {:name "технический перевод", :taxonomy-url nil}
+    {:name "русский язык", :taxonomy-url nil}
+    {:name "русский перевод", :taxonomy-url nil}
+    {:name "рунглиш", :taxonomy-url nil}),
+   :link
+   "https://habr.com/ru/post/717694/?utm_source=habrahabr&utm_medium=rss&utm_campaign=717694",
+   :contributors nil,
+   :uri "https://habr.com/ru/post/717694/",
+   :contents nil,
+   :authors nil,
+   :enclosures nil}
+  {:description
+   {:type "text/html",
+    :mode nil,
+    :value
+    "<img src=\"https://habrastorage.org/webt/1n/bm/eh/1nbmehmuan-foono2cnnhnfgmug.png\" alt=\"image\"><br>\n<br>\nВ последнее время практически любую радиоактивную аварию принято сравнивать с Чернобылем. Авария на Фукусиме? Японский Чернобыль! Два бразильца в тихую вынесли и расковыряли капсулу с радиоактивным материалом? Бразильский Чернобыль! И если Фукусима ещё хоть как-то тянет на чернобыльские свинцовые лавры, то инцидент в Хуарезе, который повсеместно величают не иначе, как «Мексиканский Чернобыль», по масштабам разрушений или смертей, к счастью, сильно недотягивает. Однако проблем он создал весьма прилично, и часть из них, возможно, не решена до сих пор. Тем более странно, что в отличие от гораздо более локальных инцидентов (например, в эстонском Таммику, когда два молодых балбеса <a href=\"https://ru.wikipedia.org/wiki/%D0%9F%D1%80%D0%BE%D0%B8%D1%81%D1%88%D0%B5%D1%81%D1%82%D0%B2%D0%B8%D0%B5_%D0%B2_%D0%A2%D0%B0%D0%BC%D0%BC%D0%B8%D0%BA%D1%83\" rel=\"nofollow noopener noreferrer\">вломились</a> на свалку радиоактивных отходов и спёрли контейнер с цезием), никаких докладов по нему на ресурсах МАГАТЭ нет. Виной всему стали небольшая капсула с радиоактивным материалом, и неизвестный круг безответственных людей. Впрочем, обо всём по порядку. <a href=\"https://habr.com/ru/post/717718/?utm_source=habrahabr&#38;utm_medium=rss&#38;utm_campaign=717718#habracut\">Читать дальше &#8594;</a>"},
+   :updated-date nil,
+   :comments nil,
+   :extra nil,
+   :published-date #inst "2023-02-18T08:01:02.000-00:00",
+   :title "Против лома нет приёма. Радиоактивный металлолом в Хуарезе",
+   :author "Shyhartskoi",
+   :categories
+   ({:name "Блог компании Timeweb Cloud", :taxonomy-url nil}
+    {:name "Научно-популярное", :taxonomy-url nil}
+    {:name "Здоровье", :taxonomy-url nil}
+    {:name "Экология", :taxonomy-url nil}
+    {:name "timeweb_статьи_выходного_дня", :taxonomy-url nil}
+    {:name "радиация", :taxonomy-url nil}
+    {:name "экология", :taxonomy-url nil}
+    {:name "катастрофа", :taxonomy-url nil}
+    {:name "чернобыль", :taxonomy-url nil}
+    {:name "фукусима", :taxonomy-url nil}
+    {:name "рентгеновский сканер", :taxonomy-url nil}
+    {:name "кобальт", :taxonomy-url nil}
+    {:name "США", :taxonomy-url nil}
+    {:name "Мексика", :taxonomy-url nil}),
+   :link
+   "https://habr.com/ru/post/717718/?utm_source=habrahabr&utm_medium=rss&utm_campaign=717718",
+   :contributors nil,
+   :uri "https://habr.com/ru/post/717718/",
+   :contents nil,
+   :authors nil,
+   :enclosures nil}
+  {:description
+   {:type "text/html",
+    :mode nil,
+    :value
+    "<p>Перебирая старые архивы натолкнулся на подборку наработок и программ сделанных очень давно. Тогда было свободное время для экспериментов в поиске своего места в этом компьютерном мире. Было всё очень интересно и всё хотелось попробовать. Программки потянули за собой воспоминания о событиях и людях, с которыми на тот момент мы были единодушны в своих увлечениях.</p><p>Я хочу рассказать как в одном небольшом, закрытом, сибирском городке, небольшая компания молодых людей, увлеченных компьютерами, создала свое сообщество сплоченное общим интересом к программированию, созданием чего-то нового и общением друг с другом.</p> <a href=\"https://habr.com/ru/post/717732/?utm_source=habrahabr&#38;utm_medium=rss&#38;utm_campaign=717732#habracut\">Читать далее</a>"},
+   :updated-date nil,
+   :comments nil,
+   :extra nil,
+   :published-date #inst "2023-02-17T19:59:29.000-00:00",
+   :title "Демосцена маленького городка. История в лицах и программах",
+   :author "arwa",
+   :categories
+   ({:name "История IT", :taxonomy-url nil}
+    {:name "Демосцена", :taxonomy-url nil}
+    {:name "дискмаг", :taxonomy-url nil}
+    {:name "литмаг", :taxonomy-url nil}
+    {:name "демосцена", :taxonomy-url nil}
+    {:name "история it", :taxonomy-url nil}
+    {:name "воспоминания", :taxonomy-url nil}),
+   :link
+   "https://habr.com/ru/post/717732/?utm_source=habrahabr&utm_medium=rss&utm_campaign=717732",
+   :contributors nil,
+   :uri "https://habr.com/ru/post/717732/",
+   :contents nil,
+   :authors nil,
+   :enclosures nil}
+  {:description
+   {:type "text/html",
+    :mode nil,
+    :value
+    "<img src=\"https://habrastorage.org/webt/hs/1j/x5/hs1jx5pvk5wa5r4lkvewgmnr_m4.jpeg\"><br>\n<br>\nLinux продолжает развиваться, эта ОС каждый год становится все более востребованной. Чаще всего разные дистрибутивы Linux работают в корпоративной среде, но есть, конечно, и пользовательские устройства. Их не так мало, хотя и гораздо меньше, чем девайсов на Windows, Adnroid, iOS и т.п.<br>\n<br>\nТем не менее, производители из разных стран стараются выпускать новые модели Linux-систем для обычных пользователей. Сегодня как раз и поговорим о паре новинок, которые заслуживают внимания. <br> <a href=\"https://habr.com/ru/post/717276/?utm_source=habrahabr&#38;utm_medium=rss&#38;utm_campaign=717276#habracut\">Читать дальше &#8594;</a>"},
+   :updated-date nil,
+   :comments nil,
+   :extra nil,
+   :published-date #inst "2023-02-18T02:43:50.000-00:00",
+   :title
+   "Больше Linux-устройств хороших и разных: портативный «наладонник» из Китая, док-станция для Librem 5 и кое-что еще",
+   :author "Greiv656",
+   :categories
+   ({:name "Блог компании Selectel", :taxonomy-url nil}
+    {:name "Разработка под Linux", :taxonomy-url nil}
+    {:name "Гаджеты", :taxonomy-url nil}
+    {:name "Компьютерное железо", :taxonomy-url nil}
+    {:name "Смартфоны", :taxonomy-url nil}
+    {:name "linux", :taxonomy-url nil}
+    {:name "смартфоны", :taxonomy-url nil}
+    {:name "телефоны", :taxonomy-url nil}
+    {:name "гаджеты", :taxonomy-url nil}),
+   :link
+   "https://habr.com/ru/post/717276/?utm_source=habrahabr&utm_medium=rss&utm_campaign=717276",
+   :contributors nil,
+   :uri "https://habr.com/ru/post/717276/",
+   :contents nil,
+   :authors nil,
+   :enclosures nil}
+  {:description
+   {:type "text/html",
+    :mode nil,
+    :value
+    "<p>В 2022 году учёные-компьютерщики узнали, как передавать совершенно секретные сведения, почему трансформеры хорошо справляются, кажется, с любыми задачами и как улучшить алгоритмы более чем десятилетней давности (с небольшой помощью искусственного интеллекта), работать с которым вы научитесь на <a href=\"https://skillfactory.ru/data-scientist-pro?utm_source=habr&#38;utm_medium=habr&#38;utm_campaign=article&#38;utm_content=data-science_dspr_090223&#38;utm_term=lead\" rel=\"nofollow noopener noreferrer\">наших курсах по Data Science</a>.</p> <a href=\"https://habr.com/ru/post/717588/?utm_source=habrahabr&#38;utm_medium=rss&#38;utm_campaign=717588#habracut\">Читать дальше &#8594;</a>"},
+   :updated-date nil,
+   :comments nil,
+   :extra nil,
+   :published-date #inst "2023-02-17T18:52:01.000-00:00",
+   :title
+   "[Перевод] Крупнейшие открытия ушедшего года в области Computer Science",
+   :author "honyaki",
+   :categories
+   ({:name "Блог компании SkillFactory", :taxonomy-url nil}
+    {:name "Читальный зал", :taxonomy-url nil}
+    {:name "Научно-популярное", :taxonomy-url nil}
+    {:name "skillfactory", :taxonomy-url nil}
+    {:name "обзор", :taxonomy-url nil}
+    {:name "научпоп", :taxonomy-url nil}
+    {:name "наука", :taxonomy-url nil}
+    {:name "мозг", :taxonomy-url nil}
+    {:name "прорывы", :taxonomy-url nil}
+    {:name "доказательства", :taxonomy-url nil}
+    {:name "криптография", :taxonomy-url nil}
+    {:name "открытия", :taxonomy-url nil}
+    {:name "итоги", :taxonomy-url nil}),
+   :link
+   "https://habr.com/ru/post/717588/?utm_source=habrahabr&utm_medium=rss&utm_campaign=717588",
+   :contributors nil,
+   :uri "https://habr.com/ru/post/717588/",
+   :contents nil,
+   :authors nil,
+   :enclosures nil}
+  {:description
+   {:type "text/html",
+    :mode nil,
+    :value
+    "<p>Путь начинающего разработчика сложный и тернистый. Мы хотим как можно быстрее стать специалистом своего дела, получить работу и достойное вознаграждение за проделанный путь и приложенные усилия. Но время идет, я бы даже сказал бежит. А у нас до сих пор так ничего и не вышло, только накапливаемая усталость и чувство сожаления, что все происходит гораздо медленнее, чем мы того хотели. В чем же причины?</p><p></p> <a href=\"https://habr.com/ru/post/717702/?utm_source=habrahabr&#38;utm_medium=rss&#38;utm_campaign=717702#habracut\">Читать далее</a>"},
+   :updated-date nil,
+   :comments nil,
+   :extra nil,
+   :published-date #inst "2023-02-17T15:12:38.000-00:00",
+   :title
+   "Изучение программирования с нуля: готовьте на это очень много времени и не ждите быстрого результата",
+   :author "VasiliyST",
+   :categories
+   ({:name "Учебный процесс в IT", :taxonomy-url nil}
+    {:name "Карьера в IT-индустрии", :taxonomy-url nil}
+    {:name "начинающие разработчики", :taxonomy-url nil}
+    {:name ".net", :taxonomy-url nil}),
+   :link
+   "https://habr.com/ru/post/717702/?utm_source=habrahabr&utm_medium=rss&utm_campaign=717702",
+   :contributors nil,
+   :uri "https://habr.com/ru/post/717702/",
+   :contents nil,
+   :authors nil,
+   :enclosures nil}
+  {:description
+   {:type "text/html",
+    :mode nil,
+    :value
+    "<p>Всем привет. Продолжаем реализовывать hashmap из исходников Go 1.19. Во второй части рассмотрим generic ключи и рост мапы. Узнаем что такое нерефлексивные ключи, как происходит итерация во время роста и немного про коробочное хеширование.</p> <a href=\"https://habr.com/ru/post/717724/?utm_source=habrahabr&#38;utm_medium=rss&#38;utm_campaign=717724#habracut\">Читать далее</a>"},
+   :updated-date nil,
+   :comments nil,
+   :extra nil,
+   :published-date #inst "2023-02-17T20:16:50.000-00:00",
+   :title "Hashmap(map) по версии Golang. Часть 2",
+   :author "wikendp",
+   :categories
+   ({:name "Программирование", :taxonomy-url nil}
+    {:name "Алгоритмы", :taxonomy-url nil}
+    {:name "Go", :taxonomy-url nil}
+    {:name "go", :taxonomy-url nil}
+    {:name "hashmap", :taxonomy-url nil}
+    {:name "структуры данных", :taxonomy-url nil}),
+   :link
+   "https://habr.com/ru/post/717724/?utm_source=habrahabr&utm_medium=rss&utm_campaign=717724",
+   :contributors nil,
+   :uri "https://habr.com/ru/post/717724/",
+   :contents nil,
+   :authors nil,
+   :enclosures nil}
+  {:description
+   {:type "text/html",
+    :mode nil,
+    :value
+    "<p>Привет, Хабр! Меня зовут Георгий Ржавин, работаю процессным архитектором в&#160;компании GlowByte, руковожу направлением Business Process Management. В&#160;этой статье хотел&#160;бы поделится моим видением мирового рынка ПО (в первую очередь доступного в&#160;России) по&#160;моделированию и автоматизации процессов, а&#160;также рассказать о&#160;новых инструментах. Материал будет в&#160;первую очередь интересен для&#160;бизнес‑ и процессных аналитиков.</p><p></p> <a href=\"https://habr.com/ru/post/717700/?utm_source=habrahabr&#38;utm_medium=rss&#38;utm_campaign=717700#habracut\">Читать далее</a>"},
+   :updated-date nil,
+   :comments nil,
+   :extra nil,
+   :published-date #inst "2023-02-17T15:06:31.000-00:00",
+   :title "Как Heflo поломал мою картину мира",
+   :author "Vimagik",
+   :categories
+   ({:name "Блог компании GlowByte", :taxonomy-url nil}
+    {:name "Анализ и проектирование систем", :taxonomy-url nil}
+    {:name "Бизнес-модели", :taxonomy-url nil}
+    {:name "Визуальное программирование", :taxonomy-url nil}
+    {:name "Подготовка технической документации", :taxonomy-url nil}
+    {:name "bpmn", :taxonomy-url nil}
+    {:name "bpmn 2.0", :taxonomy-url nil}
+    {:name "camunda", :taxonomy-url nil}
+    {:name "bizagi", :taxonomy-url nil}
+    {:name "heflo", :taxonomy-url nil}
+    {:name "business studio", :taxonomy-url nil}),
+   :link
+   "https://habr.com/ru/post/717700/?utm_source=habrahabr&utm_medium=rss&utm_campaign=717700",
+   :contributors nil,
+   :uri "https://habr.com/ru/post/717700/",
+   :contents nil,
+   :authors nil,
+   :enclosures nil}
+  {:description
+   {:type "text/html",
+    :mode nil,
+    :value
+    "<p>Примерно полтора года назад вышла моя <a href=\"https://habr.com/ru/post/574044/\" rel=\"noopener noreferrer nofollow\">статья</a> про библиотеку валидации <a href=\"https://vueent.github.io/v9s\" rel=\"noopener noreferrer nofollow\">v9s</a>. Благодаря конструктивной критике в комментариях, удалось серьезно переработать библиотеку, уже год как вышла вторая более дружелюбная версия. В тексте публикации было сказано о том, что появилась необходимость осуществлять динамическую валидацию больших и сложных форм на <a href=\"https://vuejs.org/\" rel=\"noopener noreferrer nofollow\">Vue</a>, а еще хотелось добавить индикацию к отдельным частям страницы во время загрузки и сохранения данных. После серии экспериментов сложился общий концепт новой библиотеки и нескромное название <code>VueEnt</code>, намекающее на сферу ее применения. Итак, если у вас возникают те же проблемы при разработке на Vue, что изложены в моей предыдущей публикации по ссылке выше, то заварите чайку и приготовьте бутерброды, ведь, несмотря на обзорный характер публикации, в двух словах все не описать.</p><p></p> <a href=\"https://habr.com/ru/post/717680/?utm_source=habrahabr&#38;utm_medium=rss&#38;utm_campaign=717680#habracut\">Читать далее</a>"},
+   :updated-date nil,
+   :comments nil,
+   :extra nil,
+   :published-date #inst "2023-02-17T13:49:32.000-00:00",
+   :title "VueEnt — сложные формы на Vue и не только",
+   :author "Devoter",
+   :categories
+   ({:name "JavaScript", :taxonomy-url nil}
+    {:name "Программирование", :taxonomy-url nil}
+    {:name "VueJS", :taxonomy-url nil}
+    {:name "TypeScript", :taxonomy-url nil}
+    {:name "vue", :taxonomy-url nil}
+    {:name "vue.js", :taxonomy-url nil}
+    {:name "vuejs", :taxonomy-url nil}
+    {:name "typescript", :taxonomy-url nil}
+    {:name "javascript", :taxonomy-url nil}
+    {:name "vueent", :taxonomy-url nil}),
+   :link
+   "https://habr.com/ru/post/717680/?utm_source=habrahabr&utm_medium=rss&utm_campaign=717680",
+   :contributors nil,
+   :uri "https://habr.com/ru/post/717680/",
+   :contents nil,
+   :authors nil,
+   :enclosures nil}
+  {:description
+   {:type "text/html",
+    :mode nil,
+    :value
+    "<p>История перьевой ручки — это прежде всего история большого бизнеса, а потому богата легендами и апокрифами, которые всегда сопровождают любой большой бизнес и создаются им же для самоутверждения. Отделить в этой истории зерна от плевел достаточно проблематично, особенно сегодня, когда «золотой век» перьевой ручки позади и самая дешевая шариковая ручка более функциональна, чем самая дорогая авторучка. Parker или Monblanc с золотым пером остаются предметом престижа для уважающего себя бизнесмена или политика наряду со швейцарским хронометром на запястье, множа ряды подражателей и подпитывая мифологию «вечного пера» новыми и новыми апокрифами. Рассказываем историю ручки от перьевого пера до авторучки.</p><p></p> <a href=\"https://habr.com/ru/post/717696/?utm_source=habrahabr&#38;utm_medium=rss&#38;utm_campaign=717696#habracut\">Читать далее</a>"},
+   :updated-date nil,
+   :comments nil,
+   :extra nil,
+   :published-date #inst "2023-02-17T16:00:02.000-00:00",
+   :title "История создания ручки",
+   :author "gregyku",
+   :categories
+   ({:name "Блог компании Онлайн Патент", :taxonomy-url nil}
+    {:name "Читальный зал", :taxonomy-url nil}
+    {:name "Патентование", :taxonomy-url nil}
+    {:name "Научно-популярное", :taxonomy-url nil}
+    {:name "патентование", :taxonomy-url nil}
+    {:name "ручка", :taxonomy-url nil}
+    {:name "изобретение", :taxonomy-url nil}),
+   :link
+   "https://habr.com/ru/post/717696/?utm_source=habrahabr&utm_medium=rss&utm_campaign=717696",
+   :contributors nil,
+   :uri "https://habr.com/ru/post/717696/",
+   :contents nil,
+   :authors nil,
+   :enclosures nil}
+  {:description
+   {:type "text/html",
+    :mode nil,
+    :value
+    "<p>Я вот именно тот, иногда ненавистный работодатель, в сфере ИТ. У нас компания разработчиков ~25 человек, кто-то уехал в Европу после начала СВО, но весь костяк команды в Питере. Мне 49, а ребятам в массе своей до 25 — студенты, учатся (магистратура, балакавриат). Расскажу свой свежий опыт найма, а уж там дальше выводы делайте сами… Пишу по итогу справедливых опасений \"<em>взрослею и боюсь что будет дальше, найду ли работу?</em>\".</p><p></p> <a href=\"https://habr.com/ru/post/717752/?utm_source=habrahabr&#38;utm_medium=rss&#38;utm_campaign=717752#habracut\">Читать далее</a>"},
+   :updated-date nil,
+   :comments nil,
+   :extra nil,
+   :published-date #inst "2023-02-18T07:45:16.000-00:00",
+   :title
+   "Почему не берут возрастных кандидатов — взгляд работодателя… откровенно и изнутри",
+   :author "makasin4ik",
+   :categories
+   ({:name "Блог компании offlineCRM: Бесплатная CRM для самозанятых",
+     :taxonomy-url nil}
+    {:name "Управление проектами", :taxonomy-url nil}
+    {:name "Управление продуктом", :taxonomy-url nil}
+    {:name "Управление продажами", :taxonomy-url nil}
+    {:name "Управление персоналом", :taxonomy-url nil}
+    {:name "персонал", :taxonomy-url nil}
+    {:name "найм", :taxonomy-url nil}
+    {:name "найм персонала", :taxonomy-url nil}
+    {:name "найм разработчиков", :taxonomy-url nil}
+    {:name "стартап", :taxonomy-url nil}
+    {:name "поиск работы", :taxonomy-url nil}
+    {:name "работа", :taxonomy-url nil}
+    {:name "работа в it", :taxonomy-url nil}),
+   :link
+   "https://habr.com/ru/post/717752/?utm_source=habrahabr&utm_medium=rss&utm_campaign=717752",
+   :contributors nil,
+   :uri "https://habr.com/ru/post/717752/",
+   :contents nil,
+   :authors nil,
+   :enclosures nil}
+  {:description
+   {:type "text/html",
+    :mode nil,
+    :value
+    "<p>Привет, Хабр!&#160;</p><p>Мы – Александр Просвирнин, <a href=\"https://career.habr.com/companies/mts/vacancies\">руководитель проектного направления</a>, и Иван Григорьев, <a href=\"https://career.habr.com/companies/mts/vacancies\">старший менеджер</a>, работаем в команде продукта <a href=\"https://moskva.mts.ru/business/it-i-bezopasnost/videonablyudenie_i_videoanalitika\">«Видеонаблюдение» МТС</a>.&#160;</p><p>В этой статье мы расскажем о том, как современные технологии помогают бороться с лесными пожарами. Внутри команды мы придумали решение на базе видеоаналитики, которое существенно улучшает процесс мониторинга возгораний.</p><p></p> <a href=\"https://habr.com/ru/post/717738/?utm_source=habrahabr&#38;utm_medium=rss&#38;utm_campaign=717738#habracut\">Читать далее</a>"},
+   :updated-date nil,
+   :comments nil,
+   :extra nil,
+   :published-date #inst "2023-02-18T07:00:02.000-00:00",
+   :title "Как технологии помогают бороться с лесными пожарами",
+   :author "mtsvideo",
+   :categories
+   ({:name "Блог компании МТС", :taxonomy-url nil}
+    {:name "Геоинформационные сервисы", :taxonomy-url nil}
+    {:name "Гаджеты", :taxonomy-url nil}
+    {:name "Экология", :taxonomy-url nil}
+    {:name "Инженерные системы", :taxonomy-url nil}
+    {:name "видео", :taxonomy-url nil}
+    {:name "видеонаблюдение", :taxonomy-url nil}
+    {:name "безопасность", :taxonomy-url nil}
+    {:name "мониторинг", :taxonomy-url nil}
+    {:name "бпла", :taxonomy-url nil}
+    {:name "пожаротушение", :taxonomy-url nil}
+    {:name "видеоаналитика", :taxonomy-url nil}
+    {:name "системы мониторинга", :taxonomy-url nil}
+    {:name "камеры наблюдения", :taxonomy-url nil}
+    {:name "камеры слежения", :taxonomy-url nil}),
+   :link
+   "https://habr.com/ru/post/717738/?utm_source=habrahabr&utm_medium=rss&utm_campaign=717738",
+   :contributors nil,
+   :uri "https://habr.com/ru/post/717738/",
+   :contents nil,
+   :authors nil,
+   :enclosures nil}
+  {:description
+   {:type "text/html",
+    :mode nil,
+    :value
+    "<p>Приветствую читатели, в этой статье я бы хотел рассказать о написанной мной OpenSource библиотеке <strong>MediaFileProcessor</strong> под платформу .NET (.netstandart 2.0).</p><p></p> <a href=\"https://habr.com/ru/post/717726/?utm_source=habrahabr&#38;utm_medium=rss&#38;utm_campaign=717726#habracut\">Читать далее</a>"},
+   :updated-date nil,
+   :comments nil,
+   :extra nil,
+   :published-date #inst "2023-02-17T18:51:48.000-00:00",
+   :title
+   "C# и обработка медиафайлов средствами FFmpeg, Pandoc и ImageMagick",
+   :author "StivenDiplet",
+   :categories
+   ({:name ".NET", :taxonomy-url nil}
+    {:name "C#", :taxonomy-url nil}
+    {:name "c#.net", :taxonomy-url nil}
+    {:name "ffmpeg", :taxonomy-url nil}
+    {:name "pandoc", :taxonomy-url nil}
+    {:name "imagemagick", :taxonomy-url nil}
+    {:name "wrapper", :taxonomy-url nil}
+    {:name "stream", :taxonomy-url nil}),
+   :link
+   "https://habr.com/ru/post/717726/?utm_source=habrahabr&utm_medium=rss&utm_campaign=717726",
+   :contributors nil,
+   :uri "https://habr.com/ru/post/717726/",
+   :contents nil,
+   :authors nil,
+   :enclosures nil}
+  {:description
+   {:type "text/html",
+    :mode nil,
+    :value
+    "<p>Привет Хабр!</p><p>В своей предыдущей <a href=\"https://habr.com/ru/post/716292/\" rel=\"noopener noreferrer nofollow\">статье</a> про разбор кода победившего в VK Cup'22/23 я описывал как мне удалось ускорить копирование одной картинки в другую в 30 раз с помощью чёрной магии <code>unsafe</code>. Однако я не переставал задаваться вопросом, можно ли увеличить скорость еще больше. Я даже привлёк OpenAI в поисках решения, но он мне помог только с картинкой для обложки статьи. В итоге я нашел способ улучшить код еще в 2 раза. Чем и хочу поделиться.</p><p></p> <a href=\"https://habr.com/ru/post/717716/?utm_source=habrahabr&#38;utm_medium=rss&#38;utm_campaign=717716#habracut\">Читать далее</a>"},
+   :updated-date nil,
+   :comments nil,
+   :extra nil,
+   :published-date #inst "2023-02-17T16:52:56.000-00:00",
+   :title "Оптимизация доступа к элементам слайса в Go",
+   :author "svistunov",
+   :categories
+   ({:name "Высокая производительность", :taxonomy-url nil}
+    {:name "Ненормальное программирование", :taxonomy-url nil}
+    {:name "Go", :taxonomy-url nil}
+    {:name "go", :taxonomy-url nil}
+    {:name "оптимизация", :taxonomy-url nil}
+    {:name "оптимизация кода", :taxonomy-url nil}),
+   :link
+   "https://habr.com/ru/post/717716/?utm_source=habrahabr&utm_medium=rss&utm_campaign=717716",
+   :contributors nil,
+   :uri "https://habr.com/ru/post/717716/",
+   :contents nil,
+   :authors nil,
+   :enclosures nil}),
+ :docs nil,
+ :extra nil,
+ :copyright nil,
+ :published-date #inst "2023-02-18T12:12:35.000-00:00",
+ :icon nil,
+ :entry-links nil,
+ :title "Лучшие публикации за сутки",
+ :author "editor@habr.com",
+ :categories nil,
+ :language "ru",
+ :link "https://habr.com/ru/top/daily/",
+ :webmaster nil,
+ :contributors nil,
+ :editor "editor@habr.com",
+ :generator "habr.com",
+ :image
+ {:title "Хабр",
+  :url
+  "https://habrastorage.org/webt/ym/el/wk/ymelwk3zy1gawz4nkejl_-ammtc.png",
+  :width -1,
+  :height -1,
+  :link "https://habr.com/ru/",
+  :description nil},
+ :uri nil,
+ :authors nil}
