@@ -130,14 +130,12 @@
 ;;
 
 (defn create-messages-for-subscription
-  [^UUID subscription-id]
+  [^UUID subscription-id ^UUID feed-id]
   (db/execute
    {:insert-into [[:messages [:entry_id :subscription_id]]
                   {:select [:e.id subscription-id]
-                   :from [[:subscriptions :s]]
-                   :join [[:feeds :f] [:= :s.feed_id :f.id]
-                          [:entries :e] [:= :e.feed_id :f.id]]
-                   :where [:= :s.id subscription-id]
+                   :from [[:entries :e]]
+                   :where [:= :e.feed_id feed-id]
                    :limit 1000}]
     :on-conflict [:entry_id :subscription_id]
     :do-nothing true
@@ -147,6 +145,10 @@
 
 #_
 (comment
+
+  (create-messages-for-subscription
+   #uuid "42230fa5-c115-488d-a36e-af0d650ec771"
+   #uuid "2e86f35b-569a-4220-a25b-a646233b1508")
 
   (def -url "https://habr.com/ru/rss/all/all/?fl=ru")
   (def -user-id (random-uuid))
