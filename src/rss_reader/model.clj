@@ -5,6 +5,10 @@
    [rss-reader.db :as db]))
 
 
+;;
+;; Feed
+;;
+
 (defn update-feed
   [^UUID feed-id fields]
   (let [row
@@ -47,6 +51,25 @@
                            [:= :user_id user-id]
                            [:= :url_source url]]}
                   {:limit 1}))
+
+
+;;
+;; Entry
+;;
+
+(defn upsert-entry
+  [^UUID feed-id ^String guid fields]
+  (let [row
+        (-> fields
+            (assoc :feed_id feed-id
+                   :guid guid
+                   :updated_at :%now))]
+    (db/execute-one {:insert-into [:entries]
+                     :values [row]
+                     :on-conflict [:feed_id :guid]
+                     :do-update-set (keys row)
+                     :returning [:*]})))
+
 
 
 #_

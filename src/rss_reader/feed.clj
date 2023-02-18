@@ -106,11 +106,20 @@
 
                   {:keys [type
                           value]}
-                  description]
+                  description
 
-              ))
+                  guid
+                  (or link
+                      uri
+                      (str published-date)
+                      (throw (ex-info "AAA" {})))]
 
-          )
+              (model/upsert-entry feed-id guid
+                                  {:link (or link uri)
+                                   :author author
+                                   :date_published_at published-date
+                                   :date_updated_at updated-date
+                                   :summary value}))))
 
         (= status 304)
         :not-modified
