@@ -1,9 +1,13 @@
 (ns rss-reader.db
+  (:import
+   java.util.Date
+   (java.sql PreparedStatement Timestamp))
   (:require
    [hikari-cp.core :as cp]
    [honey.sql :as honey]
    [mount.core :as mount]
    [next.jdbc :as jdbc]
+   [next.jdbc.prepare :as jdbc.prepare]
    [next.jdbc.connection :as jdbc.conn]
    [next.jdbc.result-set :as rs]
    [next.jdbc.sql :as sql]
@@ -56,3 +60,9 @@
   `(jdbc/with-transaction [tx# db ~opt]
      (binding [db tx#]
        ~@body)))
+
+
+(extend-protocol jdbc.prepare/SettableParameter
+  Date
+  (set-parameter [^Date v ^PreparedStatement s ^long i]
+    (.setTimestamp s i (new Timestamp (.getTime v)))))

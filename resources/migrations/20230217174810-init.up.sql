@@ -20,11 +20,18 @@ create table feeds (
     url_source          TEXT NOT NULL,
     url_website         TEXT,
     url_favicon         TEXT,
+    url_icon            TEXT,
     url_image           TEXT,
-    domain              TEXT,
-    language            TEXT,
-    title               TEXT,
-    subtitle            TEXT,
+    rss_feed_type       TEXT,
+    rss_encoding        TEXT,
+    rss_description     TEXT,
+    rss_domain          TEXT,
+    rss_language        TEXT,
+    rss_title           TEXT,
+    rss_author          TEXT,
+    rss_editor          TEXT,
+    rss_subtitle        TEXT,
+    rss_published_at    TIMESTAMP WITHOUT TIME ZONE,
     http_status         INTEGER,
     http_etag           TEXT,
     http_last_modified  TEXT,
@@ -60,8 +67,19 @@ create table enclosures (
     id         UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
     updated_at TIMESTAMP WITHOUT TIME ZONE,
-    entry_id   UUID,
+    parent_id  UUID NOT NULL,
     url        TEXT,
     length     INTEGER,
     type       TEXT
-)
+);
+
+--;
+
+CREATE TABLE CATEGORIES (
+    id         UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
+    updated_at TIMESTAMP WITHOUT TIME ZONE,
+    parent_id  UUID NOT NULL,
+    category   TEXT NOT NULL,
+    UNIQUE (parent_id, category)
+);

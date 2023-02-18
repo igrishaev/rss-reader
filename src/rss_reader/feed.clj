@@ -38,7 +38,11 @@
            :headers headers}
 
           {:keys [status body headers error]}
-          @(client/get url_source options)]
+          @(client/get url_source options)
+
+          {:keys [etag
+                  last-modified]}
+          headers]
 
       (cond
 
@@ -66,19 +70,47 @@
                       editor
                       generator
                       image
-                      ]}
+                      uri
+                      entries]}
+              parsed]
 
-              ]
+          (model/update-feed feed-id
+                             {:rss_title title
+                              :rss_language language
+                              :rss_author author
+                              :rss_editor editor
+                              :rss_published_at published-date
+                              :rss_description description
+                              :rss_encoding encoding
+                              :rss_feed_type feed-type
+                              :url_icon (:url icon)
+                              :url_image (:url image)
+                              :url_website link
+                              :http_status status
+                              :http_last_modified last-modified
+                              :http_etag etag
+                              :sync_count [:raw "sync_count + 1"]})
 
-          (spit "feed.edn" (with-out-str
-                             (clojure.pprint/pprint
-                              parsed)))
+          (doseq [entry entries]
+            (let [{:keys [uri
+                          updated-date
+                          published-date
+                          title
+                          author
+                          categories
+                          link
+                          image
+                          enclosures
+                          description]}
+                  entry
 
+                  {:keys [type
+                          value]}
+                  description]
+
+              ))
 
           )
-
-
-
 
         (= status 304)
         :not-modified
@@ -98,5 +130,16 @@
   ;; - update feed
   ;; json?
   ;; - remap
+
+  )
+
+
+#_
+(comment
+
+  (def -feed-id #uuid "2fc19251-d095-454e-86a0-c93ed67d4636")
+
+  (update-feed -feed-id)
+
 
   )

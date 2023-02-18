@@ -1,6 +1,5 @@
 (ns rss-reader.core-test
-  (:require [clojure.test :refer :all]
-            [rss-reader.core :refer :all]))
+  (:require [clojure.test :refer :all]))
 
 (deftest a-test
   (testing "FIXME, I fail."
