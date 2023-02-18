@@ -1,17 +1,15 @@
-drop table categories;
-
+DROP TABLE categories;
 --;
-
-drop table enclosures;
-
+DROP TABLE enclosures;
 --;
-
-drop table entries;
-
+DROP TABLE entries;
 --;
-
-drop table feeds;
-
+DROP TABLE feeds;
 --;
-
-drop table users;
+DROP TABLE users;
+--;
+DROP TABLE subscriptions;
+--;
+DROP TABLE messages;
+--;
+DROP EXTENSION IF EXISTS "uuid-ossp";

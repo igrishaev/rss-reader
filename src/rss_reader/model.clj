@@ -21,18 +21,17 @@
 
 
 (defn upsert-feed
-  ([url user-id]
-   (upsert-feed url user-id nil))
+  ([url]
+   (upsert-feed url nil))
 
-  ([^String url ^UUID user-id fields]
+  ([^String url fields]
    (let [row
          (-> fields
              (assoc :url_source url
-                    :user_id user-id
                     :updated_at :%now))]
      (db/execute-one {:insert-into [:feeds]
                       :values [row]
-                      :on-conflict [:user_id :url_source]
+                      :on-conflict [:url_source]
                       :do-update-set (keys row)
                       :returning [:*]}))))
 
@@ -44,12 +43,10 @@
                   {:limit 1}))
 
 
-(defn get-feed-by-url [^String url ^UUID user-id]
+(defn get-feed-by-url [^String url]
   (db/execute-one {:select [:*]
                    :from [:feeds]
-                   :where [:and
-                           [:= :user_id user-id]
-                           [:= :url_source url]]}
+                   :where [:= :url_source url]}
                   {:limit 1}))
 
 
@@ -71,6 +68,24 @@
                      :returning [:*]})))
 
 
+;;
+;; Categories
+;;
+
+(defn upsert-categories
+  [^UUID parent-id
+   ^String parent-type
+   categories]
+  (when (seq categories)
+    (db/execute {:insert-into [:categories]
+                 :values (for [category categories]
+                           {:parent_id parent-id
+                            :parent-type parent-type
+                            :category category})
+                 :on-conflict [:parent_id :category]
+                 :do-nothing true
+                 :returning [:*]})))
+
 
 #_
 (comment
@@ -78,8 +93,13 @@
   (def -url "https://habr.com/ru/rss/all/all/?fl=ru")
   (def -user-id (random-uuid))
 
-  (upsert-feed -url -user-id)
+  (upsert-feed -url)
 
-  (get-feed-by-url -url -user-id)
+  (get-feed-by-url -url)
 
-  )
+  (def -parent-id (random-uuid))
+
+  (upsert-categories -parent-id "entry"
+                     ["foo"
+                      "bar"
+                      "baz"]))

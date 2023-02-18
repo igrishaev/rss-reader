@@ -72,24 +72,26 @@
                       image
                       uri
                       entries]}
-              parsed]
+              parsed
 
-          (model/update-feed feed-id
-                             {:rss_title title
-                              :rss_language language
-                              :rss_author author
-                              :rss_editor editor
-                              :rss_published_at published-date
-                              :rss_description description
-                              :rss_encoding encoding
-                              :rss_feed_type feed-type
-                              :url_icon (:url icon)
-                              :url_image (:url image)
-                              :url_website link
-                              :http_status status
-                              :http_last_modified last-modified
-                              :http_etag etag
-                              :sync_count [:raw "sync_count + 1"]})
+              feed-fields
+              {:rss_title title
+               :rss_language language
+               :rss_author author
+               :rss_editor editor
+               :rss_published_at published-date
+               :rss_description description
+               :rss_encoding encoding
+               :rss_feed_type feed-type
+               :url_icon (:url icon)
+               :url_image (:url image)
+               :url_website link
+               :http_status status
+               :http_last_modified last-modified
+               :http_etag etag
+               :sync_count [:raw "sync_count + 1"]}]
+
+          (model/update-feed feed-id feed-fields)
 
           (doseq [entry entries]
             (let [{:keys [uri
@@ -112,14 +114,25 @@
                   (or link
                       uri
                       (str published-date)
-                      (throw (ex-info "AAA" {})))]
+                      (throw (ex-info "AAA" {})))
 
-              (model/upsert-entry feed-id guid
-                                  {:link (or link uri)
-                                   :author author
-                                   :date_published_at published-date
-                                   :date_updated_at updated-date
-                                   :summary value}))))
+                  entry-fields
+                  {:link (or link uri)
+                   :author author
+                   :title title
+                   :date_published_at published-date
+                   :date_updated_at updated-date
+                   :summary value}
+
+                  {entry-id :id}
+                  (model/upsert-entry feed-id guid entry-fields)
+
+                  category-names
+                  (map :name categories)]
+
+              (model/upsert-categories entry-id
+                                       "entry"
+                                       category-names))))
 
         (= status 304)
         :not-modified
@@ -146,7 +159,7 @@
 #_
 (comment
 
-  (def -feed-id #uuid "2fc19251-d095-454e-86a0-c93ed67d4636")
+  (def -feed-id #uuid "2e86f35b-569a-4220-a25b-a646233b1508")
 
   (update-feed -feed-id)
 
