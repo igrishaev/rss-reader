@@ -1,6 +1,7 @@
 (ns rss-reader.db
   (:require
    [hikari-cp.core :as cp]
+   [honey.sql :as honey]
    [mount.core :as mount]
    [next.jdbc :as jdbc]
    [next.jdbc.connection :as jdbc.conn]
@@ -9,7 +10,7 @@
    [rss-reader.config :refer [config]]))
 
 
-(mount/defstate ^{:on-reload :noop} db
+(mount/defstate ^{:dynamic true :on-reload :noop} db
   :start
   (-> config
       :db-pool
@@ -27,5 +28,19 @@
   (mount/stop (var db)))
 
 
-#_
-(jdbc/execute! db ["select 1"])
+(defn execute [query-map]
+  (jdbc/execute! db
+                 (honey/format query-map)
+                 {:builder-fn rs/as-unqualified-maps}))
+
+
+(defn execute-one [query-map]
+  (jdbc/execute-one! db
+                     (honey/format query-map)
+                     {:builder-fn rs/as-unqualified-maps}))
+
+
+(defmacro with-tx [[opt] & body]
+  `(jdbc/with-transaction [tx# db ~opt]
+     (binding [db tx#]
+       ~@body)))

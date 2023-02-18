@@ -15,6 +15,9 @@
   <logger name="org.eclipse.jetty" level="ERROR" additivity="false">
   </logger>
 
+  <logger name="com.zaxxer.hikari.pool" level="ERROR" additivity="false">
+  </logger>
+
   <root level="DEBUG">
     <appender-ref ref="STDOUT"/>
   </root>
