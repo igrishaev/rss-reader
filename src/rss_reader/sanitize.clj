@@ -2,8 +2,11 @@
   (:import
    org.jsoup.Jsoup
    org.jsoup.nodes.Document
-   [org.jsoup.safety Safelist Cleaner]
-   org.jsoup.nodes.Entities$EscapeMode))
+   org.jsoup.nodes.Element
+   org.jsoup.nodes.Entities$EscapeMode
+   org.jsoup.safety.Cleaner
+   org.jsoup.safety.Safelist))
+
 
 (def tags-allowed
   [
@@ -89,10 +92,43 @@
   (Safelist/none))
 
 
+(def re-youtube
+  #"(?i)youtube.com/embed")
+
+(def re-vk
+  #"(?i)vk.com/video_ext.php")
+
+(def re-coube
+  #"(?i)coub.com/embed")
+
+(def re-soundcloud
+  #"(?i)soundcloud.com/player")
+
+(def re-vimeo
+  #"(?i)player.vimeo.com/video")
+
+
+(defn media-src?
+  [^String src]
+  (or (re-find re-youtube src)
+      (re-find re-vk src)
+      (re-find re-coube src)
+      (re-find re-soundcloud src)
+      (re-find re-vimeo src)))
+
+
+(defn process-iframes
+  [^Document doc]
+  (doseq [^Element el (.select doc "iframe")]
+    (let [src (.absUrl el "src")]
+      (when-not (media-src? src)
+        (.remove el)))))
+
+
 (defn sanitize-html
   [^String html ^String url]
   (let [^Document doc (Jsoup/parse html (or url ""))]
-    #_(process-iframes src)
+    (process-iframes doc)
     (let [out (.clean cleaner-html doc)]
       (.. out outputSettings (escapeMode XHTML))
       (.. out body html))))
