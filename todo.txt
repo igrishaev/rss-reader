@@ -1,0 +1,8 @@
+- add cron
+- add main module
+- add signals
+- add config env! tag
+- add todos in feed
+- handle 304/error in feed
+- configure logs
+- configure sentry
