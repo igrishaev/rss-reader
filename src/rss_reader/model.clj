@@ -142,6 +142,51 @@
     :returning [:*]}))
 
 
+(defn update-unread-for-subscription
+  [^UUID subscription-id]
+  (db/execute
+   {:update [:subscriptions]
+    :set {:unread_count :sub.unread
+          :sync_date_next [:raw "now() + (interval '1 second' * sync_interval)"]
+          :sync_count [:raw "sync_count + 1"]}
+    :from [[{:select [[[:count :m.id] :unread]]
+             :from [[:messages :m]]
+             :where [:and
+                     [:= :m.subscription_id subscription-id]
+                     [:not :is_read]]}
+            :sub]]
+    :where [:= :id subscription-id]
+    :returning [:*]}))
+
+
+(defn sync-subsciption
+  [^UUID subscription-id ^UUID feed-id]
+  (db/with-tx nil
+    (create-messages-for-subscription subscription-id feed-id)
+    (update-unread-for-subscription subscription-id)))
+
+
+(defn feeds-to-update []
+  (db/execute
+   {:select [:id]
+    :from [:feeds]
+    :where [:or
+            [:= :sync_date_next nil]
+            [:< :sync_date_next :%now]]
+    :order-by [[:sync_date_next :asc :nulls-first]]
+    :limit 100}))
+
+
+(defn subscriptions-to-update []
+  (db/execute
+   {:select [:id :feed_id]
+    :from [:subscriptions]
+    :where [:or
+            [:= :sync_date_next nil]
+            [:< :sync_date_next :%now]]
+    :order-by [[:sync_date_next :asc :nulls-first]]
+    :limit 100}))
+
 
 #_
 (comment

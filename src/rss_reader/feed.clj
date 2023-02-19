@@ -89,7 +89,8 @@
                :http_status status
                :http_last_modified last-modified
                :http_etag etag
-               :sync_count [:raw "sync_count + 1"]}]
+               :sync_count [:raw "sync_count + 1"]
+               :sync_date_next [:raw "now() + (interval '1 second' * sync_interval)"]}]
 
           (model/update-feed feed-id feed-fields)
 

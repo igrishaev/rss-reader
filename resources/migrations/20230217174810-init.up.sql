@@ -4,8 +4,8 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 CREATE TABLE users (
     id           UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    created_at   TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
-    updated_at   TIMESTAMP WITHOUT TIME ZONE,
+    created_at   TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    updated_at   TIMESTAMP WITH TIME ZONE,
     email        TEXT NOT NULL,
     UNIQUE (email)
 );
@@ -14,8 +14,8 @@ CREATE TABLE users (
 
 CREATE TABLE feeds (
     id                  UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    created_at          TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
-    updated_at          TIMESTAMP WITHOUT TIME ZONE,
+    created_at          TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    updated_at          TIMESTAMP WITH TIME ZONE,
     url_source          TEXT NOT NULL,
     url_website         TEXT,
     url_favicon         TEXT,
@@ -30,12 +30,12 @@ CREATE TABLE feeds (
     rss_author          TEXT,
     rss_editor          TEXT,
     rss_subtitle        TEXT,
-    rss_published_at    TIMESTAMP WITHOUT TIME ZONE,
+    rss_published_at    TIMESTAMP WITH TIME ZONE,
     http_status         INTEGER,
     http_etag           TEXT,
     http_last_modified  TEXT,
     sync_interval       INTEGER NOT NULL DEFAULT 3600,
-    sync_date_next      TIMESTAMP WITHOUT TIME ZONE,
+    sync_date_next      TIMESTAMP WITH TIME ZONE,
     sync_count          INTEGER NOT NULL DEFAULT 0,
     entries_count       INTEGER NOT NULL DEFAULT 0,
     UNIQUE (url_source)
@@ -45,11 +45,14 @@ CREATE TABLE feeds (
 
 CREATE TABLE subscriptions (
     id             UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    created_at     TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
-    updated_at     TIMESTAMP WITHOUT TIME ZONE,
+    created_at     TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    updated_at     TIMESTAMP WITH TIME ZONE,
     user_id        UUID NOT NULL,
     feed_id        UUID NOT NULL,
     unread_count   INTEGER NOT NULL DEFAULT 0,
+    sync_count     INTEGER NOT NULL DEFAULT 0,
+    sync_interval  INTEGER NOT NULL DEFAULT 3600,
+    sync_date_next TIMESTAMP WITH TIME ZONE,
     UNIQUE (feed_id, user_id)
 );
 
@@ -57,16 +60,16 @@ CREATE TABLE subscriptions (
 
 CREATE TABLE entries (
     id                 UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    created_at         TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
-    updated_at         TIMESTAMP WITHOUT TIME ZONE,
+    created_at         TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    updated_at         TIMESTAMP WITH TIME ZONE,
     feed_id            UUID NOT NULL,
     guid               TEXT NOT NULL,
     link               TEXT,
     author             TEXT,
     title              TEXT,
     summary            TEXT,
-    date_published_at  TIMESTAMP WITHOUT TIME ZONE,
-    date_updated_at    TIMESTAMP WITHOUT TIME ZONE,
+    date_published_at  TIMESTAMP WITH TIME ZONE,
+    date_updated_at    TIMESTAMP WITH TIME ZONE,
     UNIQUE (feed_id, guid)
 );
 
@@ -74,11 +77,11 @@ CREATE TABLE entries (
 
 CREATE TABLE messages (
     id                UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    created_at        TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
-    updated_at        TIMESTAMP WITHOUT TIME ZONE,
+    created_at        TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    updated_at        TIMESTAMP WITH TIME ZONE,
     entry_id          UUID NOT NULL,
     subscription_id   UUID NOT NULL,
-    date_read_at      TIMESTAMP WITHOUT TIME ZONE,
+    is_read           BOOLEAN NOT NULL DEFAULT FALSE,
     UNIQUE (entry_id, subscription_id)
 );
 
@@ -87,8 +90,8 @@ CREATE TABLE messages (
 
 CREATE TABLE enclosures (
     id         UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
-    updated_at TIMESTAMP WITHOUT TIME ZONE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    updated_at TIMESTAMP WITH TIME ZONE,
     parent_id  UUID NOT NULL,
     url        TEXT,
     length     INTEGER,
@@ -99,7 +102,7 @@ CREATE TABLE enclosures (
 
 CREATE TABLE categories (
     id            UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    created_at    TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
+    created_at    TIMESTAMP WITH TIME ZONE DEFAULT now(),
     parent_id     UUID NOT NULL,
     parent_type   TEXT NOT NULL,
     category      TEXT NOT NULL,
