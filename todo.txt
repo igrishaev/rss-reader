@@ -1,5 +1,9 @@
 - add config env! tag
-- add todos in feed
+- fix todos in feed
+- cleanup htmo
+- investigate json responses
+- fix cron tasks
 - handle 304/error in feed
 - configure logs
 - configure sentry
+- add sql indexes

@@ -54,9 +54,6 @@
    ;; url validator
    [commons-validator/commons-validator "1.7"]]
 
-  :main
-  ^:skip-aot rss-reader.main
-
   :target-path
   "target/%s"
 
@@ -68,4 +65,5 @@
 
    :uberjar
    {:aot :all
+    :main rss-reader.main
     :jvm-opts ["-Dclojure.compiler.direct-linking=true"]}})

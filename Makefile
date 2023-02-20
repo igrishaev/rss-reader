@@ -29,3 +29,6 @@ docker-rm:
 
 docker-psql:
 	psql --port 15432 --host localhost -U user rss
+
+uberjar:
+	lein with-profile uberjar uberjar

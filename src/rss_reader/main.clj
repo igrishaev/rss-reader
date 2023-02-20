@@ -26,4 +26,10 @@
     (log/info "Caught SIGTERM, stopping the system...")
     (mount/stop)
     (log/info "The system has been stopped.")
+    (System/exit 0))
+
+  (signal/with-handler :int
+    (log/info "Caught SIGINT, stopping the system...")
+    (mount/stop)
+    (log/info "The system has been stopped.")
     (System/exit 0)))
