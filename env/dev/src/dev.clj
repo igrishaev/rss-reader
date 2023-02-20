@@ -11,12 +11,3 @@
 
 (defn stop []
   (mount/stop))
-
-
-#_
-(comment
-
-  (start)
-  (stop)
-
-  )

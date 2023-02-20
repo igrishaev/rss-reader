@@ -9,17 +9,6 @@
    [rss-reader.config :refer [config]]))
 
 
-(defn wrap-func [func title]
-  (fn []
-    (log/infof "Cron task %s has been started" title)
-    (try
-      (func)
-      (catch Throwable e
-        (log/errorf e "Cron task %s has failed" title))
-      (finally
-        (log/infof "Cron task %s has been stopped" title)))))
-
-
 (def TASKS
   [{:delay 15
     :period (* 1 60 60)
@@ -31,6 +20,17 @@
     :func #(println "World")}])
 
 
+(defn wrap-func [func title]
+  (fn []
+    (log/infof "Cron task %s has been started" title)
+    (try
+      (func)
+      (catch Throwable e
+        (log/errorf e "Cron task %s has failed" title))
+      (finally
+        (log/infof "Cron task %s has been stopped" title)))))
+
+
 (mount/defstate ^{:on-reload :noop} cron
   :start
   (let [executor
@@ -40,9 +40,9 @@
         (vec (for [{:keys [delay period title func]}
                    TASKS]
                (.scheduleAtFixedRate executor
+                                     (wrap-func func title)
                                      delay
                                      period
-                                     (wrap-func func title)
                                      TimeUnit/SECONDS)))]
 
     {:executor executor
@@ -54,3 +54,11 @@
     (doseq [^Future future futures]
       (.cancel future false))
     (.shutdown ^ScheduledThreadPoolExecutor executor)))
+
+
+(defn start []
+  (mount/start (var cron)))
+
+
+(defn stop []
+  (mount/stop (var cron)))

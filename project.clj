@@ -34,15 +34,22 @@
    [http-kit "2.7.0-alpha1"]
    [ring/ring-core "1.9.6"]
    [compojure "1.7.0"]
+   [ring/ring-json "0.5.1"]
 
    ;; rss
    [com.rometools/rome "1.19.0"]
+
+   ;; json
+   [cheshire "5.11.0"]
 
    ;; sanitize
    [org.jsoup/jsoup "1.15.3"]
 
    ;; html
    [selmer "1.12.55"]
+
+   ;; signals
+   [spootnik/signal "0.2.4"]
 
    ;; url validator
    [commons-validator/commons-validator "1.7"]]
