@@ -13,7 +13,8 @@
 
 (defn index [request]
   {:status 200
-   :body {:foo 42}})
+   :body {:aaa 42
+          :ccc [1 2 3 4]}})
 
 
 (defroutes routes

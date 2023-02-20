@@ -9,7 +9,7 @@
 
 (mount/defstate ^{:on-reload :noop} server
   :start
-  (server/run-server handler/routes
+  (server/run-server handler/app
                      {:max-line 8192
                       :max-body 100663296
                       :port 18088

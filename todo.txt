@@ -1,6 +1,5 @@
 - cleanup html
 - fix todos in feed
-- investigate json responses
 - fix cron tasks
 - handle 304/error in feed
 - configure logs
