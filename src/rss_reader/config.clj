@@ -24,6 +24,12 @@
         (aero/read-config {:profile *profile*}))))
 
 
+(defmethod aero/reader 'env!
+  [opts tag value]
+  (or (System/getenv (name value))
+      (throw (new Exception (format "Env var is not set: %s" value)))))
+
+
 (defn start []
   (mount/start (var config)))
 

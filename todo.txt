@@ -1,6 +1,5 @@
-- add config env! tag
+- cleanup html
 - fix todos in feed
-- cleanup htmo
 - investigate json responses
 - fix cron tasks
 - handle 304/error in feed

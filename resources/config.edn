@@ -13,8 +13,13 @@
   :maximum-pool-size  10
   :pool-name          "rss-pool"
   :adapter            "postgresql"
-  :username           "user"
-  :password           "pass"
-  :database-name      "rss"
-  :server-name        "127.0.0.1"
-  :port-number        15432}}
+  :username           #profile {:default #env! RSS_DB_USER
+                                :dev "user"}
+  :password           #profile {:default #env! RSS_DB_PASS
+                                :dev "pass"}
+  :database-name      #profile {:default #env! RSS_DB_NAME
+                                :dev "rss"}
+  :server-name        #profile {:default #env! RSS_DB_HOST
+                                :dev "127.0.0.1"}
+  :port-number        #profile {:default 5432
+                                :dev 15432}}}
