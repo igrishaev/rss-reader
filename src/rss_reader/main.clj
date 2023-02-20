@@ -10,26 +10,48 @@
    rss-reader.server))
 
 
+(defn exit [code]
+  (System/exit code))
+
+
+(defn start []
+  (mount/start (var rss-reader.config/config)
+               (var rss-reader.db/db)
+               (var rss-reader.cron/cron)
+               (var rss-reader.server/server)))
+
+
+(defn stop []
+  (mount/stop))
+
+
 (defn -main
   [& _]
 
   (log/info "Starting the system...")
 
-  (mount/start (var rss-reader.config/config)
-               (var rss-reader.db/db)
-               (var rss-reader.cron/cron)
-               (var rss-reader.server/server))
+  (try
+    (start)
+    (catch Throwable e
+      (log/errorf e "The system has failed to start")
+      (exit 1)))
 
   (log/info "The system has been started.")
 
   (signal/with-handler :term
     (log/info "Caught SIGTERM, stopping the system...")
-    (mount/stop)
+    (stop)
     (log/info "The system has been stopped.")
-    (System/exit 0))
+    (exit 0))
 
   (signal/with-handler :int
     (log/info "Caught SIGINT, stopping the system...")
-    (mount/stop)
+    (stop)
     (log/info "The system has been stopped.")
-    (System/exit 0)))
+    (exit 0))
+
+  (signal/with-handler :hup
+    (log/info "Caught SIGHUP, restarting the system...")
+    (stop)
+    (start)
+    (log/info "The system has been restarted.")))
