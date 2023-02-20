@@ -4,20 +4,32 @@
    java.util.concurrent.Future
    java.util.concurrent.ScheduledThreadPoolExecutor)
   (:require
+   [rss-reader.model :as model]
    [mount.core :as mount]
    [clojure.tools.logging :as log]
    [rss-reader.config :refer [config]]))
 
 
+(defn task-sync-subscriptions []
+  (let [rows
+        (model/subscriptions-to-update)]
+    (log/info "Got %s subsciption(s) to update")
+    (doseq [{:keys [id feed_id]} rows]
+      (log/infof "Syncing subscription %s, feed %s" id feed_id)
+      (model/sync-subsciption id feed_id))))
+
+
 (def TASKS
-  [{:delay 15
-    :period (* 1 60 60)
+
+  [{:delay (* 60 5)
+    :period (* 60 60)
     :title "Print Hello"
     :func #(println "Hello")}
-   {:delay 30
-    :period (* 1 60 60)
-    :title "Print World"
-    :func #(println "World")}])
+
+   {:delay (* 60 35)
+    :period (* 60 60)
+    :title "<sync subscriptions>"
+    :func task-sync-subscriptions}])
 
 
 (defn wrap-func [func title]
