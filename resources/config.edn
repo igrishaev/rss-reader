@@ -1,6 +1,9 @@
-{:http
- {:port 18088
-  :host "127.0.0.1"}
+{:http-server
+ {:ip "127.0.0.1"
+  :port #profile {:default 8088
+                  :dev 18088}
+  :thread 4
+  :max-body 1048576}
 
  :db-pool
  {:auto-commit        true

@@ -146,9 +146,7 @@
   [^UUID subscription-id]
   (db/execute
    {:update [:subscriptions]
-    :set {:unread_count :sub.unread
-          :sync_date_next [:raw "now() + (interval '1 second' * sync_interval)"]
-          :sync_count [:raw "sync_count + 1"]}
+    :set {:unread_count :sub.unread}
     :from [[{:select [[[:count :m.id] :unread]]
              :from [[:messages :m]]
              :where [:and
@@ -159,11 +157,22 @@
     :returning [:*]}))
 
 
+(defn update-sync-next-for-subscription
+  [^UUID subscription-id]
+  (db/execute
+   {:update [:subscriptions]
+    :set {:sync_date_next [:raw "now() + (interval '1 second' * sync_interval)"]
+          :sync_count [:raw "sync_count + 1"]}
+    :where [:= :id subscription-id]
+    :returning [:*]}))
+
+
 (defn sync-subsciption
   [^UUID subscription-id ^UUID feed-id]
   (db/with-tx nil
     (create-messages-for-subscription subscription-id feed-id)
-    (update-unread-for-subscription subscription-id)))
+    (update-unread-for-subscription subscription-id)
+    (update-sync-next-for-subscription subscription-id)))
 
 
 (defn feeds-to-update []

@@ -22,7 +22,7 @@
   (route/not-found "Not found"))
 
 
-(def app
+(def handler
   (-> routes
       (wrap-keyword-params)
       (wrap-params)

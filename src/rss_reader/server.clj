@@ -7,13 +7,16 @@
    [rss-reader.handler :as handler]))
 
 
+(def defaults
+  {:legacy-return-value? false})
+
+
 (mount/defstate ^{:on-reload :noop} server
   :start
-  (server/run-server handler/app
-                     {:max-line 8192
-                      :max-body 100663296
-                      :port 18088
-                      :legacy-return-value? false})
+  (server/run-server handler/handler
+                     (-> config
+                         :http-server
+                         (merge defaults)))
 
   :stop
   (server/server-stop! server))
