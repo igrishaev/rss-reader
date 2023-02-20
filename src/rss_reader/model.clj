@@ -136,6 +136,7 @@
                   {:select [:e.id subscription-id]
                    :from [[:entries :e]]
                    :where [:= :e.feed_id feed-id]
+                   :order-by [[:created_at :desc]]
                    :limit 1000}]
     :on-conflict [:entry_id :subscription_id]
     :do-nothing true
