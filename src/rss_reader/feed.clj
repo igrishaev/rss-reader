@@ -40,6 +40,12 @@
           {:keys [status body headers error]}
           @(client/get url_source options)
 
+          encoding
+          "utf-8"
+
+          content-type
+          ""
+
           {:keys [etag
                   last-modified]}
           headers]
@@ -51,9 +57,9 @@
 
         (= status 200)
         (let [reader
-              (rome/make-reader body #_{:lanient true
-                                        :encoding "aaa"
-                                        :content-type "aaa"})
+              (rome/make-reader body {:lanient true
+                                      :encoding encoding
+                                      :content-type content-type})
               parsed
               (rome/parse-reader reader)
 
@@ -74,6 +80,9 @@
                       entries]}
               parsed
 
+              category-names
+              (map :name categories)
+
               feed-fields
               {:rss_title title
                :rss_language language
@@ -93,6 +102,10 @@
                :sync_date_next [:raw "now() + (interval '1 second' * sync_interval)"]}]
 
           (model/update-feed feed-id feed-fields)
+
+          (model/upsert-categories feed-id
+                                   "feed"
+                                   category-names)
 
           (doseq [entry entries]
             (let [{:keys [uri
