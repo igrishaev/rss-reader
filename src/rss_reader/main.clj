@@ -17,6 +17,7 @@
 (defn start []
   (mount/start (var rss-reader.config/config)
                (var rss-reader.db/db)
+               (var rss-reader.http/cm)
                (var rss-reader.cron/cron)
                (var rss-reader.server/server)))
 

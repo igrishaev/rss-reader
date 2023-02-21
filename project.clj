@@ -35,6 +35,7 @@
    [ring/ring-core "1.9.6"]
    [compojure "1.7.0"]
    [ring/ring-json "0.5.1"]
+   [clj-http "3.12.3"]
 
    ;; rss
    [com.rometools/rome "1.19.0"]

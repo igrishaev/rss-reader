@@ -5,6 +5,10 @@
    [rss-reader.db :as db]))
 
 
+(defn upsert-fields [row]
+  (-> row (dissoc :id) keys))
+
+
 ;;
 ;; User
 ;;
@@ -21,7 +25,7 @@
      (db/execute-one {:insert-into [:users]
                       :values [row]
                       :on-conflict [:email]
-                      :do-update-set (keys row)
+                      :do-update-set (upsert-fields row)
                       :returning [:*]}))))
 
 
@@ -52,7 +56,7 @@
      (db/execute-one {:insert-into [:feeds]
                       :values [row]
                       :on-conflict [:url_source]
-                      :do-update-set (keys row)
+                      :do-update-set (upsert-fields row)
                       :returning [:*]}))))
 
 
@@ -84,8 +88,22 @@
     (db/execute-one {:insert-into [:entries]
                      :values [row]
                      :on-conflict [:feed_id :guid]
-                     :do-update-set (keys row)
-                     :returning [:*]})))
+                     :do-update-set (upsert-fields row)
+                     :returning [:id]})))
+
+
+(defn upsert-entries
+  [^UUID feed-id entry-rows]
+  (let [rows
+        (for [row entry-rows]
+          (assoc row
+                 :feed_id feed-id
+                 :updated_at :%now))]
+    (db/execute {:insert-into [:entries]
+                 :values rows
+                 :on-conflict [:feed_id :guid]
+                 :do-update-set (upsert-fields (first rows))
+                 :returning [:id]})))
 
 
 ;;
@@ -102,7 +120,7 @@
     (db/execute-one {:insert-into [:subscriptions]
                      :values [row]
                      :on-conflict [:feed_id :user_id]
-                     :do-update-set (keys row)
+                     :do-update-set (upsert-fields row)
                      :returning [:*]})))
 
 
@@ -207,6 +225,8 @@
 
   (def -url "https://habr.com/ru/rss/all/all/?fl=ru")
   (def -user-id (random-uuid))
+
+  ;; http://oglaf.com/feeds/rss/
 
   (upsert-feed -url)
 

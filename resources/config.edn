@@ -1,4 +1,9 @@
-{:http-server
+{:conn-manager
+ {:timeout 5
+  :threads 4
+  :insecure? true}
+
+ :http-server
  {:ip "127.0.0.1"
   :port #profile {:default 8088
                   :dev 18088}
