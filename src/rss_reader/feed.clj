@@ -72,11 +72,6 @@
                       (sanitize/sanitize-html url-page))}))
 
 
-(def feed-sync-fields
-  {:sync_count [:raw "sync_count + 1"]
-   :sync_date_next [:raw "now() + (interval '1 second' * sync_interval)"]})
-
-
 (defn feed->row
   [feed]
 
@@ -145,7 +140,6 @@
         feed-fields
         (-> feed
             (feed->row)
-            (merge feed-sync-fields)
             (assoc :http_status status
                    :http_last_modified last-modified
                    :http_etag etag))]
@@ -177,8 +171,7 @@
   [feed-id]
   (log/infof "Feed %s has not been modified")
   (let [feed-fields
-        (-> {:http_status 304}
-            (merge feed-sync-fields))]
+        {:http_status 304}]
     (model/update-feed feed-id feed-fields)))
 
 
@@ -209,6 +202,7 @@
           {:as response :keys [status]}
           (http/get url_source options)]
 
+      ;; TODO: cond?
       (cond
 
         (= status 200)
@@ -223,7 +217,33 @@
     (log/errorf "Feed %s not found" feed-id)))
 
 
-;; TODO udpate-feed-safe
+(def feed-ok-fields
+  {:err_attempts 0
+   :err_class nil
+   :err_message nil})
+
+
+(defn feed-err-fields [e]
+  {:err_attempts [:raw "err_attempts + 1"]
+   :err_class (-> e class .getName)
+   :err_message (-> e ex-message)})
+
+
+(def feed-sync-fields
+  {:sync_count [:raw "sync_count + 1"]
+   :sync_date_next [:raw "now() + (interval '1 second' * sync_interval)"]})
+
+
+(defn update-feed-safe [feed-id]
+  (try
+    (update-feed feed-id)
+    (model/update-feed feed-id feed-ok-fields)
+    (log/infof "Feed %s has been updated" feed-id)
+    (catch Throwable e
+      (log/errorf e "Feed %s failed to update" feed-id)
+      (model/update-feed feed-id (feed-err-fields e)))
+    (finally
+      (model/update-feed feed-id feed-sync-fields))))
 
 
 
