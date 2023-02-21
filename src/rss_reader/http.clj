@@ -16,6 +16,14 @@
   (conn-mgr/shutdown-manager cm))
 
 
+(defn start []
+  (mount/start (var cm)))
+
+
+(defn stop []
+  (mount/stop (var cm)))
+
+
 (defn get
   ([url]
    (get url nil))

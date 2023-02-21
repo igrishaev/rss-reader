@@ -89,7 +89,7 @@
                      :values [row]
                      :on-conflict [:feed_id :guid]
                      :do-update-set (upsert-fields row)
-                     :returning [:id]})))
+                     :returning [:*]})))
 
 
 (defn upsert-entries
@@ -103,7 +103,7 @@
                  :values rows
                  :on-conflict [:feed_id :guid]
                  :do-update-set (upsert-fields (first rows))
-                 :returning [:id]})))
+                 :returning [:id :guid]})))
 
 
 ;;
@@ -138,6 +138,16 @@
                            {:parent_id parent-id
                             :parent-type parent-type
                             :category category})
+                 :on-conflict [:parent_id :category]
+                 :do-nothing true
+                 :returning [:*]})))
+
+
+(defn upsert-categories-bulk
+  [rows]
+  (when (seq rows)
+    (db/execute {:insert-into [:categories]
+                 :values rows
                  :on-conflict [:parent_id :category]
                  :do-nothing true
                  :returning [:*]})))

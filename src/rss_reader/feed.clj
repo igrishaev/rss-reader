@@ -33,6 +33,25 @@
           (not-empty)))
 
 
+(def feed-sync-fields
+  {:sync_count [:raw "sync_count + 1"]
+   :sync_date_next [:raw "now() + (interval '1 second' * sync_interval)"]})
+
+
+(def feed-ok-fields
+  (merge feed-sync-fields
+         {:err_attempts 0
+          :err_class nil
+          :err_message nil}))
+
+
+(defn feed-err-fields [e]
+  (merge feed-sync-fields
+         {:err_attempts [:raw "err_attempts + 1"]
+          :err_class (-> e class .getName)
+          :err_message (-> e ex-message)}))
+
+
 (defn entry->row [entry]
 
   (let [{:keys [uri
@@ -109,6 +128,11 @@
      :url_website link}))
 
 
+(defn categories->names
+  [categories]
+  (set (map :name categories)))
+
+
 (defn handle-feed-ok
   [feed-id response]
 
@@ -118,14 +142,14 @@
         {:strs [etag
                 content-type
                 last-modified]}
-          headers
+        headers
 
-          encoding
-          (some-> content-type get-charset)
+        encoding
+        (some-> content-type get-charset)
 
         reader
-        (rome/make-reader body {:lanient true
-                                :encoding encoding
+        (rome/make-reader body {:lanient      true
+                                :encoding     encoding
                                 :content-type content-type})
         feed
         (rome/parse-reader reader)
@@ -135,11 +159,12 @@
         feed
 
         category-names
-        (map :name categories)
+        (categories->names categories)
 
         feed-fields
         (-> feed
             (feed->row)
+            (merge feed-ok-fields)
             (assoc :http_status status
                    :http_last_modified last-modified
                    :http_etag etag))]
@@ -152,26 +177,49 @@
                              "feed"
                              category-names)
 
-    ;; TODO: save categories
-    (let [entry-rows
-          (map entry->row entries)]
+    (doseq [entries (by-chunks entries ENTRY-BATCH-SIZE)]
 
-      (doseq [chunk (by-chunks entry-rows ENTRY-BATCH-SIZE)]
-        (model/upsert-entries feed-id chunk)))))
+      (loop [[e & entries]    entries
+             rows             []
+             guid->categories {}]
 
+        (let [{:keys [categories]}
+              e
 
-(defn handle-feed-negative
-  [feed-id]
-  ;; TODO save http status
-  ;; TODO log
-  )
+              row
+              (entry->row e)
+
+              {:keys [guid]}
+              row]
+
+          (if entries
+            (recur entries
+                   (conj rows row)
+                   (assoc guid->categories
+                          guid
+                          (categories->names categories)))
+
+            (let [result
+                  (model/upsert-entries feed-id rows)
+
+                  rows-categories
+                  (for [{:keys [id guid]}  result
+                        [guid' categories] guid->categories
+                        category           categories
+                        :when (= guid guid')]
+                    {:parent-id id
+                     :parent-type "entry"
+                     :category category})]
+
+              (model/upsert-categories-bulk rows-categories))))))))
 
 
 (defn handle-feed-not-modified
   [feed-id]
   (log/infof "Feed %s has not been modified")
   (let [feed-fields
-        {:http_status 304}]
+        (merge feed-ok-fields
+               {:http_status 304})]
     (model/update-feed feed-id feed-fields)))
 
 
@@ -196,61 +244,38 @@
 
           options
           {:as :stream
-           :throw-exceptions false
+           :throw-exceptions true
            :headers headers}
 
           {:as response :keys [status]}
           (http/get url_source options)]
 
-      ;; TODO: cond?
       (cond
 
         (= status 200)
         (handle-feed-ok feed-id response)
 
         (= status 304)
-        (handle-feed-not-modified feed-id)
-
-        :else
-        (handle-feed-negative feed-id)))
+        (handle-feed-not-modified feed-id)))
 
     (log/errorf "Feed %s not found" feed-id)))
-
-
-(def feed-ok-fields
-  {:err_attempts 0
-   :err_class nil
-   :err_message nil})
-
-
-(defn feed-err-fields [e]
-  {:err_attempts [:raw "err_attempts + 1"]
-   :err_class (-> e class .getName)
-   :err_message (-> e ex-message)})
-
-
-(def feed-sync-fields
-  {:sync_count [:raw "sync_count + 1"]
-   :sync_date_next [:raw "now() + (interval '1 second' * sync_interval)"]})
 
 
 (defn update-feed-safe [feed-id]
   (try
     (update-feed feed-id)
-    (model/update-feed feed-id feed-ok-fields)
     (log/infof "Feed %s has been updated" feed-id)
     (catch Throwable e
       (log/errorf e "Feed %s failed to update" feed-id)
-      (model/update-feed feed-id (feed-err-fields e)))
-    (finally
-      (model/update-feed feed-id feed-sync-fields))))
+      (model/update-feed feed-id (feed-err-fields e)))))
 
 
 
 #_
 (comment
 
-  (def -feed-id #uuid "2e86f35b-569a-4220-a25b-a646233b1508")
+  (model/upsert-feed "http://oglaf.com/feeds/rss/")
+  (model/upsert-feed "https://habr.com/ru/rss/all/all/?fl=ru")
 
   (update-feed #uuid "6607fd58-5ea3-47ff-8188-e997d6a8430b")
 
