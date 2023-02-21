@@ -4,7 +4,8 @@
   https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Last-Modified
   "
   (:import
-   java.util.UUID)
+   java.util.UUID
+   java.util.Date)
   (:require
    [clojure.string :as str]
    [clojure.tools.logging :as log]
@@ -34,8 +35,8 @@
 (defn entry->row [entry]
 
   (let [{:keys [uri
-                updated-date
-                published-date
+                ^Date updated-date
+                ^Date published-date
                 title
                 author
                 categories
@@ -49,17 +50,16 @@
                 value]}
         description
 
-        ;; TODO: or (now)
-        ;; TODO: don't throw an exception
         guid
         (or link
             uri
-            (str published-date)
-            (throw (ex-info "AAA" {})))]
+            (some-> published-date .getTime str)
+            (format "none/%s" (random-uuid)))]
 
     {:guid guid
      :link (or link uri)
      :author author
+     :updated_at :%now
      :title title
      :date_published_at published-date
      :date_updated_at updated-date
