@@ -6,11 +6,21 @@
   (:import
    java.util.UUID)
   (:require
+   [clojure.string :as str]
+   [clojure.tools.logging :as log]
+   [org.httpkit.client :as client]
    [rss-reader.db :as db]
    [rss-reader.model :as model]
-   [rss-reader.rome :as rome]
-   [org.httpkit.client :as client]
-   [clojure.tools.logging :as log]))
+   [rss-reader.rome :as rome]))
+
+
+(defn get-charset
+  ^String [^String content-type]
+  (some-> #"(?i)charset\s*=\s*(.+)"
+          (re-find content-type)
+          (second)
+          (str/trim)
+          (not-empty)))
 
 
 (defn update-feed [feed-id]
@@ -40,19 +50,17 @@
           {:keys [status body headers error]}
           @(client/get url_source options)
 
-          ;; _
-          ;; (clojure.pprint/pprint headers)
-
           {:keys [etag
                   content-type
                   last-modified]}
           headers
 
           encoding
-          "utf-8"]
+          (some-> content-type get-charset)]
 
       (cond
 
+        ;; TODO: don't throw but log & update with error
         error
         (throw error)
 
@@ -108,6 +116,7 @@
                                    "feed"
                                    category-names)
 
+          ;; TODO: bulk insert by chunks
           (doseq [entry entries]
             (let [{:keys [uri
                           updated-date
@@ -125,6 +134,8 @@
                           value]}
                   description
 
+                  ;; TODO: or (now)
+                  ;; TODO: don't throw an exception
                   guid
                   (or link
                       uri
@@ -149,26 +160,15 @@
                                        "entry"
                                        category-names))))
 
+        ;; TODO: update sync dates
         (= status 304)
         :not-modified
 
+        ;; TODO: log/???
         :else
         :foo))
 
-    (log/errorf "Feed %s not found" feed-id))
-
-  ;; get feed
-  ;; http (etag, last-modified)
-  ;; 200
-  ;; get encoding
-  ;; xml?
-  ;; - rome-parse
-  ;; - upsert entries
-  ;; - update feed
-  ;; json?
-  ;; - remap
-
-  )
+    (log/errorf "Feed %s not found" feed-id)))
 
 
 #_
