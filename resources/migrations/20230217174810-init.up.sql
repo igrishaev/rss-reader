@@ -38,6 +38,10 @@ CREATE TABLE feeds (
     sync_date_next      TIMESTAMP WITH TIME ZONE,
     sync_count          INTEGER NOT NULL DEFAULT 0,
     entries_count       INTEGER NOT NULL DEFAULT 0,
+    err_attempts        INTEGER NOT NULL DEFAULT 0,
+    err_class           TEXT,
+    err_message         TEXT,
+    is_stopped          BOOLEAN NOT NULL DEFAULT FALSE,
     UNIQUE (url_source)
 );
 
@@ -82,6 +86,7 @@ CREATE TABLE messages (
     entry_id          UUID NOT NULL,
     subscription_id   UUID NOT NULL,
     is_read           BOOLEAN NOT NULL DEFAULT FALSE,
+    is_marked         BOOLEAN NOT NULL DEFAULT FALSE,
     UNIQUE (entry_id, subscription_id)
 );
 
