@@ -40,15 +40,16 @@
           {:keys [status body headers error]}
           @(client/get url_source options)
 
-          encoding
-          "utf-8"
-
-          content-type
-          ""
+          ;; _
+          ;; (clojure.pprint/pprint headers)
 
           {:keys [etag
+                  content-type
                   last-modified]}
-          headers]
+          headers
+
+          encoding
+          "utf-8"]
 
       (cond
 
