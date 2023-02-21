@@ -9,6 +9,7 @@
   (:require
    [clojure.string :as str]
    [clojure.tools.logging :as log]
+   [rss-reader.sanitize :as sanitize]
    [rss-reader.db :as db]
    [rss-reader.http :as http]
    [rss-reader.model :as model]
@@ -46,13 +47,16 @@
                 description]}
         entry
 
-        {:keys [type
-                value]}
+        {description-type :type
+         description-text :value}
         description
 
+        url-page
+        (or link uri)
+
         guid
-        (or link
-            uri
+        (or uri
+            link
             (some-> published-date .getTime str)
             (format "none/%s" (random-uuid)))]
 
@@ -60,10 +64,12 @@
      :link (or link uri)
      :author author
      :updated_at :%now
-     :title title
      :date_published_at published-date
      :date_updated_at updated-date
-     :summary value}))
+     :title (some-> title
+                    sanitize/sanitize-none)
+     :summary (some-> description-text
+                      (sanitize/sanitize-html url-page))}))
 
 
 (def feed-sync-fields
@@ -91,12 +97,16 @@
                 entries]}
         feed]
 
-    {:rss_title title
+    {:rss_title
+     (some-> title
+             sanitize/sanitize-none)
      :rss_language language
      :rss_author author
      :rss_editor editor
      :rss_published_at published-date
-     :rss_description description
+     :rss_description
+     (some-> description
+             sanitize/sanitize-none)
      :rss_encoding encoding
      :rss_feed_type feed-type
      :url_icon (:url icon)
@@ -140,12 +150,15 @@
                    :http_last_modified last-modified
                    :http_etag etag))]
 
+    (log/infof "Got %s(s) items for feed %s" (count entries) feed-id)
+
     (model/update-feed feed-id feed-fields)
 
     (model/upsert-categories feed-id
                              "feed"
                              category-names)
 
+    ;; TODO: save categories
     (let [entry-rows
           (map entry->row entries)]
 
@@ -153,8 +166,16 @@
         (model/upsert-entries feed-id chunk)))))
 
 
+(defn handle-feed-negative
+  [feed-id]
+  ;; TODO save http status
+  ;; TODO log
+  )
+
+
 (defn handle-feed-not-modified
   [feed-id]
+  (log/infof "Feed %s has not been modified")
   (let [feed-fields
         (-> {:http_status 304}
             (merge feed-sync-fields))]
@@ -196,9 +217,8 @@
         (= status 304)
         (handle-feed-not-modified feed-id)
 
-        ;; TODO: log/???
         :else
-        :foo))
+        (handle-feed-negative feed-id)))
 
     (log/errorf "Feed %s not found" feed-id)))
 
@@ -208,7 +228,9 @@
 
   (def -feed-id #uuid "2e86f35b-569a-4220-a25b-a646233b1508")
 
-  (update-feed -feed-id)
+  (update-feed #uuid "6607fd58-5ea3-47ff-8188-e997d6a8430b")
+
+  (update-feed #uuid "3ea6c6c0-074a-4714-9085-d2d38c1862e9")
 
 
   )

@@ -228,7 +228,9 @@
 
   ;; http://oglaf.com/feeds/rss/
 
-  (upsert-feed -url)
+  (upsert-feed "http://oglaf.com/feeds/rss/")
+  (upsert-feed "https://ilyabirman.ru/meanwhile/rss/")
+
 
   (get-feed-by-url -url)
 
