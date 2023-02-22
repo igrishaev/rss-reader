@@ -5,6 +5,7 @@
    java.util.concurrent.ScheduledThreadPoolExecutor)
   (:require
    [rss-reader.model :as model]
+   [rss-reader.feed :as feed]
    [mount.core :as mount]
    [clojure.tools.logging :as log]
    [rss-reader.config :refer [config]]))
@@ -13,26 +14,35 @@
 (defn task-sync-subscriptions []
   (let [rows
         (model/subscriptions-to-update)]
-    (log/info "Got %s subsciption(s) to update")
+    (log/info "Got %s subsciption(s) to update" (count rows))
     (doseq [{:keys [id feed_id]} rows]
       (log/infof "Syncing subscription %s, feed %s" id feed_id)
       (model/sync-subsciption id feed_id))))
+
+
+(defn task-sync-feeds []
+  (let [rows
+        (model/feeds-to-update)]
+    (log/info "Got %s feeds(s) to update" (count rows))
+    (doseq [{:keys [id]} rows]
+      (log/infof "Syncing feed %s" id)
+      (feed/update-feed-safe id))))
 
 
 (def TASKS
 
   [{:delay (* 60 5)
     :period (* 60 60)
-    :title "Print Hello"
-    :func #(println "Hello")}
+    :title "<Sync Feeds>"
+    :func task-sync-feeds}
 
    {:delay (* 60 35)
     :period (* 60 60)
-    :title "<sync subscriptions>"
+    :title "<Sync Subscriptions>"
     :func task-sync-subscriptions}])
 
 
-(defn wrap-func [func title]
+(defn wrap-task [func title]
   (fn []
     (log/infof "Cron task %s has been started" title)
     (try
@@ -52,7 +62,7 @@
         (vec (for [{:keys [delay period title func]}
                    TASKS]
                (.scheduleAtFixedRate executor
-                                     (wrap-func func title)
+                                     (wrap-task func title)
                                      delay
                                      period
                                      TimeUnit/SECONDS)))]

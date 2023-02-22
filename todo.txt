@@ -1,5 +1,3 @@
-- crop update feeds
-- fix cron tasks
 - configure logs
 - configure sentry
 - add sql indexes
