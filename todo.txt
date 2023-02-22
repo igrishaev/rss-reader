@@ -1,10 +1,6 @@
-- cleanup html
-- fix todos in feed
+- crop update feeds
 - fix cron tasks
-- handle 304/error in feed
 - configure logs
 - configure sentry
 - add sql indexes
-- feed-update-safe
 - reg domain
-- crop update feeds

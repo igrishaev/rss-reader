@@ -2,6 +2,7 @@
   (:import
    java.util.UUID)
   (:require
+   [rss-reader.const :as c]
    [rss-reader.db :as db]))
 
 
@@ -165,7 +166,7 @@
                    :from [[:entries :e]]
                    :where [:= :e.feed_id feed-id]
                    :order-by [[:created_at :desc]]
-                   :limit 1000}]
+                   :limit c/max-messages-to-create}]
     :on-conflict [:entry_id :subscription_id]
     :do-nothing true
     :returning [:*]}))
@@ -212,7 +213,7 @@
             [:= :sync_date_next nil]
             [:< :sync_date_next :%now]]
     :order-by [[:sync_date_next :asc :nulls-first]]
-    :limit 100}))
+    :limit c/feeds-to-update-limit}))
 
 
 (defn subscriptions-to-update []
@@ -223,7 +224,7 @@
             [:= :sync_date_next nil]
             [:< :sync_date_next :%now]]
     :order-by [[:sync_date_next :asc :nulls-first]]
-    :limit 100}))
+    :limit c/subscriptions-to-update-limit}))
 
 
 #_

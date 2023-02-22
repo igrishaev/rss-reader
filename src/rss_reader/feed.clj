@@ -4,33 +4,17 @@
   https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Last-Modified
   "
   (:import
-   java.util.UUID
-   java.util.Date)
+   java.util.Date
+   java.util.UUID)
   (:require
-   [clojure.string :as str]
    [clojure.tools.logging :as log]
-   [rss-reader.sanitize :as sanitize]
+   [rss-reader.const :as c]
    [rss-reader.db :as db]
    [rss-reader.http :as http]
    [rss-reader.model :as model]
-   [rss-reader.rome :as rome]))
-
-
-(def ENTRY-BATCH-SIZE
-  50)
-
-
-(defn by-chunks [coll n]
-  (partition n n [] coll))
-
-
-(defn get-charset
-  ^String [^String content-type]
-  (some-> #"(?i)charset\s*=\s*(.+)"
-          (re-find content-type)
-          (second)
-          (str/trim)
-          (not-empty)))
+   [rss-reader.rome :as rome]
+   [rss-reader.sanitize :as sanitize]
+   [rss-reader.util :as util]))
 
 
 (def feed-sync-fields
@@ -145,7 +129,7 @@
         headers
 
         encoding
-        (some-> content-type get-charset)
+        (some-> content-type util/get-charset)
 
         reader
         (rome/make-reader body {:lanient      true
@@ -177,7 +161,8 @@
                              "feed"
                              category-names)
 
-    (doseq [entries (by-chunks entries ENTRY-BATCH-SIZE)]
+    (doseq [entries (util/by-chunks entries
+                                    c/entry-batch-size)]
 
       (loop [[e & entries]    entries
              rows             []
