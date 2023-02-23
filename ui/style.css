@@ -226,6 +226,30 @@ body {
     background-color: black;
 }
 
+#sidebar-logo-text {
+    margin-left: 5px;
+}
+
+#sidebar-logo-title {
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-bottom: 5px;
+}
+
+#sidebar-logo-slogan {
+    font-color: gray;
+}
+
+
+#sidebar-top-section {
+    margin: 35px 0 0 50px;
+}
+
+#sidebar-logo-and-title {
+    display: flex;
+    flex-direction: row;
+}
+
 .dropdown {
   position: relative;
   display: inline-block;
