@@ -33,9 +33,13 @@
    ;; http
    [http-kit "2.7.0-alpha1"]
    [ring/ring-core "1.9.6"]
-   [compojure "1.7.0"]
    [ring/ring-json "0.5.1"]
    [clj-http "3.12.3"]
+
+   ;; routing
+   [compojure "1.7.0"]
+   [metosin/reitit-core "0.6.0"]
+   [metosin/reitit-ring "0.6.0"]
 
    ;; rss
    [com.rometools/rome "1.19.0"]
