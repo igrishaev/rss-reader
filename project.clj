@@ -47,7 +47,7 @@
    [org.jsoup/jsoup "1.15.3"]
 
    ;; html
-   [selmer "1.12.55"]
+   [hiccup "1.0.5"]
 
    ;; signals
    [spootnik/signal "0.2.4"]
