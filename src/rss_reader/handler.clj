@@ -1,44 +1,26 @@
 (ns rss-reader.handler
   (:require
-   [reitit.core :as r]
-   [reitit.ring :as ring]
+   rss-reader.handlers.index
+   [compojure.core :refer [defroutes GET POST]]
+   [compojure.route :as route]
    [ring.middleware.cookies :refer [wrap-cookies]]
+   [ring.middleware.resource :refer
+    [wrap-resource]]
    [ring.middleware.json :refer
     [wrap-json-body
      wrap-json-response]]
    [ring.middleware.keyword-params :refer [wrap-keyword-params]]
    [ring.middleware.params :refer [wrap-params]]
-   [ring.middleware.resource :refer
-    [wrap-resource]]
-   [ring.middleware.session :refer [wrap-session]]
-   rss-reader.handlers.index))
+   [ring.middleware.session :refer [wrap-session]]))
 
 
+(defroutes routes
+  (GET "/" request (rss-reader.handlers.index/handler request))
+  (GET "/foo/bar" request (rss-reader.handlers.index/dialog request))
+  #_
+  (GET "/htmx/subscription/" request (rss-reader.handlers.index/handler request))
 
-(def router
-  (ring/router
-   [["/"
-     {:name ::index
-      :get rss-reader.handlers.index/handler}]
-    ["/foo/bar"
-     {:name ::foobar
-      :get rss-reader.handlers.index/dialog}]]))
-
-
-(def routes
-  (ring/ring-handler
-   router
-   (route/not-found "Not found")))
-
-
-(defn back-url
-  ([route-name]
-   (back-url route-name nil))
-
-  ([route-name path-params]
-   (-> router
-       (r/match-by-name route-name path-params)
-       (r/match->path))))
+  (route/not-found "Not found"))
 
 
 (def handler
