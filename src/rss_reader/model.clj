@@ -125,6 +125,22 @@
                      :returning [:*]})))
 
 
+(defn get-subscription-by-id
+  [^UUID subscription-id]
+  (db/execute-one
+   {:select [:s.*
+             :f.rss_title
+             :f.url_source
+             :f.url_website
+             :f.rss_domain]
+    :from [[:subscriptions :s]
+           [:feeds :f]]
+    :where
+    [:and
+     [:= :s.id subscription-id]
+     [:= :s.feed_id :f.id]]}))
+
+
 ;;
 ;; Categories
 ;;
@@ -225,6 +241,43 @@
             [:< :sync_date_next :%now]]
     :order-by [[:sync_date_next :asc :nulls-first]]
     :limit c/subscriptions-to-update-limit}))
+
+
+;;
+;; Render
+;;
+
+(defn subscriptions-to-render []
+  (db/execute
+   {:select [:s.*
+             :f.rss_title
+             :f.url_source
+             :f.url_website
+             :f.rss_domain]
+    :from [[:subscriptions :s]
+           [:feeds :f]]
+    :where [:= :s.feed_id :f.id]}))
+
+
+(defn messages-to-render [subscription-id]
+  (db/execute
+   {:select [:e.feed_id
+             :e.guid
+             :e.link
+             :e.author
+             :e.title
+             :e.teaser
+             :e.date_published_at
+             :e.date_updated_at
+             :m.id
+             :m.is_read
+             :m.is_marked]
+    :from [[:messages :m]
+           [:entries :e]]
+    :where
+    [:and
+     [:= :m.subscription_id subscription-id]
+     [:= :m.entry_id :e.id]]}))
 
 
 #_

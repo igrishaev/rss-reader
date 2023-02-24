@@ -48,15 +48,19 @@ CREATE TABLE feeds (
 --;
 
 CREATE TABLE subscriptions (
-    id             UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    created_at     TIMESTAMP WITH TIME ZONE DEFAULT now(),
-    updated_at     TIMESTAMP WITH TIME ZONE,
-    user_id        UUID NOT NULL,
-    feed_id        UUID NOT NULL,
-    unread_count   INTEGER NOT NULL DEFAULT 0,
-    sync_count     INTEGER NOT NULL DEFAULT 0,
-    sync_interval  INTEGER NOT NULL DEFAULT 3600,
-    sync_date_next TIMESTAMP WITH TIME ZONE,
+    id                UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    created_at        TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    updated_at        TIMESTAMP WITH TIME ZONE,
+    user_id           UUID NOT NULL,
+    feed_id           UUID NOT NULL,
+    unread_count      INTEGER NOT NULL DEFAULT 0,
+    sync_count        INTEGER NOT NULL DEFAULT 0,
+    sync_interval     INTEGER NOT NULL DEFAULT 3600,
+    sync_date_next    TIMESTAMP WITH TIME ZONE,
+    opt_title         TEXT,
+    opt_order         TEXT,
+    opt_layout        TEXT,
+    opt_unread_only   BOOLEAN NOT NULL DEFAULT TRUE,
     UNIQUE (feed_id, user_id)
 );
 
@@ -72,6 +76,7 @@ CREATE TABLE entries (
     author             TEXT,
     title              TEXT,
     summary            TEXT,
+    teaser             TEXT,
     date_published_at  TIMESTAMP WITH TIME ZONE,
     date_updated_at    TIMESTAMP WITH TIME ZONE,
     UNIQUE (feed_id, guid)

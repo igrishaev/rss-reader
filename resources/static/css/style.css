@@ -138,7 +138,7 @@
 }
 
 .feed-messages-row-date {
-    width: 100px;
+    width: 65px;
 }
 
 .feed-messages-row-title {
@@ -149,6 +149,8 @@
 }
 
 .feed-messages-row-teaser {
+    max-width: 1000px;
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }

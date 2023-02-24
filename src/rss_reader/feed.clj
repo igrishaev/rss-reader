@@ -72,7 +72,9 @@
      :title (some-> title
                     sanitize/sanitize-none)
      :summary (some-> description-text
-                      (sanitize/sanitize-html url-page))}))
+                      (sanitize/sanitize-html url-page))
+     :teaser (some-> description-text
+                     sanitize/sanitize-none)}))
 
 
 (defn feed->row
@@ -201,7 +203,7 @@
 
 (defn handle-feed-not-modified
   [feed-id]
-  (log/infof "Feed %s has not been modified")
+  (log/infof "Feed %s has not been modified" feed-id)
   (let [feed-fields
         (merge feed-ok-fields
                {:http_status 304})]

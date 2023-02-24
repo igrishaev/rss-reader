@@ -1,8 +1,7 @@
 (ns rss-reader.handler
   (:require
-   rss-reader.handlers.index
-   [compojure.core :refer [defroutes GET POST]]
-   [compojure.route :as route]
+   [rss-reader.index :as index]
+   [rss-reader.htmx :as htmx]
    [ring.middleware.cookies :refer [wrap-cookies]]
    [ring.middleware.resource :refer
     [wrap-resource]]
@@ -14,13 +13,21 @@
    [ring.middleware.session :refer [wrap-session]]))
 
 
-(defroutes routes
-  (GET "/" request (rss-reader.handlers.index/handler request))
-  (GET "/foo/bar" request (rss-reader.handlers.index/dialog request))
-  #_
-  (GET "/htmx/subscription/" request (rss-reader.handlers.index/handler request))
+(defn routes
+  [{:as request
+    :keys [request-method uri]}]
+  (case [request-method uri]
 
-  (route/not-found "Not found"))
+    [:get "/"]
+    (index/handler request)
+
+    [:post "/htmx"]
+    (htmx/handler request)
+
+    ;; else
+    {:status 404
+     :headers {"content-type" "text/html"}
+     :body "Not found"}))
 
 
 (def handler

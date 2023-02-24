@@ -1,21 +1,30 @@
-(ns rss-reader.html
+(ns rss-reader.htmx
   (:require
+   [rss-reader.html :as html]
    [clojure.spec.alpha :as s]
-   [clojure.string :as str]))
+   rss-reader.htmx.message-view
+   rss-reader.htmx.subscription-view
+   [rss-reader.spec :as spec]))
 
 
 (def API
-  {"viewMessage"
-   {:doc "test test"
-    :spec :foo
+  {"viewSubscription"
+   {:doc "aaa"
+    :spec ::spec/api-view-subscription
     :auth? true
-    :func (fn [])}
+    :handler #'rss-reader.htmx.subscription-view/handler}
+
+   "viewMessage"
+   {:doc "test test"
+    :spec ::spec/api-view-message
+    :auth? true
+    :handler #'rss-reader.htmx.message-view/handler}
 
    "deleteSubscription"
    {:doc "test test"
-    :spec ::foo
+    :spec ::spec/api-delete-subscription
     :auth? true
-    :func (fn [])}})
+    :handler (fn [])}})
 
 
 (defn handler [request]
@@ -26,13 +35,20 @@
         {:keys [action]}
         params]
 
-    (if-let [{:keys [spec auth? func]}
+    (if-let [{:keys [spec auth? handler]}
              (get API action)]
 
-      (let [params-ok
+      (let [conform-result
             (s/conform spec params)]
 
-        (func params-ok))
+        (if (s/invalid? conform-result)
+
+          {:status 400
+           :headers {"content-type" "text/html"}
+           :body "wrong params"}
+
+          (html/response
+           (handler conform-result))))
 
       {:status 400
        :headers {"content-type" "text/html"}
