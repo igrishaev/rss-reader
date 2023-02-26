@@ -259,7 +259,8 @@
     :where [:= :s.feed_id :f.id]}))
 
 
-(defn messages-to-render [subscription-id]
+(defn messages-to-render
+  [^UUID subscription-id]
   (db/execute
    {:select [:e.feed_id
              :e.guid
@@ -280,27 +281,23 @@
      [:= :m.entry_id :e.id]]}))
 
 
-#_
-(comment
-
-  (create-messages-for-subscription
-   #uuid "42230fa5-c115-488d-a36e-af0d650ec771"
-   #uuid "2e86f35b-569a-4220-a25b-a646233b1508")
-
-  (def -url "https://habr.com/ru/rss/all/all/?fl=ru")
-  (def -user-id (random-uuid))
-
-  ;; http://oglaf.com/feeds/rss/
-
-  (upsert-feed "http://oglaf.com/feeds/rss/")
-  (upsert-feed "https://ilyabirman.ru/meanwhile/rss/")
-
-
-  (get-feed-by-url -url)
-
-  (def -parent-id (random-uuid))
-
-  (upsert-categories -parent-id "entry"
-                     ["foo"
-                      "bar"
-                      "baz"]))
+(defn message-to-render
+  [^UUID message-id]
+  (db/execute-one
+   {:select [:e.feed_id
+             :e.guid
+             :e.link
+             :e.author
+             :e.title
+             :e.summary
+             :e.date_published_at
+             :e.date_updated_at
+             :m.id
+             :m.is_read
+             :m.is_marked]
+    :from [[:messages :m]
+           [:entries :e]]
+    :where
+    [:and
+     [:= :m.id message-id]
+     [:= :m.entry_id :e.id]]}))

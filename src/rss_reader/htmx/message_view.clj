@@ -5,45 +5,40 @@
 
 
 (defn handler [{:keys [message-id]}]
-  (let [
-        ;; subscription
-        ;; (model/get-subscription-by-id subscription-id)
+  (let [message
+        (model/message-to-render message-id)
 
-        ;; messages
-        ;; (model/messages-to-render subscription-id)
+        {:keys [guid
+                link
+                author
+                title
+                summary
+                date_published_at
+                date_updated_at
+                id
+                is_read
+                is_marked]}
+        message]
 
-        ;; {:keys [opt_title
-        ;;         rss_title]}
-        ;; subscription
-
-        ]
-
-    [:div (format "Message %s" message-id)]
-
-    #_
-    [:div#feed-messages-list
-
-     [:h1 (or opt_title rss_title)]
+    [:div#message-content
+     [:h1 title]
 
      [:div.message-brief
+
+      (when author
+        [:div.message-author
+         author])
+
       [:div.message-date
-       "Last updated at 15:01"]]
+       (str date_published_at)]]
 
-     [:div#feed-messages-table
-      (for [message messages
-            :let [{:keys [id
-                          title
-                          summary]} message]]
+     [:div.message-brief
+      (for [tag ["aaa" "bbb" "ccc"]]
+        [:div.message-tag tag])]
 
-        [:div.feed-messages-row
-         {:hx-post (html/api-url :viewMessage
-                                 {:message-id 1})
-          :hx-trigger "click"
-          :hx-target "#content-inner"
-          :hx-swap "innerHTML"}
+     [:div#message-summary
+      summary]
 
-         [:div.feed-messages-row-date
-          "23 Feb"]
-         [:div.feed-messages-row-content
-          [:div.feed-messages-row-title title]
-          [:div.feed-messages-row-teaser summary]]])]]))
+     [:div#message-buttons
+      [:div.button-normal
+       "Read more"]]]))

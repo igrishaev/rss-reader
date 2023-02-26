@@ -46,7 +46,7 @@
                 categories
                 link
                 image
-                enclosures
+                enclosures ;; TODO: save enclosures
                 description]}
         entry
 
