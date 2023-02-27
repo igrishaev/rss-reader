@@ -301,3 +301,18 @@
     [:and
      [:= :m.id message-id]
      [:= :m.entry_id :e.id]]}))
+
+
+(def cursor-exp
+  [:raw "(extract(epoch from date_published_at)::text || '|' || id)"])
+
+
+(defn foo
+  [cursor]
+  (db/execute
+   {:select [:id
+             [cursor-exp :cursor]]
+    :from [:entries]
+    :order-by [[cursor-exp :asc]]
+    :where
+    [:> cursor-exp cursor]}))

@@ -4,8 +4,8 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 CREATE TABLE users (
     id           UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    created_at   TIMESTAMP WITH TIME ZONE DEFAULT now(),
-    updated_at   TIMESTAMP WITH TIME ZONE,
+    created_at   TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
+    updated_at   TIMESTAMP WITHOUT TIME ZONE,
     email        TEXT NOT NULL,
     UNIQUE (email)
 );
@@ -14,8 +14,8 @@ CREATE TABLE users (
 
 CREATE TABLE feeds (
     id                  UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    created_at          TIMESTAMP WITH TIME ZONE DEFAULT now(),
-    updated_at          TIMESTAMP WITH TIME ZONE,
+    created_at          TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
+    updated_at          TIMESTAMP WITHOUT TIME ZONE,
     url_source          TEXT NOT NULL,
     url_website         TEXT,
     url_favicon         TEXT,
@@ -30,12 +30,12 @@ CREATE TABLE feeds (
     rss_author          TEXT,
     rss_editor          TEXT,
     rss_subtitle        TEXT,
-    rss_published_at    TIMESTAMP WITH TIME ZONE,
+    rss_published_at    TIMESTAMP WITHOUT TIME ZONE,
     http_status         INTEGER,
     http_etag           TEXT,
     http_last_modified  TEXT,
     sync_interval       INTEGER NOT NULL DEFAULT 3600,
-    sync_date_next      TIMESTAMP WITH TIME ZONE,
+    sync_date_next      TIMESTAMP WITHOUT TIME ZONE,
     sync_count          INTEGER NOT NULL DEFAULT 0,
     entries_count       INTEGER NOT NULL DEFAULT 0,
     err_attempts        INTEGER NOT NULL DEFAULT 0,
@@ -49,14 +49,14 @@ CREATE TABLE feeds (
 
 CREATE TABLE subscriptions (
     id                UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    created_at        TIMESTAMP WITH TIME ZONE DEFAULT now(),
-    updated_at        TIMESTAMP WITH TIME ZONE,
+    created_at        TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
+    updated_at        TIMESTAMP WITHOUT TIME ZONE,
     user_id           UUID NOT NULL,
     feed_id           UUID NOT NULL,
     unread_count      INTEGER NOT NULL DEFAULT 0,
     sync_count        INTEGER NOT NULL DEFAULT 0,
     sync_interval     INTEGER NOT NULL DEFAULT 3600,
-    sync_date_next    TIMESTAMP WITH TIME ZONE,
+    sync_date_next    TIMESTAMP WITHOUT TIME ZONE,
     opt_title         TEXT,
     opt_order         TEXT,
     opt_layout        TEXT,
@@ -68,8 +68,8 @@ CREATE TABLE subscriptions (
 
 CREATE TABLE entries (
     id                 UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    created_at         TIMESTAMP WITH TIME ZONE DEFAULT now(),
-    updated_at         TIMESTAMP WITH TIME ZONE,
+    created_at         TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
+    updated_at         TIMESTAMP WITHOUT TIME ZONE,
     feed_id            UUID NOT NULL,
     guid               TEXT NOT NULL,
     link               TEXT,
@@ -77,17 +77,22 @@ CREATE TABLE entries (
     title              TEXT,
     summary            TEXT,
     teaser             TEXT,
-    date_published_at  TIMESTAMP WITH TIME ZONE,
-    date_updated_at    TIMESTAMP WITH TIME ZONE,
+    date_published_at  TIMESTAMP WITHOUT TIME ZONE, -- TODO: NOT NULL
+    date_updated_at    TIMESTAMP WITHOUT TIME ZONE,
     UNIQUE (feed_id, guid)
 );
 
 --;
 
+CREATE INDEX idx_entries_cursor ON entries USING BTREE
+((extract(epoch from date_published_at)::text || '|' || id));
+
+--;
+
 CREATE TABLE messages (
     id                UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    created_at        TIMESTAMP WITH TIME ZONE DEFAULT now(),
-    updated_at        TIMESTAMP WITH TIME ZONE,
+    created_at        TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
+    updated_at        TIMESTAMP WITHOUT TIME ZONE,
     entry_id          UUID NOT NULL,
     subscription_id   UUID NOT NULL,
     is_read           BOOLEAN NOT NULL DEFAULT FALSE,
@@ -100,8 +105,8 @@ CREATE TABLE messages (
 
 CREATE TABLE enclosures (
     id         UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
-    updated_at TIMESTAMP WITH TIME ZONE,
+    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
+    updated_at TIMESTAMP WITHOUT TIME ZONE,
     parent_id  UUID NOT NULL,
     url        TEXT,
     length     INTEGER,
@@ -112,7 +117,7 @@ CREATE TABLE enclosures (
 
 CREATE TABLE categories (
     id            UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    created_at    TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    created_at    TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
     parent_id     UUID NOT NULL,
     parent_type   TEXT NOT NULL,
     category      TEXT NOT NULL,
