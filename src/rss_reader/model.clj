@@ -268,64 +268,91 @@
   [:raw "(extract(epoch from date_published_at)::text || '|' || id)"])
 
 
+(defn butlast-vec
+  [^clojure.lang.PersistentVector vctr]
+  (let [len (count vctr)]
+    (if (pos? len)
+      (subvec vctr 0 (dec len))
+      vctr)))
+
+
 (defn messages-to-render
-  [^UUID subscription-id & [asc? cursor]]
 
-  (let [direction
-        (if asc? :asc :desc)
+  ([subscription-id]
+   (messages-to-render nil))
 
-        comparator
-        (if asc? :> :<)
+  ([^UUID subscription-id {:keys [asc?
+                                  cursor
+                                  limit]
+                           :or {asc? false
+                                limit c/message-page-size}}]
 
-        sql-messages
-        (cond-> {:select [:id
-                          :entry_id
-                          :is_read
-                          :is_marked
-                          [sql-cursor :cursor]]
-                 :from [:messages]
-                 :order-by [[sql-cursor direction]]
-                 :where
-                 [:and [:= :subscription_id subscription-id]]
-                 :limit c/message-page-size}
+   (let [direction
+         (if asc? :asc :desc)
 
-          cursor
-          (update :where conj [comparator sql-cursor cursor]))
+         comparator
+         (if asc? :> :<)
 
-        messages
-        (db/execute sql-messages)
+         sql-messages
+         (cond-> {:select [:id
+                           :entry_id
+                           :is_read
+                           :is_marked
+                           [sql-cursor :cursor]]
+                  :from [:messages]
+                  :order-by [[sql-cursor direction]]
+                  :where
+                  [:and [:= :subscription_id subscription-id]]
+                  :limit (inc limit)}
 
-        entry-ids
-        (map :entry_id messages)
+           cursor
+           (update :where conj [comparator sql-cursor cursor]))
 
-        entries
-        (when (seq entry-ids)
-          (db/execute {:select [:id
-                                :title
-                                :teaser
-                                :date_published_at]
-                       :from [:entries]
-                       :where [:in :id entry-ids]}))
+         messages
+         (db/execute sql-messages)
 
-        id->entry
-        (reduce
-         (fn [acc entry]
-           (assoc acc (:id entry) entry))
-         {}
-         entries)]
+         more?
+         (> (count messages) limit)
 
-    (reduce
-     (fn [acc message]
-       (let [{:keys [entry_id]}
-             message
+         messages
+         (butlast-vec messages)
 
-             entry
-             (get id->entry entry_id)]
+         cursor
+         (-> messages peek :cursor)
 
-         (conj acc {:entry entry
-                    :message message})))
-     []
-     messages)))
+         entry-ids
+         (map :entry_id messages)
+
+         entries
+         (when (seq entry-ids)
+           (db/execute {:select [:id
+                                 :title
+                                 :teaser
+                                 :date_published_at]
+                        :from [:entries]
+                        :where [:in :id entry-ids]}))
+
+         id->entry
+         (reduce
+          (fn [acc entry]
+            (assoc acc (:id entry) entry))
+          {}
+          entries)]
+
+     {:more? more?
+      :cursor cursor
+      :messages
+      (reduce
+       (fn [acc message]
+         (let [{:keys [entry_id]}
+               message
+
+               entry
+               (get id->entry entry_id)]
+
+           (conj acc (assoc message :entry entry))))
+       []
+       messages)})))
 
 
 (defn message-to-render

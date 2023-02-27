@@ -9,11 +9,12 @@
   (let [subscription
         (model/get-subscription-by-id subscription-id)
 
-        pairs
-        (model/messages-to-render subscription-id false cursor)
-
-        cursor
-        (-> pairs peek :message :cursor)
+        {:keys [more?
+                cursor
+                messages]}
+        (model/messages-to-render subscription-id
+                                  {:asc? false
+                                   :cursor cursor})
 
         {:keys [opt_title
                 rss_title
@@ -29,8 +30,10 @@
        (str sync_date_prev)]]
 
      [:div#feed-messages-table
-      (for [{:keys [message entry]} pairs
-            :let [{:keys [id]}
+      (for [message messages
+
+            :let [{:keys [id
+                          entry]}
                   message
 
                   {:keys [title
@@ -51,11 +54,12 @@
           [:div.feed-messages-row-title title]
           [:div.feed-messages-row-teaser teaser]]])]
 
-     [:a
-      {:hx-post (html/api-url :viewSubscription
-                              {:subscription-id subscription-id
-                               :cursor cursor})
-       :hx-trigger "click"
-       :hx-target "#content-inner"
-       :hx-swap "innerHTML"}
-      "more"]]))
+     (when more?
+       [:a
+        {:hx-post (html/api-url :viewSubscription
+                                {:subscription-id subscription-id
+                                 :cursor cursor})
+         :hx-trigger "click"
+         :hx-target "#content-inner"
+         :hx-swap "innerHTML"}
+        "more"])]))
