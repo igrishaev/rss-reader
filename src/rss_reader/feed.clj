@@ -57,24 +57,29 @@
         url-page
         (or link uri)
 
-        guid
+        sql-guid
         (or uri
             link
             (some-> published-date .getTime str)
-            (format "none/%s" (random-uuid)))]
+            (format "none/%s" (random-uuid)))
 
-    {:guid guid
-     :link (or link uri)
+        sql-published-date
+        (or published-date
+            updated-date
+            :%now)
+
+        sql-link
+        (or link uri)]
+
+    {:guid sql-guid
+     :link sql-link
      :author author
      :updated_at :%now
-     :date_published_at published-date
+     :date_published_at sql-published-date
      :date_updated_at updated-date
-     :title (some-> title
-                    sanitize/sanitize-none)
-     :summary (some-> description-text
-                      (sanitize/sanitize-html url-page))
-     :teaser (some-> description-text
-                     sanitize/sanitize-none)}))
+     :title (some-> title sanitize/sanitize-none)
+     :summary (some-> description-text (sanitize/sanitize-html url-page))
+     :teaser (some-> description-text sanitize/sanitize-none)}))
 
 
 (defn feed->row

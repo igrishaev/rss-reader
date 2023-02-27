@@ -77,15 +77,10 @@ CREATE TABLE entries (
     title              TEXT,
     summary            TEXT,
     teaser             TEXT,
-    date_published_at  TIMESTAMP WITHOUT TIME ZONE, -- TODO: NOT NULL
+    date_published_at  TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     date_updated_at    TIMESTAMP WITHOUT TIME ZONE,
     UNIQUE (feed_id, guid)
 );
-
---;
-
-CREATE INDEX idx_entries_cursor ON entries USING BTREE
-((extract(epoch from date_published_at)::text || '|' || id));
 
 --;
 
@@ -95,11 +90,16 @@ CREATE TABLE messages (
     updated_at        TIMESTAMP WITHOUT TIME ZONE,
     entry_id          UUID NOT NULL,
     subscription_id   UUID NOT NULL,
+    date_published_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     is_read           BOOLEAN NOT NULL DEFAULT FALSE,
     is_marked         BOOLEAN NOT NULL DEFAULT FALSE,
     UNIQUE (entry_id, subscription_id)
 );
 
+--;
+
+CREATE INDEX idx_messages_cursor ON messages USING BTREE
+((extract(epoch from date_published_at)::text || '|' || id));
 
 --;
 

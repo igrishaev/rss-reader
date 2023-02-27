@@ -177,8 +177,12 @@
 (defn create-messages-for-subscription
   [^UUID subscription-id ^UUID feed-id]
   (db/execute
-   {:insert-into [[:messages [:entry_id :subscription_id]]
-                  {:select [:e.id subscription-id]
+   {:insert-into [[:messages [:entry_id
+                              :subscription_id
+                              :date_published_at]]
+                  {:select [:e.id
+                            subscription-id
+                            :e.date_published_at]
                    :from [[:entries :e]]
                    :where [:= :e.feed_id feed-id]
                    :order-by [[:created_at :desc]]
@@ -259,26 +263,51 @@
     :where [:= :s.feed_id :f.id]}))
 
 
+(def sql-cursor
+  [:raw "(extract(epoch from m.date_published_at)::text || '|' || m.id)"])
+
+
 (defn messages-to-render
-  [^UUID subscription-id]
-  (db/execute
-   {:select [:e.feed_id
-             :e.guid
-             :e.link
-             :e.author
-             :e.title
-             :e.teaser
-             :e.date_published_at
-             :e.date_updated_at
-             :m.id
-             :m.is_read
-             :m.is_marked]
-    :from [[:messages :m]
-           [:entries :e]]
-    :where
-    [:and
-     [:= :m.subscription_id subscription-id]
-     [:= :m.entry_id :e.id]]}))
+  [^UUID subscription-id & [asc? cursor]]
+
+  (let [direction
+        (if asc? :asc :desc)
+
+        comparator
+        (if asc? :> :<)
+
+        ;; TODO !!!!!!!
+
+        sql
+        {:select [
+                  ;; :e.feed_id
+                  ;; :e.guid
+                  ;; :e.link
+                  ;; :e.author
+                  ;; :e.title
+                  ;; :e.teaser
+                  ;; :e.date_published_at
+                  ;; :e.date_updated_at
+
+                  :m.id
+                  :m.is_read
+                  :m.is_marked
+                  [sql-cursor :cursor]]
+         :from [[:messages :m]
+                ;; [:entries :e]
+                ]
+         :order-by [[sql-cursor direction]]
+         :where
+         [:and
+          [:= :m.subscription_id subscription-id]
+          ;; [:= :m.entry_id :e.id]
+          ]
+         :limit c/message-page-size}]
+
+    (db/execute
+     (cond-> sql
+       cursor
+       (update :where conj [comparator sql-cursor cursor])))))
 
 
 (defn message-to-render
@@ -301,18 +330,3 @@
     [:and
      [:= :m.id message-id]
      [:= :m.entry_id :e.id]]}))
-
-
-(def cursor-exp
-  [:raw "(extract(epoch from date_published_at)::text || '|' || id)"])
-
-
-(defn foo
-  [cursor]
-  (db/execute
-   {:select [:id
-             [cursor-exp :cursor]]
-    :from [:entries]
-    :order-by [[cursor-exp :asc]]
-    :where
-    [:> cursor-exp cursor]}))

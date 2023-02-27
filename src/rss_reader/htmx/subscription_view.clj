@@ -4,12 +4,16 @@
    [rss-reader.model :as model]))
 
 
-(defn handler [{:keys [subscription-id]}]
+(defn handler [{:keys [subscription-id
+                       cursor]}]
   (let [subscription
         (model/get-subscription-by-id subscription-id)
 
         messages
-        (model/messages-to-render subscription-id)
+        (model/messages-to-render subscription-id false cursor)
+
+        cursor
+        (-> messages peek :cursor)
 
         {:keys [opt_title
                 rss_title]}
@@ -40,4 +44,13 @@
           "23 Feb"]
          [:div.feed-messages-row-content
           [:div.feed-messages-row-title title]
-          [:div.feed-messages-row-teaser teaser]]])]]))
+          [:div.feed-messages-row-teaser teaser]]])]
+
+     [:a
+      {:hx-post (html/api-url :viewSubscription
+                              {:subscription-id subscription-id
+                               :cursor cursor})
+       :hx-trigger "click"
+       :hx-target "#content-inner"
+       :hx-swap "innerHTML"}
+      "more"]]))
