@@ -19,6 +19,7 @@
 
 (def feed-sync-fields
   {:sync_count [:raw "sync_count + 1"]
+   :sync_date_prev :%now
    :sync_date_next [:raw "now() + (interval '1 second' * sync_interval)"]})
 
 

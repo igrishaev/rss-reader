@@ -9,14 +9,15 @@
   (let [subscription
         (model/get-subscription-by-id subscription-id)
 
-        messages
+        pairs
         (model/messages-to-render subscription-id false cursor)
 
         cursor
-        (-> messages peek :cursor)
+        (-> pairs peek :message :cursor)
 
         {:keys [opt_title
-                rss_title]}
+                rss_title
+                sync_date_prev]}
         subscription]
 
     [:div#feed-messages-list
@@ -25,13 +26,17 @@
 
      [:div.message-brief
       [:div.message-date
-       "Last updated at 15:01"]]
+       (str sync_date_prev)]]
 
      [:div#feed-messages-table
-      (for [message messages
-            :let [{:keys [id
-                          title
-                          teaser]} message]]
+      (for [{:keys [message entry]} pairs
+            :let [{:keys [id]}
+                  message
+
+                  {:keys [title
+                          teaser
+                          date_published_at]}
+                  entry]]
 
         [:div.feed-messages-row
          {:hx-post (html/api-url :viewMessage
@@ -41,7 +46,7 @@
           :hx-swap "innerHTML"}
 
          [:div.feed-messages-row-date
-          "23 Feb"]
+          (str date_published_at)]
          [:div.feed-messages-row-content
           [:div.feed-messages-row-title title]
           [:div.feed-messages-row-teaser teaser]]])]
