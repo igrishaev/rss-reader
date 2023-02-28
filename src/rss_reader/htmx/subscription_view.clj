@@ -49,24 +49,29 @@
                   message
 
                   {:keys [title
+                          link
                           teaser
                           date_published_at]}
                   entry]]
 
         [:div.feed-messages-row
-         {:hx-post (html/api-url :viewMessage
-                                 {:message-id id})
-          :hx-trigger "click"
-          :hx-target "#content-inner"
-          :hx-swap "innerHTML"}
 
          [:div.feed-messages-row-date
           {:title (str date_published_at)}
           (html/ago date_published_at)]
 
          [:div.feed-messages-row-content
-          [:div.feed-messages-row-title title]
-          [:div.feed-messages-row-teaser teaser]]])]
+          (if link
+            [:div.feed-messages-row-title
+             [:a {:href link} title]]
+            [:div.feed-messages-row-title title])
+          [:div.feed-messages-row-teaser
+           {:hx-post (html/api-url :viewMessage
+                                   {:message-id id})
+            :hx-trigger "click"
+            :hx-target "#content-inner"
+            :hx-swap "innerHTML"}
+           teaser]]])]
 
      (when more?
        [:a

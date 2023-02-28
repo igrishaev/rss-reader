@@ -336,6 +336,7 @@
          (when (seq entry-ids)
            (db/execute {:select [:id
                                  :title
+                                 :link
                                  :teaser
                                  :date_published_at]
                         :from [:entries]
