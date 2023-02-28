@@ -145,6 +145,15 @@
 ;; Categories
 ;;
 
+
+(defn get-categories-by-parent-id
+  [^UUID entry-id]
+  (db/execute
+   {:select [:*]
+    :from [:categories]
+    :where [:= :parent_id entry-id]}))
+
+
 (defn upsert-categories
   [^UUID parent-id
    ^String parent-type
@@ -358,7 +367,8 @@
 (defn message-to-render
   [^UUID message-id]
   (db/execute-one
-   {:select [:e.feed_id
+   {:select [[:e.id :entry_id]
+             :e.feed_id
              :e.guid
              :e.link
              :e.author
@@ -367,6 +377,7 @@
              :e.date_published_at
              :e.date_updated_at
              :m.id
+             :m.subscription_id
              :m.is_read
              :m.is_marked]
     :from [[:messages :m]

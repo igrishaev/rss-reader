@@ -85,10 +85,7 @@
              3]]]]]
 
         [:div#content
-         [:div#content-inner
-          [:div#content-actions
-           ]
-          ]
+         [:div#content-inner]
          ]
 
         ]]])))

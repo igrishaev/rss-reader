@@ -85,6 +85,7 @@
 }
 
 #content-inner {
+    max-width: 1024px;
     padding: 20px 50px 50px 50px;
 }
 
@@ -100,6 +101,9 @@
 }
 
 .message-brief {
+    margin-bottom: 5px;
+    flex-direction: row;
+    flex-wrap: wrap;
     display: flex;
     font-size: 0.8em;
 }
@@ -115,6 +119,7 @@
 }
 
 #message-buttons {
+    margin-top: 15px;
     display: flex;
     flex-direction: row;
 }
@@ -138,8 +143,11 @@
 }
 
 .feed-messages-row-date {
+    color: gray;
+    margin-right: 10px;
+    text-align: right;
     white-space: nowrap;
-    width: 65px;
+    min-width: 30px;
 }
 
 .feed-messages-row-title {
@@ -291,4 +299,37 @@ body {
 
 .dropdown:hover .dropdown-content {
   display: block;
+}
+
+a {
+    color: darkslategray;
+}
+
+a:hover {
+    color: black;
+}
+
+div.button-normal a {
+    text-decoration: none;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    padding: 0.25rem;
+    text-align: left;
+    border: 1px solid #ccc;
+}
+
+tbody tr:nth-child(odd) {
+    background: #eee;
+}
+
+iframe {
+    width: 100%;
+    height: 75%;
+    border: none;
 }

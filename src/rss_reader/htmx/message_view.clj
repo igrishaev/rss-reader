@@ -8,7 +8,8 @@
   (let [message
         (model/message-to-render message-id)
 
-        {:keys [guid
+        {:keys [entry_id
+                guid
                 link
                 author
                 title
@@ -16,29 +17,51 @@
                 date_published_at
                 date_updated_at
                 id
+                subscription_id
                 is_read
                 is_marked]}
-        message]
+        message
 
-    [:div#message-content
-     [:h1 title]
+        categories
+        (model/get-categories-by-parent-id entry_id)]
 
-     [:div.message-brief
+    [:div
 
-      (when author
-        [:div.message-author
-         author])
+     [:div#content-actions
+      [:div.content-action
+       {:hx-post (html/api-url :viewSubscription
+                               {:subscription-id subscription_id})
+        :hx-trigger "click"
+        :hx-target "#content-inner"
+        :hx-swap "innerHTML"}
+       "&larr; Back"]]
 
-      [:div.message-date
-       (str date_published_at)]]
+     [:div#message-content
 
-     [:div.message-brief
-      (for [tag ["aaa" "bbb" "ccc"]]
-        [:div.message-tag tag])]
+      (if link
+        [:h1 [:a {:href link} title]]
+        [:h1 title])
 
-     [:div#message-summary
-      summary]
+      [:div.message-brief
 
-     [:div#message-buttons
-      [:div.button-normal
-       "Read more"]]]))
+       (when author
+         [:div.message-author
+          "Author: " author])
+
+       [:div.message-date
+        {:title (str date_published_at)}
+        "Publised: "
+        (html/ago date_published_at)]]
+
+      [:div.message-brief
+       (for [{:keys [category]} categories]
+         [:div.message-tag category])]
+
+      [:div#message-summary
+       summary]
+
+      [:div#message-buttons
+       (when link
+         [:div.button-normal
+          [:a {:href link}
+           "Read more"]])]]]))

@@ -11,9 +11,12 @@
 (def tags-allowed
   [
    "a"
+   "article"
    "b"
    "blockquote"
    "br"
+   "figcaption"
+   "figure"
    "h1"
    "h2"
    "h3"
@@ -24,6 +27,7 @@
    "iframe"
    "img"
    "li"
+   "main"
    "p"
    "pre"
    "small"

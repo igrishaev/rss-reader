@@ -16,14 +16,26 @@
                                   {:asc? false
                                    :cursor cursor})
 
-        {:keys [opt_title
+        {:keys [feed_id
+                opt_title
                 rss_title
                 sync_date_prev]}
-        subscription]
+        subscription
+
+        feed
+        (model/get-feed-by-id feed_id)
+
+        {:keys [url_website]}
+        feed
+
+        title
+        (or opt_title rss_title)]
 
     [:div#feed-messages-list
 
-     [:h1 (or opt_title rss_title)]
+     (if url_website
+       [:h1 [:a {:href url_website} title]]
+       [:h1 title])
 
      [:div.message-brief
       [:div.message-date
@@ -49,7 +61,9 @@
           :hx-swap "innerHTML"}
 
          [:div.feed-messages-row-date
-          (str date_published_at)]
+          {:title (str date_published_at)}
+          (html/ago date_published_at)]
+
          [:div.feed-messages-row-content
           [:div.feed-messages-row-title title]
           [:div.feed-messages-row-teaser teaser]]])]
