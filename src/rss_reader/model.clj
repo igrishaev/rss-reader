@@ -311,7 +311,9 @@
                   :from [:messages]
                   :order-by [[sql-cursor direction]]
                   :where
-                  [:and [:= :subscription_id subscription-id]]
+                  [:and
+                   [:not :is_read]
+                   [:= :subscription_id subscription-id]]
                   :limit (inc limit)}
 
            cursor
@@ -387,3 +389,30 @@
     [:and
      [:= :m.id message-id]
      [:= :m.entry_id :e.id]]}))
+
+
+(defn mark-message-read
+  [^UUID message-id ^Boolean flag]
+  (db/execute-one
+   {:update [:messages]
+    :set {:is_read flag
+          :updated_at :%now}
+    :where [:= :id message-id]}))
+
+
+(defn inc-subscription-read-counter
+  [^UUID subscription-id]
+  (db/execute-one
+   {:update [:subscriptions]
+    :set {:unread_count [:raw "unread_count + 1"]
+          :updated_at :%now}
+    :where [:= :id subscription-id]}))
+
+
+(defn dec-subscription-read-counter
+  [^UUID subscription-id]
+  (db/execute-one
+   {:update [:subscriptions]
+    :set {:unread_count [:raw "unread_count - 1"]
+          :updated_at :%now}
+    :where [:= :id subscription-id]}))

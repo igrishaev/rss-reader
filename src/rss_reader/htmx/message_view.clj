@@ -25,6 +25,9 @@
         categories
         (model/get-categories-by-parent-id entry_id)]
 
+    (model/mark-message-read message-id true)
+    (model/dec-subscription-read-counter subscription_id)
+
     [:div
 
      [:div#content-actions
