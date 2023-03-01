@@ -1,4 +1,20 @@
-{:conn-manager
+{:smtp
+ {:host "smtp.gmail.com"
+  :port 587
+
+  :from
+  #profile {:default #env! RSS_SMTP_FROM
+            :dev "ivan@grishaev.me"}
+
+  :user
+  #profile {:default #env! RSS_SMTP_USER
+            :dev "ivan@grishaev.me"}
+
+  :pass
+  #profile {:default #env! RSS_SMTP_PASS
+            :dev "secret123"}}
+
+ :conn-manager
  {:timeout 5
   :threads 4
   :insecure? true}

@@ -22,6 +22,9 @@
    ;; config
    [aero "1.1.6"]
 
+   ;; email
+   [com.draines/postal "2.0.5"]
+
    ;; state
    [mount "0.1.17"]
 
