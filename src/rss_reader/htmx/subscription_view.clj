@@ -31,51 +31,52 @@
         title
         (or opt_title rss_title)]
 
-    [:div#feed-messages-list
+    (html/response
+     [:div#feed-messages-list
 
-     (if url_website
-       [:h1 [:a {:href url_website} title]]
-       [:h1 title])
+      (if url_website
+        [:h1 [:a {:href url_website} title]]
+        [:h1 title])
 
-     [:div.message-brief
-      [:div.message-date
-       (str sync_date_prev)]]
+      [:div.message-brief
+       [:div.message-date
+        (str sync_date_prev)]]
 
-     [:div#feed-messages-table
-      (for [message messages
+      [:div#feed-messages-table
+       (for [message messages
 
-            :let [{:keys [id
-                          entry]}
-                  message
+             :let [{:keys [id
+                           entry]}
+                   message
 
-                  {:keys [title
-                          link
-                          teaser
-                          date_published_at]}
-                  entry]]
+                   {:keys [title
+                           link
+                           teaser
+                           date_published_at]}
+                   entry]]
 
-        [:div.feed-messages-row
+         [:div.feed-messages-row
 
-         {:hx-post (html/api-url :viewMessage
-                                 {:message-id id})
+          {:hx-post (html/api-url :viewMessage
+                                  {:message-id id})
+           :hx-trigger "click"
+           :hx-target "#content-inner"
+           :hx-swap "innerHTML"}
+
+          [:div.feed-messages-row-date
+           {:title (str date_published_at)}
+           (html/ago date_published_at)]
+
+          [:div.feed-messages-row-content
+           [:div.feed-messages-row-title title]
+           [:div.feed-messages-row-teaser teaser]]])]
+
+      (when more?
+        [:a
+         {:hx-post (html/api-url :viewSubscription
+                                 {:subscription-id subscription-id
+                                  :cursor cursor})
           :hx-trigger "click"
           :hx-target "#content-inner"
           :hx-swap "innerHTML"}
-
-         [:div.feed-messages-row-date
-          {:title (str date_published_at)}
-          (html/ago date_published_at)]
-
-         [:div.feed-messages-row-content
-          [:div.feed-messages-row-title title]
-          [:div.feed-messages-row-teaser teaser]]])]
-
-     (when more?
-       [:a
-        {:hx-post (html/api-url :viewSubscription
-                                {:subscription-id subscription-id
-                                 :cursor cursor})
-         :hx-trigger "click"
-         :hx-target "#content-inner"
-         :hx-swap "innerHTML"}
-        "more"])]))
+         "more"])])))

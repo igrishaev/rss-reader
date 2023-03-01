@@ -1,5 +1,6 @@
 (ns rss-reader.htmx.message-view
   (:require
+   [rss-reader.htmx.subscription-row :as subscription-row]
    [rss-reader.html :as html]
    [rss-reader.model :as model]))
 
@@ -28,43 +29,50 @@
     (model/mark-message-read message-id true)
     (model/dec-subscription-read-counter subscription_id)
 
-    [:div
+    (let [subscription
+          (model/get-subscription-by-id subscription_id)]
 
-     [:div#content-actions
-      [:div.content-action
-       {:hx-post (html/api-url :viewSubscription
-                               {:subscription-id subscription_id})
-        :hx-trigger "click"
-        :hx-target "#content-inner"
-        :hx-swap "innerHTML"}
-       "&larr; Back"]]
+      (html/response
 
-     [:div#message-content
+       [:div
 
-      (if link
-        [:h1 [:a {:href link} title]]
-        [:h1 title])
+        [:div#content-actions
+         [:div.content-action
+          {:hx-post (html/api-url :viewSubscription
+                                  {:subscription-id subscription_id})
+           :hx-trigger "click"
+           :hx-target "#content-inner"
+           :hx-swap "innerHTML"}
+          "&larr; Back"]]
 
-      [:div.message-brief
+        [:div#message-content
 
-       (when author
-         [:div.message-author
-          "Author: " author])
+         (if link
+           [:h1 [:a {:href link} title]]
+           [:h1 title])
 
-       [:div.message-date
-        {:title (str date_published_at)}
-        "Publised: "
-        (html/ago date_published_at)]]
+         [:div.message-brief
 
-      [:div.message-brief
-       (for [{:keys [category]} categories]
-         [:div.message-tag category])]
+          (when author
+            [:div.message-author
+             "Author: " author])
 
-      [:div#message-summary
-       summary]
+          [:div.message-date
+           {:title (str date_published_at)}
+           "Publised: "
+           (html/ago date_published_at)]]
 
-      [:div#message-buttons
-       (when link
-         [:div.button-normal
-          [:a {:href link}
-           "Read more"]])]]]))
+         [:div.message-brief
+          (for [{:keys [category]} categories]
+            [:div.message-tag category])]
+
+         [:div#message-summary
+          summary]
+
+         [:div#message-buttons
+          (when link
+            [:div.button-normal
+             [:a {:href link}
+              "Read more"]])]]]
+
+       (subscription-row/element subscription)))))

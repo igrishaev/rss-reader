@@ -1,5 +1,6 @@
 (ns rss-reader.index
   (:require
+   [rss-reader.htmx.subscription-row :as subscription-row]
    [rss-reader.model :as model]
    [rss-reader.html :as html]))
 
@@ -53,36 +54,9 @@
                                rss_title
                                opt_title
                                unread_count]}
-                       subscription]
-                 ]
-             [:div.feed-item
-              {:hx-post (html/api-url :viewSubscription
-                                      {:subscription-id id})
-               :hx-trigger "click"
-               :hx-target "#content-inner"
-               :hx-swap "innerHTML"}
-              [:div.feed-title
-               (or opt_title rss_title)]
-              [:div.feed-unread
-               unread_count]])
+                       subscription]]
 
-           #_
-           [:div.feed-item
-            {:hx-get "/foo/bar"
-             :hx-trigger "click"
-             :hx-target "#content-inner"
-             :hx-swap "innerHTML"}
-            [:div.feed-title
-             "Ivan Grishaev is writing on diffent stuff foo bar baz"]
-            [:div.feed-unread
-             128]]
-
-           #_
-           [:div.feed-item.feed-item-active
-            [:div.feed-title
-             "Блог Васи Пупкина"]
-            [:div.feed-unread
-             3]]]]]
+             (subscription-row/element subscription))]]]
 
         [:div#content
          [:div#content-inner]

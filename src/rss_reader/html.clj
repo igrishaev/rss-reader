@@ -12,10 +12,11 @@
            (assoc params :action (name action)))))
 
 
-(defn response [struct]
-  {:status 200
-   :headers {"content-type" "text/html"}
-   :body (hiccup/html struct)})
+(defmacro response
+  [& struct]
+  `{:status 200
+    :headers {"content-type" "text/html"}
+    :body (hiccup/html ~@struct)})
 
 
 (def rules

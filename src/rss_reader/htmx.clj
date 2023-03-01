@@ -1,6 +1,5 @@
 (ns rss-reader.htmx
   (:require
-   [rss-reader.html :as html]
    [clojure.spec.alpha :as s]
    rss-reader.htmx.message-view
    rss-reader.htmx.subscription-view
@@ -38,17 +37,16 @@
     (if-let [{:keys [spec auth? handler]}
              (get API action)]
 
-      (let [conform-result
+      (let [params-ok
             (s/conform spec params)]
 
-        (if (s/invalid? conform-result)
+        (if (s/invalid? params-ok)
 
           {:status 400
            :headers {"content-type" "text/html"}
            :body "wrong params"}
 
-          (html/response
-           (handler conform-result))))
+          (handler params-ok)))
 
       {:status 400
        :headers {"content-type" "text/html"}
