@@ -125,6 +125,10 @@
   (set (map :name categories)))
 
 
+(def into-set
+    (fnil into #{}))
+
+
 (defn handle-feed-ok
   [feed-id response]
 
@@ -178,74 +182,45 @@
 
             guid->categories
             (reduce
-             (fn [acc {:keys [guid categories]}]
-               (update acc
-                       guid
-                       (fnil conj #{})
-                       (map :name categories)))
+             (fn [acc [row entry]]
+               (let [{:keys [guid]}
+                     row
+                     {:keys [categories]}
+                     entry]
+                 (update acc
+                         guid
+                         into-set
+                         (map :name categories))))
              {}
-             entries)
+             (map vector rows entries))
 
             db-result
             (model/upsert-entries feed-id rows)
 
-            guid->id
+            id->guid
             (reduce
-             (fn [acc [{:keys [guid id]}]]
-               (assoc acc guid id))
+             (fn [acc {:keys [guid id]}]
+               (assoc acc id guid))
              {}
              db-result)
 
-            id->categories
-            1
+            category-rows
+            (for [[id guid1]
+                  id->guid
 
+                  [guid2 categories]
+                  guid->categories
 
-            ]
+                  category
+                  categories
 
+                  :when (= guid1 guid2)]
 
-        )
+              {:parent-id id
+               :parent-type "entry"
+               :category category})]
 
-      #_
-      (loop [[e & entries-rest]
-             entries
-
-             rows
-             []
-
-             guid->categories
-             {}]
-
-        (let [{:keys [categories]}
-              e
-
-              row
-              (entry->row e)
-
-              {:keys [guid]}
-              row]
-
-          (if entries-rest
-            (recur entries-rest
-                   (conj rows row)
-                   (assoc guid->categories
-                          guid
-                          (categories->names categories)))
-
-            rows
-            #_
-            (let [result
-                  (model/upsert-entries feed-id rows)
-
-                  rows-categories
-                  (for [{:keys [id guid]}  result
-                        [guid' categories] guid->categories
-                        category           categories
-                        :when (= guid guid')]
-                    {:parent-id id
-                     :parent-type "entry"
-                     :category category})]
-
-              (model/upsert-categories-bulk rows-categories))))))))
+        (model/upsert-categories-bulk category-rows)))))
 
 
 (defn handle-feed-not-modified
