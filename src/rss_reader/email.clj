@@ -1,8 +1,7 @@
 (ns rss-reader.email
   (:require
-   [clojure.tools.logging :as log]
-   [rss-reader.config :refer [config]]
-   [postal.core :as postal]))
+   [postal.core :as postal]
+   [rss-reader.config :refer [config]]))
 
 
 (defn send-mail
@@ -36,5 +35,11 @@
         response]
 
     (when-not (zero? code)
-      (log/error "SMTP error, code: %s, error: %s, message: %s"
-                 code error message))))
+      (throw (ex-info (format "SMTP error, code: %s, error: %s, message: %s"
+                              code error message)
+                      {:type ::error
+                       :code code
+                       :error error
+                       :message message
+                       :to to
+                       :subject subject})))))

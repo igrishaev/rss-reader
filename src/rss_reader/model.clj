@@ -416,3 +416,30 @@
     :set {:unread_count [:raw "unread_count - 1"]
           :updated_at :%now}
     :where [:= :id subscription-id]}))
+
+
+;;
+;; Auth codes
+;;
+
+(defn add-auth-code
+  [^String email]
+  (db/execute-one
+   {:insert-into [:auth_codes]
+    :values [{:email email}]
+    :returning [:*]}))
+
+
+(defn get-auth-code
+  [^UUID id]
+  (db/execute-one
+   {:select [:*]
+    :from [:auth_codes]
+    :where [:= :id id]}))
+
+
+(defn expire-auth-codes []
+  (db/execute
+   {:delete-from [:auth_codes]
+    :where [:< :created_at
+            [:raw "now() - interval '10 minutes'"]]}))

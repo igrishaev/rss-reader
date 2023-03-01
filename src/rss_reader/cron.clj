@@ -29,6 +29,10 @@
       (feed/update-feed-safe id))))
 
 
+(defn task-expire-auth-codes []
+  (model/expire-auth-codes))
+
+
 (def TASKS
 
   [{:delay (* 60 5)
@@ -39,7 +43,12 @@
    {:delay (* 60 35)
     :period (* 60 60)
     :title "<Sync Subscriptions>"
-    :func task-sync-subscriptions}])
+    :func task-sync-subscriptions}
+
+   {:delay (* 60 1)
+    :period (* 60 10)
+    :title "<Expire Auth Codes>"
+    :func task-expire-auth-codes}])
 
 
 (defn wrap-task [func title]

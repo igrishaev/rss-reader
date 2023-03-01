@@ -125,3 +125,11 @@ CREATE TABLE categories (
     category      TEXT NOT NULL,
     UNIQUE (parent_id, category)
 );
+
+--;
+
+CREATE TABLE auth_codes (
+    id            UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    created_at    TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
+    email         TEXT NOT NULL
+);
