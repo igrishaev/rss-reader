@@ -6,6 +6,6 @@
 
 (def max-messages-to-create 1000)
 
-(def entry-batch-size 50)
+(def entry-batch-size 20)
 
 (def message-page-size 20)

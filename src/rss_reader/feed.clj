@@ -169,12 +169,51 @@
                              "feed"
                              category-names)
 
-    (doseq [entries (util/by-chunks entries
-                                    c/entry-batch-size)]
+    (doseq [entries (util/by-chunks
+                     entries
+                     c/entry-batch-size)]
 
-      (loop [[e & entries]    entries
-             rows             []
-             guid->categories {}]
+      (let [rows
+            (map entry->row entries)
+
+            guid->categories
+            (reduce
+             (fn [acc {:keys [guid categories]}]
+               (update acc
+                       guid
+                       (fnil conj #{})
+                       (map :name categories)))
+             {}
+             entries)
+
+            db-result
+            (model/upsert-entries feed-id rows)
+
+            guid->id
+            (reduce
+             (fn [acc [{:keys [guid id]}]]
+               (assoc acc guid id))
+             {}
+             db-result)
+
+            id->categories
+            1
+
+
+            ]
+
+
+        )
+
+      #_
+      (loop [[e & entries-rest]
+             entries
+
+             rows
+             []
+
+             guid->categories
+             {}]
 
         (let [{:keys [categories]}
               e
@@ -185,13 +224,15 @@
               {:keys [guid]}
               row]
 
-          (if entries
-            (recur entries
+          (if entries-rest
+            (recur entries-rest
                    (conj rows row)
                    (assoc guid->categories
                           guid
                           (categories->names categories)))
 
+            rows
+            #_
             (let [result
                   (model/upsert-entries feed-id rows)
 
