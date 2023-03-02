@@ -14,6 +14,15 @@
   #profile {:default #env! RSS_SMTP_PASS
             :dev "secret123"}}
 
+ :google
+ {:cx
+  #profile {:default #env! RSS_CSE_CX
+            :dev "xxxxxxxxxx"}
+
+  :key
+  #profile {:default #env! RSS_CSE_KEY
+            :dev "xxxxxxxxxx"}}
+
  :http
  {:conn-manager
   {:timeout 5
