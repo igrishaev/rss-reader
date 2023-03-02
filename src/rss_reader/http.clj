@@ -10,7 +10,7 @@
 (mount/defstate ^{:on-reload :noop} cm
   :start
   (conn-mgr/make-reusable-conn-manager
-   (:conn-manager config))
+   (-> config :http :conn-manager))
 
   :stop
   (conn-mgr/shutdown-manager cm))
@@ -30,5 +30,6 @@
 
   ([url options]
    (client/get url
-               (assoc options
-                      :connection-manager cm))))
+               (-> (-> config :http :defaults)
+                   (merge options)
+                   (assoc :connection-manager cm)))))

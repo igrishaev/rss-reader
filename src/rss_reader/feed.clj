@@ -129,6 +129,33 @@
     (fnil into #{}))
 
 
+(defn head-feed [^String url]
+  (let [response
+        (http/get url {:as :stream
+                       :throw-exceptions true})
+
+        {:keys [status body headers]}
+        response
+
+        {:strs [content-type]}
+        headers
+
+        encoding
+        (some-> content-type util/get-charset)
+
+        reader-opt
+        {:lanient true
+         :encoding encoding
+         :content-type content-type}
+
+        reader
+        (rome/make-reader body reader-opt)]
+
+    (-> reader
+        (rome/parse-reader)
+        (dissoc :entries))))
+
+
 (defn handle-feed-ok
   [feed-id response]
 
@@ -143,10 +170,14 @@
         encoding
         (some-> content-type util/get-charset)
 
+        reader-opt
+        {:lanient true
+         :encoding encoding
+         :content-type content-type}
+
         reader
-        (rome/make-reader body {:lanient      true
-                                :encoding     encoding
-                                :content-type content-type})
+        (rome/make-reader body reader-opt)
+
         feed
         (rome/parse-reader reader)
 
@@ -277,18 +308,3 @@
     (catch Throwable e
       (log/errorf e "Feed %s failed to update" feed-id)
       (model/update-feed feed-id (feed-err-fields e)))))
-
-
-
-#_
-(comment
-
-  (model/upsert-feed "http://oglaf.com/feeds/rss/")
-  (model/upsert-feed "https://habr.com/ru/rss/all/all/?fl=ru")
-
-  (update-feed #uuid "6607fd58-5ea3-47ff-8188-e997d6a8430b")
-
-  (update-feed #uuid "3ea6c6c0-074a-4714-9085-d2d38c1862e9")
-
-
-  )
