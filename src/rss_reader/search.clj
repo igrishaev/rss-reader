@@ -8,43 +8,50 @@
    [rss-reader.discovery :as discovery]))
 
 
-(defn lookup-feeds [term]
-  (cond
+(defn lookup-feeds
+  ([term]
+   (lookup-feeds term nil))
 
-    (url/url? term)
-    (let [response
-          (http/get term {:as :stream
-                          :throw-exceptions false})]
-      (when (http/ok? response)
-        (cond
-          (http/html? response)
-          (discovery/get-rss-links-from-response response)
-          (http/feed? response)
-          (feed/head-feed-from-response response))))
+  ([term {:keys [country]}]
+   (cond
 
-    (url/domain? term)
-    (let [url
-          (str "http://" term)
-          links
-          (discovery/get-rss-links url)]
-      (mapv feed/head-feed links))
+     (url/url? term)
+     (let [response
+           (http/get term {:as :stream
+                           :throw-exceptions false})]
+       (when (http/ok? response)
+         (cond
+           (http/html? response)
+           (discovery/get-rss-links-from-response response)
+           (http/feed? response)
+           (feed/head-feed-from-response response))))
 
-    :else
-    (let [links
-          (google/search term {:limit 1})]
-      (when-let [link (first links)]
-        (let [links
-              (discovery/get-rss-links link)]
-          (mapv feed/head-feed links))))))
+     (url/domain? term)
+     (let [url
+           (str "http://" term)
+           links
+           (discovery/get-rss-links url)]
+       (mapv feed/head-feed links))
+
+     :else
+     (let [links
+           (google/search term {:limit 1 :country country})]
+       (when-let [link (first links)]
+         (let [links
+               (discovery/get-rss-links link)]
+           (mapv feed/head-feed links)))))))
 
 
-(defn search [term]
+(defn search
+  ([term]
+   (search term nil))
 
-  (let [feed-rows
-        (model/search-feeds term)
+  ([term options]
+   (let [feed-rows
+         (model/search-feeds term)
 
-        feed-maps
-        (lookup-feeds term)]
+         feed-maps
+         (lookup-feeds term options)]
 
-    {:rows feed-rows
-     :maps feed-maps}))
+     {:rows feed-rows
+      :maps feed-maps})))

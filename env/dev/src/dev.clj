@@ -10,12 +10,16 @@
    rss-reader.server))
 
 
-(defn start []
-  (config/with-profile :dev
-    (mount/start (var config/config)
-                 (var rss-reader.server/server)
-                 (var rss-reader.db/db)
-                 (var rss-reader.http/cm))))
+(defn start
+  ([]
+   (start :dev))
+
+  ([profile]
+   (config/with-profile profile
+     (mount/start (var config/config)
+                  (var rss-reader.server/server)
+                  (var rss-reader.db/db)
+                  (var rss-reader.http/cm)))))
 
 (defn stop []
   (mount/stop))

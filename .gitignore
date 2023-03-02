@@ -14,3 +14,4 @@ pom.xml.asc
 
 .docker/postgres
 .docker/m2
+secrets.env
