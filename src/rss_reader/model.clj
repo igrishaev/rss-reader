@@ -443,3 +443,42 @@
    {:delete-from [:auth_codes]
     :where [:< :created_at
             [:raw "now() - interval '10 minutes'"]]}))
+
+;;
+;; Search
+;;
+
+(defn search-feeds [^String term]
+  (let [fields
+        [:id
+         :url_source
+         :url_website
+         :rss_title
+         :rss_subtitle]
+
+        term-fuzzy
+        (str "%" term "%")]
+
+    (db/execute
+     {:union
+      [{:select (conj fields [true :exact_match])
+        :from [:feeds]
+        :where [:= :url_source term]}
+
+       {:select (conj fields [true :exact_match])
+        :from [:feeds]
+        :where [:= :url_website term]}
+
+       {:select (conj fields [false :exact_match])
+        :from [:feeds]
+        :where [:= :rss_domain term]}
+
+       {:select (conj fields [false :exact_match])
+        :from [:feeds]
+        :where [:ilike :rss_title term-fuzzy]}
+
+       {:select (conj fields [false :exact_match])
+        :from [:feeds]
+        :where [:ilike :rss_description term-fuzzy]}]
+
+      :limit 10})))

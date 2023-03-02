@@ -129,12 +129,8 @@
     (fnil into #{}))
 
 
-(defn head-feed [^String url]
-  (let [response
-        (http/get url {:as :stream
-                       :throw-exceptions true})
-
-        {:keys [status body headers]}
+(defn head-feed-from-response [response]
+  (let [{:keys [status body headers]}
         response
 
         {:strs [content-type]}
@@ -154,6 +150,13 @@
     (-> reader
         (rome/parse-reader)
         (dissoc :entries))))
+
+
+(defn head-feed [^String url]
+  (let [response
+        (http/get url {:as :stream
+                       :throw-exceptions true})]
+    (head-feed-from-response response)))
 
 
 (defn handle-feed-ok

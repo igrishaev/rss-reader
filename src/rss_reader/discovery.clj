@@ -14,41 +14,44 @@
    "link[rel='alternate'][type='application/atom+xml']"])
 
 
-(defn get-rss-links-unsafe [^String url]
+(defn get-rss-links-from-response
+  [^String url response]
 
-  (let [response
-        (http/get url {:as :stream
-                       :throw-exceptions false})
-
-        {:keys [status body headers]}
+  (let [{:keys [status body headers]}
         response
 
         {:strs [content-type]}
         headers
 
         charset
-        (some-> content-type util/get-charset)]
+        (some-> content-type util/get-charset)
 
-    (when (= status 200)
+        doc
+        (Jsoup/parse ^InputStream body charset url)
 
-      (let [doc
-            (Jsoup/parse ^InputStream body charset url)
+        select
+        (fn [^String selector]
+          (.select doc selector))
 
-            select
-            (fn [^String selector]
-              (.select doc selector))
+        elements
+        (mapcat select feed-selectors)
 
-            elements
-            (mapcat select feed-selectors)
+        hrefs
+        (for [^Element el elements]
+          (.absUrl el "href"))]
 
-            hrefs
-            (for [^Element el elements]
-              (.absUrl el "href"))]
+    (-> hrefs set not-empty)))
 
-        (-> hrefs set not-empty)))))
+
+(defn get-rss-links-http [^String url]
+  (let [response
+        (http/get url {:as :stream
+                       :throw-exceptions false})]
+    (when (http/ok? response)
+      (get-rss-links-from-response url response))))
 
 
 (defn get-rss-links [^String url]
   (try
-    (get-rss-links-unsafe url)
+    (get-rss-links-http url)
     (catch Throwable _)))

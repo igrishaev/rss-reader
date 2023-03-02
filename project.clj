@@ -28,6 +28,9 @@
    ;; state
    [mount "0.1.17"]
 
+   ;; url validation
+   [commons-validator/commons-validator "1.7"]
+
    ;; logging
    [org.clojure/tools.logging "1.2.4"]
    [ch.qos.logback/logback-classic "1.4.5"]

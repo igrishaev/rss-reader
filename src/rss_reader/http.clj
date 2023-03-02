@@ -33,3 +33,22 @@
                (-> (-> config :http :defaults)
                    (merge options)
                    (assoc :connection-manager cm)))))
+
+
+(defn ok? [response]
+  (-> response :status (= 200)))
+
+
+(defn content-type? [response regex]
+  (some-> response
+          :headers
+          (clojure.core/get "content-type")
+          (->> (re-find regex))))
+
+
+(defn html? [response]
+  (content-type? response #"(?i)text/html"))
+
+
+(defn feed? [response]
+  (content-type? response #"(?i)rss|atom|xml"))
