@@ -1,8 +1,4 @@
-- configure logs
 - configure sentry
 - add sql indexes
 - reg domain
-- investigate -1
 - save enclosures
-- render tags
-- render human-fr dates
