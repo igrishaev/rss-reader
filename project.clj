@@ -34,7 +34,7 @@
    ;; logging
    [org.clojure/tools.logging "1.2.4"]
    [ch.qos.logback/logback-classic "1.4.5"]
-   [io.sentry/sentry-logback "6.14.0"]
+   [io.sentry/sentry-logback "6.15.0"]
 
    ;; http
    [http-kit "2.7.0-alpha1"]
