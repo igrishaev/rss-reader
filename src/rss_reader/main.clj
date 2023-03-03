@@ -1,13 +1,14 @@
 (ns rss-reader.main
   (:gen-class)
   (:require
-   [mount.core :as mount]
-   [signal.handler :as signal]
    [clojure.tools.logging :as log]
+   [mount.core :as mount]
    rss-reader.config
-   rss-reader.db
    rss-reader.cron
-   rss-reader.server))
+   rss-reader.db
+   rss-reader.log
+   rss-reader.server
+   [signal.handler :as signal]))
 
 
 (defn exit [code]
@@ -17,6 +18,7 @@
 (defn start []
   (mount/start (var rss-reader.config/config)
                (var rss-reader.db/db)
+               (var rss-reader.log/log)
                (var rss-reader.http/cm)
                (var rss-reader.cron/cron)
                (var rss-reader.server/server)))

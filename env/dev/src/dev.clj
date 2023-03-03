@@ -6,6 +6,7 @@
    [rss-reader.cron :as cron]
    rss-reader.db
    rss-reader.http
+   rss-reader.log
    [rss-reader.model :as model]
    rss-reader.server))
 
@@ -18,6 +19,7 @@
    (config/with-profile profile
      (mount/start (var config/config)
                   (var rss-reader.server/server)
+                  (var rss-reader.log/log)
                   (var rss-reader.db/db)
                   (var rss-reader.http/cm)))))
 
