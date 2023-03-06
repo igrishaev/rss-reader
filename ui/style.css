@@ -6,17 +6,18 @@
 
 
 #sidebar {
+    display: flex;
+    flex-direction: column;
     position: fixed;
     width: 350px;
     height: 100%;
-    display: block;
     overflow-y: scroll;
     background-color: #F5F5F5;
 }
 
 #sidebar-menu {
     padding: 0px 0px 0px 50px;
-    margin-bottom: 25px;
+    margin-bottom: 5px;
 }
 
 .feed-list-caption {
@@ -85,7 +86,7 @@
 }
 
 #content-inner {
-    padding: 20px 50px 50px 50px;
+    padding: 5px 50px 50px 50px;
 }
 
 #content-actions {
@@ -321,4 +322,27 @@ p {
     background-color: gray;
     width: 100%;
     height: auto;
+}
+
+#sidebar-main-menu {
+    padding: 0 0 0 25px;
+    display: flex;
+    flex-direction: row;
+    background-color: darkslategray;
+}
+
+.sidebar-main-menu-item {
+    cursor: pointer;
+    padding: 15px 15px 0 15px;
+    height: 35px;
+}
+
+.sidebar-main-menu-item:hover {
+    background-color: gray;
+}
+
+
+.sidebar-main-menu-item a {
+    color: white;
+    text-decoration: none;
 }
