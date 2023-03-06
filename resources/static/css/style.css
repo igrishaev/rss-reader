@@ -333,3 +333,11 @@ iframe {
     height: 75%;
     border: none;
 }
+
+.form-input {
+    height: 30px;
+    font-size: 1.2em;
+    width: 300px;
+    border: none;
+    border-bottom: 1px black solid;
+}

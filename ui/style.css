@@ -278,3 +278,42 @@ body {
 .dropdown:hover .dropdown-content {
   display: block;
 }
+
+.form-input {
+    padding-left: 5px;
+    height: 30px;
+    font-size: 1.2em;
+    width: 300px;
+    border: none;
+    border-bottom: 1px black solid;
+}
+
+.form-search {
+    width: 90%;
+};
+
+p {
+    font-size: 1.1em;
+}
+
+#search-results {
+    display: flex;
+    flex-direction: column;
+}
+
+.search-result-item {
+    display: flex;
+    flex-direction: row;
+}
+
+.search-feed-image-wrapper {
+    margin-right: 15px;
+    width: 100px;
+    height: 100px;
+}
+
+.search-feed-image {
+    background-color: gray;
+    width: 100%;
+    height: auto;
+}
