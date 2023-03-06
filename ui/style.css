@@ -302,14 +302,19 @@ p {
 }
 
 .search-result-item {
+    margin-bottom: 15px;
     display: flex;
     flex-direction: row;
 }
 
 .search-feed-image-wrapper {
     margin-right: 15px;
-    width: 100px;
-    height: 100px;
+    width: 75px;
+    height: 75px;
+}
+
+.search-feed-title {
+    width: 400px;
 }
 
 .search-feed-image {
