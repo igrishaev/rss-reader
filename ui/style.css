@@ -346,3 +346,7 @@ p {
     color: white;
     text-decoration: none;
 }
+
+.flex-separator {
+    flex-grow: 999;
+}
