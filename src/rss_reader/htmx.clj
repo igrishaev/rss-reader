@@ -16,7 +16,6 @@
     :auth? false
     :handler #'rss-reader.htmx.auth/handler}
 
-
    "viewSubscription"
    {:doc "aaa"
     :spec ::spec/api-view-subscription

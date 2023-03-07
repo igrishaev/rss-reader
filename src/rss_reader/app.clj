@@ -1,5 +1,6 @@
 (ns rss-reader.app
   (:require
+   [cheshire.core :as json]
    [rss-reader.handlers :as handlers]
    [rss-reader.htmx :as htmx]
    [ring.middleware.cookies :refer [wrap-cookies]]
@@ -15,7 +16,12 @@
 
 (defn routes
   [{:as request
-    :keys [request-method uri]}]
+    :keys [uri
+           cookies
+           request-method]}]
+
+  (println "-------" cookies)
+
   (case [request-method uri]
 
     [:get "/"]
@@ -23,6 +29,9 @@
 
     [:post "/htmx"]
     (htmx/handler request)
+
+    [:get "/auth"]
+    (handlers/auth request)
 
     ;; else
     {:status 404
@@ -38,4 +47,6 @@
       (wrap-json-body {:keywords? true})
       (wrap-json-response)
       (wrap-session)
-      (wrap-cookies)))
+      (wrap-cookies {:encoder json/generate-string
+                     :decoder (fn [value]
+                                (json/parse-string value keyword))})))

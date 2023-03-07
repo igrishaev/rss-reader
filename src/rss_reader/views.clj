@@ -155,7 +155,9 @@
    [:h1 "Sign in by Email"]
    [:p "No password is required. We'll send you a magic link to authorize."]
    [:form
-    {:hx-post "/htmx"}
+    {:hx-post "/htmx"
+     :hx-target "#content-inner"
+     :hx-swap "innerHTML"}
     [:input.form-input
      {:type "email"
       :name "email"
