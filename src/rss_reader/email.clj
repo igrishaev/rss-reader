@@ -1,10 +1,11 @@
 (ns rss-reader.email
+  (:refer-clojure :exclude [send])
   (:require
    [postal.core :as postal]
    [rss-reader.config :refer [config]]))
 
 
-(defn send-mail
+(defn send
   [to subject body]
 
   (let [{:keys [smtp]}

@@ -1,13 +1,23 @@
 (ns rss-reader.htmx
   (:require
    [clojure.spec.alpha :as s]
+   rss-reader.htmx.auth
    rss-reader.htmx.message-view
    rss-reader.htmx.subscription-view
    [rss-reader.spec :as spec]))
 
 
 (def API
-  {"viewSubscription"
+  {
+
+   "sendAuthEmail"
+   {:doc "AAA"
+    :spec ::spec/api-form-auth
+    :auth? false
+    :handler #'rss-reader.htmx.auth/handler}
+
+
+   "viewSubscription"
    {:doc "aaa"
     :spec ::spec/api-view-subscription
     :auth? true

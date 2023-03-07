@@ -1,6 +1,6 @@
-(ns rss-reader.handler
+(ns rss-reader.app
   (:require
-   [rss-reader.index :as index]
+   [rss-reader.handlers :as handlers]
    [rss-reader.htmx :as htmx]
    [ring.middleware.cookies :refer [wrap-cookies]]
    [ring.middleware.resource :refer
@@ -19,7 +19,7 @@
   (case [request-method uri]
 
     [:get "/"]
-    (index/handler request)
+    (handlers/index request)
 
     [:post "/htmx"]
     (htmx/handler request)
@@ -30,7 +30,7 @@
      :body "Not found"}))
 
 
-(def handler
+(def app
   (-> routes
       (wrap-keyword-params)
       (wrap-params)

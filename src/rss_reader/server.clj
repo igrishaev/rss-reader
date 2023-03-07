@@ -4,7 +4,7 @@
    [mount.core :as mount]
    [org.httpkit.server :as server]
    [rss-reader.config :refer [config]]
-   [rss-reader.handler :as handler]))
+   [rss-reader.app :as app]))
 
 
 (def defaults
@@ -13,7 +13,7 @@
 
 (mount/defstate ^{:on-reload :noop} server
   :start
-  (server/run-server handler/handler
+  (server/run-server app/app
                      (-> config
                          :http-server
                          (merge defaults)))

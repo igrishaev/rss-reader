@@ -261,7 +261,7 @@
 ;; Render
 ;;
 
-(defn subscriptions-to-render []
+(defn subscriptions-to-render [user-id]
   (db/execute
    {:select [:s.*
              :f.rss_title
@@ -270,7 +270,9 @@
              :f.rss_domain]
     :from [[:subscriptions :s]
            [:feeds :f]]
-    :where [:= :s.feed_id :f.id]}))
+    :where [:and
+            [:= :s.user_id user-id]
+            [:= :s.feed_id :f.id]]}))
 
 
 (def sql-cursor
