@@ -1,9 +1,8 @@
 (ns rss-reader.app
   (:require
-   [cheshire.core :as json]
    [rss-reader.handlers :as handlers]
    [rss-reader.htmx :as htmx]
-   [ring.middleware.cookies :refer [wrap-cookies]]
+   [ring.middleware.session.cookie :as cookie]
    [ring.middleware.resource :refer
     [wrap-resource]]
    [ring.middleware.json :refer
@@ -17,10 +16,10 @@
 (defn routes
   [{:as request
     :keys [uri
-           cookies
+           session
            request-method]}]
 
-  (println "-------" cookies)
+  (println "-------session" session)
 
   (case [request-method uri]
 
@@ -39,6 +38,10 @@
      :body "Not found"}))
 
 
+(def session-store
+  (cookie/cookie-store {:key "1234567890abcdef"}))
+
+
 (def app
   (-> routes
       (wrap-keyword-params)
@@ -46,7 +49,6 @@
       (wrap-resource "static")
       (wrap-json-body {:keywords? true})
       (wrap-json-response)
-      (wrap-session)
-      (wrap-cookies {:encoder json/generate-string
-                     :decoder (fn [value]
-                                (json/parse-string value keyword))})))
+      (wrap-session {:store session-store
+                     :cookie-name "ring-session"
+                     :cookie-attrs {:http-only true}})))

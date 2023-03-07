@@ -9,7 +9,7 @@
    (views/index nil)))
 
 
-(defn auth [{:keys [cookies]}]
+(defn auth [{:keys [session]}]
 
   (let [user
         {:foo 123
@@ -17,10 +17,4 @@
 
     {:status 307
      :headers {"Location" "/"}
-     :cookies (assoc cookies
-                     :user
-                     {:value user
-                      ;; :secure true
-                      ;; :http-only true
-
-                      })}))
+     :session (assoc session :user user)}))
