@@ -12,7 +12,8 @@
 (defn auth [{:keys [session]}]
 
   (let [user
-        {:foo 123
+        {:id (random-uuid)
+         :foo 123
          :bar [1 2 3]}]
 
     {:status 307
