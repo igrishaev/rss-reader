@@ -218,6 +218,7 @@
            (sidebar-subscriptions/view user))]]
 
        [:div#content
+        [:div#alerts]
         [:div#content-inner
 
          [:div#content-actions
@@ -231,6 +232,8 @@
              ])
 
           ]
+
+
 
          (when-not user
            (form-auth))]]]]]))

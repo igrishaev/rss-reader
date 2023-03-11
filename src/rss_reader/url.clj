@@ -1,6 +1,6 @@
 (ns rss-reader.url
   (:import
-   java.net.URL
+   java.net.URI
    org.apache.commons.validator.UrlValidator
    org.apache.commons.validator.routines.DomainValidator))
 
@@ -18,3 +18,7 @@
 (defn domain? [^String string]
   (let [validator (DomainValidator/getInstance false)]
     (.isValid validator string)))
+
+
+(defn get-host [^String url]
+  (.getHost (new URI url)))

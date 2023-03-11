@@ -23,6 +23,10 @@
   #profile {:default #env! RSS_CSE_KEY
             :dev "xxxxxxxxxx"}}
 
+ :session-key
+ #profile {:default #env! RSS_SESSION_KEY
+           :dev "1234567890abcdef"}
+
  :http
  {:conn-manager
   {:timeout 5
@@ -58,5 +62,5 @@
                                 :dev "rss"}
   :server-name        #profile {:default #env! RSS_DB_HOST
                                 :dev "127.0.0.1"}
-  :port-number        #profile {:default 15432 ;; TODO
+  :port-number        #profile {:default 5432
                                 :dev 15432}}}

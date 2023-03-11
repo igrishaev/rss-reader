@@ -13,7 +13,7 @@
 
 (mount/defstate ^{:on-reload :noop} server
   :start
-  (server/run-server app/app
+  (server/run-server (app/app)
                      (-> config
                          :http-server
                          (merge defaults)))

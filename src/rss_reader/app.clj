@@ -1,5 +1,6 @@
 (ns rss-reader.app
   (:require
+   [rss-reader.config :refer [config]]
    [rss-reader.handlers :as handlers]
    [rss-reader.htmx :as htmx]
    [ring.middleware.session.cookie :as cookie]
@@ -19,8 +20,6 @@
            session
            request-method]}]
 
-  (println "-------session" session)
-
   (case [request-method uri]
 
     [:get "/"]
@@ -38,17 +37,20 @@
      :body "Not found"}))
 
 
-(def session-store
-  (cookie/cookie-store {:key "1234567890abcdef"}))
+(defn app []
 
+  (let [session-key
+        (.getBytes ^String (:session-key config))
 
-(def app
-  (-> routes
-      (wrap-keyword-params)
-      (wrap-params)
-      (wrap-resource "static")
-      (wrap-json-body {:keywords? true})
-      (wrap-json-response)
-      (wrap-session {:store session-store
-                     :cookie-name "ring-session"
-                     :cookie-attrs {:http-only true}})))
+        session-store
+        (cookie/cookie-store {:key session-key})]
+
+    (-> routes
+        (wrap-keyword-params)
+        (wrap-params)
+        (wrap-resource "static")
+        (wrap-json-body {:keywords? true})
+        (wrap-json-response)
+        (wrap-session {:store session-store
+                       :cookie-name "ring-session"
+                       :cookie-attrs {:http-only true}}))))

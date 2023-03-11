@@ -10,6 +10,7 @@
    [clojure.tools.logging :as log]
    [rss-reader.const :as c]
    [rss-reader.db :as db]
+   [rss-reader.url :as url]
    [rss-reader.http :as http]
    [rss-reader.model :as model]
    [rss-reader.rome :as rome]
@@ -103,21 +104,26 @@
                 entries]}
         feed]
 
-    {:rss_title
-     (some-> title
-             sanitize/sanitize-none)
-     :rss_language language
-     :rss_author author
-     :rss_editor editor
-     :rss_published_at published-date
-     :rss_description
-     (some-> description
-             sanitize/sanitize-none)
-     :rss_encoding encoding
-     :rss_feed_type feed-type
-     :url_icon (:url icon)
-     :url_image (:url image)
-     :url_website link}))
+    (let [feed-title
+          (or (some-> title sanitize/sanitize-none)
+              (some-> link url/get-host))
+
+          feed-description
+          (some-> description sanitize/sanitize-none)]
+
+      (cond-> {:rss_language language
+               :rss_author author
+               :rss_editor editor
+               :rss_published_at published-date
+               :rss_description feed-description
+               :rss_encoding encoding
+               :rss_feed_type feed-type
+               :url_icon (:url icon)
+               :url_image (:url image)
+               :url_website link}
+
+        feed-title
+        (assoc :rss_title feed-title)))))
 
 
 (defn categories->names

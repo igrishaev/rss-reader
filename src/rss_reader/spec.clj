@@ -1,17 +1,21 @@
 (ns rss-reader.spec
   (:require
+   [clojure.string :as str]
    [clojure.spec.alpha :as s]))
 
 
 (s/def ::uuid
   (s/conformer parse-uuid))
 
+(s/def ::ne-string
+  (s/and string? (complement str/blank?)))
+
 
 (s/def ::user-id ::uuid)
 (s/def ::subscription-id ::uuid)
 (s/def ::message-id ::uuid)
 
-(s/def ::email string?)
+(s/def ::email ::ne-string)
 
 
 (s/def ::api-view-subscription
