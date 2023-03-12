@@ -27,6 +27,10 @@
  #profile {:default #env! RSS_SESSION_KEY
            :dev "1234567890abcdef"}
 
+ :base-url
+ #profile {:default "https://rsss.dev"
+           :dev "http://localhost:18088"}
+
  :http
  {:conn-manager
   {:timeout 5

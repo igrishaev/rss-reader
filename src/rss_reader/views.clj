@@ -150,27 +150,35 @@
       unread_count]]))
 
 
-(defn form-auth []
-  [:div
-   [:h1 "Sign in by Email"]
-   [:p "No password is required. We'll send you a magic link to authorize."]
-   [:form
-    {:hx-post "/htmx"
-     :hx-target "#content-inner"
-     :hx-swap "innerHTML"}
-    [:input.form-input
-     {:type "email"
-      :name "email"
-      :placeholder "user@domain.com"}]
-    [:div.dialog-buttons
-     [:button.dialog-button-normal
-      {:type :submit
-       :name :action
-       :value :sendAuthEmail}
-      "Send the link"]]]])
+(defn form-auth
+  ([]
+   (form-auth nil))
+
+  ([{:keys [email email-error]}]
+   [:div
+    [:h1 "Sign in by Email"]
+    [:p "No password is required. We'll send you a magic link to authorize."]
+    [:form
+     {:hx-post "/htmx"
+      :hx-target "#content-inner"
+      :hx-swap "innerHTML"}
+     [:div.form-field
+      [:input.form-input
+       {:type "email"
+        :name "email"
+        :placeholder "user@domain.com"
+        :value email}]
+      (when email-error
+        [:div.form-error email-error])]
+     [:div.dialog-buttons
+      [:button.dialog-button-normal
+       {:type :submit
+        :name :action
+        :value :sendAuthEmail}
+       "Send the link"]]]]))
 
 
-(defn form-auth-ok []
+(defn form-auth-sent []
   [:div
    [:h1 "Thank you!"]
    [:p "Now check out your mailbox, please."]])

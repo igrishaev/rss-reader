@@ -36,28 +36,17 @@
         request
 
         {:keys [action]}
-        params]
+        params
 
-    (if-let [{:keys [spec auth? handler]}
-             (get API action)]
+        {:as found? :keys [spec auth? handler]}
+        (get API action)]
 
-      (let [params-ok
-            (s/conform spec params)]
+    (cond
 
-        (if (s/invalid? params-ok)
-
-          (html/response
-           [:div "ccccccccccc"]
-           [:div#alerts
-            {:hx-swap-oob "true"}
-            "there was an error"])
-          #_
-          {:status 400
-           :headers {"content-type" "text/html"}
-           :body "wrong params"}
-
-          (handler params-ok)))
-
+      (not found?)
       {:status 400
        :headers {"content-type" "text/html"}
-       :body "wrong api"})))
+       :body "wrong api"}
+
+      :else
+      (handler params))))

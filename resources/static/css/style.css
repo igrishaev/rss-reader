@@ -350,3 +350,7 @@ p {
 .flex-separator {
     flex-grow: 999;
 }
+
+.form-error {
+    color: red;
+}

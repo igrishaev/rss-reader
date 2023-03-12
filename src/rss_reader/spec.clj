@@ -15,7 +15,13 @@
 (s/def ::subscription-id ::uuid)
 (s/def ::message-id ::uuid)
 
-(s/def ::email ::ne-string)
+(s/def ::email
+  (s/and string?
+         (s/conformer str/trim)
+         (complement str/blank?)
+         (fn [string]
+           (str/includes? string "@"))
+         (s/conformer str/lower-case)))
 
 
 (s/def ::api-view-subscription
