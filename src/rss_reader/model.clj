@@ -30,6 +30,14 @@
                       :returning [:*]}))))
 
 
+(defn get-user-by-id
+  [^UUID id]
+  (db/execute-one
+   {:select [:*]
+    :from [:users]
+    :wehere [:= :id id]}))
+
+
 ;;
 ;; Feed
 ;;
@@ -432,7 +440,7 @@
     :returning [:*]}))
 
 
-(defn get-auth-code
+(defn get-auth-code-by-id
   [^UUID id]
   (db/execute-one
    {:select [:*]

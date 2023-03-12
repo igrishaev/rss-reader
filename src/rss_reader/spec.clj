@@ -4,16 +4,22 @@
    [clojure.spec.alpha :as s]))
 
 
-(s/def ::uuid
-  (s/conformer parse-uuid))
+(s/def ::->uuid
+  (s/and string?
+         (s/conformer
+          (fn [string]
+            (or (parse-uuid string)
+                ::s/invalid)))))
+
+(s/def ::id ::->uuid)
 
 (s/def ::ne-string
   (s/and string? (complement str/blank?)))
 
 
-(s/def ::user-id ::uuid)
-(s/def ::subscription-id ::uuid)
-(s/def ::message-id ::uuid)
+(s/def ::user-id ::->uuid)
+(s/def ::subscription-id ::->uuid)
+(s/def ::message-id ::->uuid)
 
 (s/def ::email
   (s/and string?
@@ -38,3 +44,7 @@
 
 (s/def ::api-form-auth
   (s/keys :req-un [::email]))
+
+
+(s/def ::api-auth-code
+  (s/keys :req-un [::id]))
