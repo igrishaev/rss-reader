@@ -56,8 +56,8 @@
            :builder-fn rs/as-unqualified-maps))))
 
 
-(defmacro with-tx [[opt] & body]
-  `(jdbc/with-transaction [tx# db ~opt]
+(defmacro with-tx [[& opts] & body]
+  `(jdbc/with-transaction [tx# db ~@opts]
      (binding [db tx#]
        ~@body)))
 
