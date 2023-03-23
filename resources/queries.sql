@@ -144,11 +144,14 @@
         messages
 
     order by
-        (extract(epoch from date_published_at)::text || '|' || id) {% sql/raw direction %}
+        cursor {% if asc? %}asc{% else %}desc{% endif %}
 
     where
         not is_read
         and subscription_id = {% sql/? subscription-id %}
+        {% if cursor %}
+        and (extract(epoch from date_published_at)::text || '|' || id) {% if asc? %}>{% else %}<{% endif %} {% sql/? cursor %}
+        {% endif %}
 
     limit
         {% sql/? limit %}
