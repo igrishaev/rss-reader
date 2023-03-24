@@ -32,7 +32,7 @@
 
 
 (defn task-expire-auth-codes []
-  (model/expire-auth-codes))
+  (db/expire-auth-codes))
 
 
 (def TASKS

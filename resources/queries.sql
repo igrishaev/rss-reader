@@ -10,7 +10,6 @@
 {% sql/endquery %}
 
 
-
 {% sql/query upsert-user :1 %}
 
     insert into users (email)
@@ -249,7 +248,7 @@
 {% sql/endquery %}
 
 
-{% sql/query get-entires-by-ids
+{% sql/query get-entires-by-ids %}
 
     select
         id,
@@ -321,5 +320,15 @@
         id = {% sql/? subscription-id %}
     returning *
 
+
+{% sql/endquery %}
+
+
+{% sql/query expire-auth-codes %}
+
+    delete from
+        auth_codes
+    where
+        created_at < now() - interval '10 minutes'
 
 {% sql/endquery %}
