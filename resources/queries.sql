@@ -1,17 +1,16 @@
 
+{% sql/query upsert-user :1 %}
 
-{% sql/query upsert_user :1 %}
-
-    insert into users ({% sql/cols fields %})
-    values ({% sql/vals fields %})
+    insert into users (email)
+    values ({% sql/? email %})
     on conflict (email)
-    do update set {% sql/excluded fields %}
+    do update set updated_at = now()
     returning *
 
 {% sql/endquery %}
 
 
-{% sql/query get_user_by_id :1 %}
+{% sql/query get-user-by-id :1 %}
 
     select * from users
     where id = {% sql/? id %}
@@ -19,18 +18,17 @@
 {% sql/endquery %}
 
 
-{% sql/query update_feed :1 %}
+{% sql/query update-feed-by-id :1 %}
 
-    insert into feeds ({% sql/cols fields %})
-    values ({% sql/vals fields %})
-    on conflict (url_source)
-    do update set {% sql/excluded fields %}
+    update feed
+    set {% sql/cols fields %}, updated_at = now()
+    where id = {% sql/? id %}
     returning *
 
 {% sql/endquery %}
 
 
-{% sql/query get_feed_by_id :1 %}
+{% sql/query get-feed-by-id :1 %}
 
     select * from feeds
     where id = {% sql/? id %}
@@ -38,7 +36,7 @@
 {% sql/endquery %}
 
 
-{% sql/query upsert_entry :1 %}
+{% sql/query upsert-entry :1 %}
 
     insert into entries (
         feed_id,
@@ -51,13 +49,13 @@
         {% sql/vals fields %}
     )
     on conflict (feed_id, guid)
-    do update set {% sql/excluded fields %}
+    do update set {% sql/excluded fields %}, updated_at = now()
     returning *
 
 {% sql/endquery %}
 
 
-{% sql/query upsert_feed :1 %}
+{% sql/query upsert-feed :1 %}
 
     insert into feeds (url_source, {% sql/cols fields %})
     values ({% sql/? url %}, {% sql/vals fields %})
@@ -68,19 +66,19 @@
 {% sql/endquery %}
 
 
-{% sql/query upsert_entries %}
+{% sql/query upsert-entries %}
 
     insert into entries ({% sql/cols* rows %})
     values {% sql/vals* rows %}
     on conflict (feed_id, guid)
-    do update set {% sql/excluded* rows %}
+    do update set {% sql/excluded* rows %}, updated_at = now()
     returning id, guid
 
 {% sql/endquery %}
 
 
 
-{% sql/query create_messages_for_subscription %}
+{% sql/query create-messages-for-subscription %}
 
     insert into messages(
         entry_id,
@@ -106,14 +104,15 @@
 {% sql/endquery %}
 
 
-{% sql/query update_sync_next_for_subscription %}
+{% sql/query update-sync-next-for-subscription %}
 
     update
         subscriptions
     set
         sync_date_prev = now(),
         sync_date_next = now() + (interval '1 second' * sync_interval),
-        sync_count = sync_count + 1
+        sync_count = sync_count + 1,
+        updated_at = now()
     where
         id = {% sql/? subscription-id %}
     returning
@@ -142,7 +141,7 @@
 {% sql/endquery %}
 
 
-{% sql/query messages_to_render %}
+{% sql/query messages-to-render %}
 
     select
         id,
@@ -170,7 +169,7 @@
 {% sql/endquery %}
 
 
-{% sql/query get_entires_by_ids
+{% sql/query get-entires-by-ids
 
     select
         id,
