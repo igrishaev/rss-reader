@@ -238,9 +238,17 @@
 (defn sync-subsciption
   [^UUID subscription-id ^UUID feed-id]
   (db/with-tx nil
-    (create-messages-for-subscription subscription-id feed-id)
-    (update-unread-for-subscription subscription-id)
-    (update-sync-next-for-subscription subscription-id)))
+
+    (db/create-messages-for-subscription
+     {:subscription-id subscription-id
+      :feed-id feed-id
+      :limit c/max-messages-to-create})
+
+    (db/update-unread-for-subscription
+     {:subscription-id subscription-id})
+
+    (db/update-sync-next-for-subscription
+     {:subscription-id subscription-id})))
 
 
 (defn feeds-to-update []

@@ -1,4 +1,16 @@
 
+{% sql/query upsert-subscription :1 %}
+
+    insert into subscriptions ({% sql/cols fields %})
+    values ({% sql/vals fields %})
+    on conflict (feed_id, user_id)
+    do update set {% sql/excluded fields %}, updated_at = now()
+    returning *
+
+{% sql/endquery %}
+
+
+
 {% sql/query upsert-user :1 %}
 
     insert into users (email)
@@ -57,8 +69,8 @@
 
 {% sql/query upsert-feed :1 %}
 
-    insert into feeds (url_source, {% sql/cols fields %})
-    values ({% sql/? url %}, {% sql/vals fields %})
+    insert into feeds ({% sql/cols fields %})
+    values ({% sql/vals fields %})
     on conflict (url_source)
     do update set {% sql/excluded fields %}, updated_at = now()
     returning *
@@ -98,7 +110,7 @@
     limit
         {% sql/? limit %}
     on conflict (entry_id, subscription_id)
-    do nothing
+    do nothing set updated_at = now()
     returning *
 
 {% sql/endquery %}
@@ -183,5 +195,63 @@
 
     where
         id in ({% sql/vals entry-ids %})
+
+{% sql/endquery %}
+
+
+{% sql/query feeds-to-update %}
+
+    select
+        id
+    from
+        feeds
+    where
+        sync_date_next is null
+        or sync_date_next < now()
+    order by
+        sync_date_next asc nulls first
+    limit
+        {% sql/? limit %}
+
+{% sql/endquery %}
+
+
+
+{% sql/query subscriptions-to-update %}
+
+    select
+        id, feed_id
+    from
+        subscriptions
+    where
+        sync_date_next is null
+        or sync_date_next < now()
+    order by
+        sync_date_next asc nulls first
+    limit
+        {% sql/? limit %}
+
+{% sql/endquery %}
+
+
+{% sql/query update-unread-for-subscription %}
+
+    update
+        subscriptions
+    set
+        unread_count = sub.unread
+    from (
+        select
+            count(id) as unread
+        from
+            messages
+        where
+            subscription_id = {% sql/? subscription-id %}
+            and not is_read
+    ) as sub
+    where
+        id = {% sql/? subscription-id %}
+    returning *
+
 
 {% sql/endquery %}

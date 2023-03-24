@@ -4,8 +4,10 @@
    java.util.concurrent.Future
    java.util.concurrent.ScheduledThreadPoolExecutor)
   (:require
+   [rss-reader.const :as c]
    [rss-reader.model :as model]
    [rss-reader.feed :as feed]
+   [rss-reader.db :as db]
    [mount.core :as mount]
    [clojure.tools.logging :as log]
    [rss-reader.config :refer [config]]))
@@ -13,7 +15,7 @@
 
 (defn task-sync-subscriptions []
   (let [rows
-        (model/subscriptions-to-update)]
+        (db/subscriptions-to-update {:limit c/subscriptions-to-update-limit})]
     (log/info "Got %s subsciption(s) to update" (count rows))
     (doseq [{:keys [id feed_id]} rows]
       (log/infof "Syncing subscription %s, feed %s" id feed_id)
@@ -22,7 +24,7 @@
 
 (defn task-sync-feeds []
   (let [rows
-        (model/feeds-to-update)]
+        (db/feeds-to-update {:limit c/feeds-to-update-limit})]
     (log/info "Got %s feeds(s) to update" (count rows))
     (doseq [{:keys [id]} rows]
       (log/infof "Syncing feed %s" id)

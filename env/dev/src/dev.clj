@@ -4,7 +4,7 @@
    [mount.core :as mount]
    [rss-reader.config :as config]
    [rss-reader.cron :as cron]
-   rss-reader.db
+   [rss-reader.db :as db]
    rss-reader.http
    rss-reader.log
    [rss-reader.model :as model]
@@ -32,6 +32,43 @@
   (cron/task-sync-subscriptions))
 
 
+(defn seed []
+
+  (let [{user-id-1 :id}
+        (db/upsert-user {:email "test1@test.com"})
+
+        {user-id-2 :id}
+        (db/upsert-user {:email "test1@test.com"})
+
+        {feed-id-1 :id}
+        (db/upsert-feed {:fields {:url_source "https://habr.com/ru/rss/all/all/?fl=ru"}})
+
+        {feed-id-2 :id}
+        (db/upsert-feed {:fields {:url_source "http://oglaf.com/feeds/rss/"}})
+
+        {feed-id-3 :id}
+        (db/upsert-feed {:fields {:url_source "https://ilyabirman.ru/meanwhile/rss/"}})
+
+        {feed-id-4 :id}
+        (db/upsert-feed {:fields {:url_source "https://grishaev.me/feed.xml"}})
+
+        {sub-id-1 :id}
+        (db/upsert-subscription {:fields {:feed_id feed-id-1 :user_id user-id-1}})
+
+        {sub-id-2 :id}
+        (db/upsert-subscription {:fields {:feed_id feed-id-2 :user_id user-id-1}})
+
+        {sub-id-3 :id}
+        (db/upsert-subscription {:fields {:feed_id feed-id-3 :user_id user-id-2}})
+
+        {sub-id-4 :id}
+        (db/upsert-subscription {:fields {:feed_id feed-id-4 :user_id user-id-2}})]
+
+    #_
+    (sync))
+  )
+
+#_
 (defn bootstrap []
 
   (let [{user-id-1 :id}

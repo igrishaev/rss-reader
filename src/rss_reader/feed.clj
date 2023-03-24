@@ -275,7 +275,7 @@
 (defn update-feed [feed-id]
 
   (if-let [feed
-           (model/get-feed-by-id feed-id)]
+           (db/get-feed-by-id {:id feed-id})]
 
     (let [{:keys [url_source
                   http_etag

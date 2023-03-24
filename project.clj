@@ -18,7 +18,7 @@
    [com.github.seancorfield/honeysql "2.4.980"]
    [hikari-cp "3.0.1"]
    [migratus "1.4.9"]
-   [com.github.igrishaev/gosql "0.1.0"]
+   [com.github.igrishaev/gosql "0.1.1"]
 
    ;; config
    [aero "1.1.6"]
