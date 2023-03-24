@@ -30,7 +30,7 @@
 {% sql/endquery %}
 
 
-{% sql/query update-feed-by-id :1 %}
+{% sql/query update-feed :1 %}
 
     update feed
     set {% sql/cols fields %}, updated_at = now()
@@ -38,6 +38,74 @@
     returning *
 
 {% sql/endquery %}
+
+
+{% sql/query reset-subscriptions-sync :count %}
+
+    update
+        subscriptions
+    set
+        sync_date_next = now(),
+        updated_at = now()
+
+{% sql/endquery %}
+
+
+
+{% sql/query reset-feeds-sync :count %}
+
+    update
+        feeds
+    set
+        sync_date_next = now(),
+        updated_at = now()
+
+{% sql/endquery %}
+
+
+
+{% sql/query sync-feed-ok :1 %}
+
+    update feeds
+    set
+        {% sql/set fields %},
+        updated_at = now(),
+        err_attempts = 0,
+        err_class = null,
+        err_message = null,
+        sync_count = sync_count + 1,
+        sync_date_prev = now(),
+        sync_date_next = now() + (interval '1 second' * sync_interval)
+
+    where
+        id = {% sql/? id %}
+
+    returning *
+
+{% sql/endquery %}
+
+
+{% sql/query sync-feed-err :1 %}
+
+    update feeds
+    set
+        updated_at = now(),
+        err_attempts = err_attempts + 1,
+
+        err_class = {% sql/? err-class %},
+        err_message = {% sql/? err-message %},
+
+        sync_count = sync_count + 1,
+        sync_date_prev = now(),
+        sync_date_next = now() + (interval '1 second' * sync_interval)
+
+    where
+        id = {% sql/? id %}
+
+    returning *
+
+{% sql/endquery %}
+
 
 
 {% sql/query get-feed-by-id :1 %}
@@ -110,7 +178,7 @@
     limit
         {% sql/? limit %}
     on conflict (entry_id, subscription_id)
-    do nothing set updated_at = now()
+    do update set updated_at = now()
     returning *
 
 {% sql/endquery %}

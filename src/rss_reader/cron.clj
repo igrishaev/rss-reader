@@ -16,7 +16,7 @@
 (defn task-sync-subscriptions []
   (let [rows
         (db/subscriptions-to-update {:limit c/subscriptions-to-update-limit})]
-    (log/info "Got %s subsciption(s) to update" (count rows))
+    (log/infof "Got %s subsciption(s) to update" (count rows))
     (doseq [{:keys [id feed_id]} rows]
       (log/infof "Syncing subscription %s, feed %s" id feed_id)
       (model/sync-subsciption id feed_id))))
@@ -25,7 +25,7 @@
 (defn task-sync-feeds []
   (let [rows
         (db/feeds-to-update {:limit c/feeds-to-update-limit})]
-    (log/info "Got %s feeds(s) to update" (count rows))
+    (log/infof "Got %s feeds(s) to update" (count rows))
     (doseq [{:keys [id]} rows]
       (log/infof "Syncing feed %s" id)
       (feed/update-feed-safe id))))

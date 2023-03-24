@@ -20,7 +20,7 @@
 
 (def feed-sync-fields
   {:sync_count [:raw "sync_count + 1"]
-   :sync_date_prev :%now
+   :sync_date_prev [:raw "now()"]
    :sync_date_next [:raw "now() + (interval '1 second' * sync_interval)"]})
 
 
@@ -38,7 +38,7 @@
           :err_message (-> e ex-message)}))
 
 
-(defn entry->row [entry]
+(defn entry->row [feed-id entry]
 
   (let [{:keys [uri
                 ^Date updated-date
@@ -67,16 +67,15 @@
 
         sql-published-date
         (or published-date
-            updated-date
-            :%now)
+            updated-date)
 
         sql-link
         (or link uri)]
 
-    {:guid sql-guid
+    {:feed_id feed-id
+     :guid sql-guid
      :link sql-link
      :author author
-     :updated_at :%now
      :date_published_at sql-published-date
      :date_updated_at updated-date
      :title (some-> title sanitize/sanitize-none)
@@ -200,14 +199,14 @@
         feed-fields
         (-> feed
             (feed->row)
-            (merge feed-ok-fields)
             (assoc :http_status status
                    :http_last_modified last-modified
                    :http_etag etag))]
 
     (log/infof "Got %s(s) items for feed %s" (count entries) feed-id)
 
-    (model/update-feed feed-id feed-fields)
+    (db/sync-feed-ok {:id feed-id
+                      :fields feed-fields})
 
     (model/upsert-categories feed-id
                              "feed"
@@ -218,7 +217,8 @@
                      c/entry-batch-size)]
 
       (let [rows
-            (map entry->row entries)
+            (for [entry entries]
+              (entry->row feed-id entry))
 
             guid->categories
             (reduce
@@ -235,7 +235,7 @@
              (map vector rows entries))
 
             db-result
-            (model/upsert-entries feed-id rows)
+            (db/upsert-entries {:rows rows})
 
             id->guid
             (reduce
@@ -260,16 +260,15 @@
                :parent-type "entry"
                :category category})]
 
+        #_
         (model/upsert-categories-bulk category-rows)))))
 
 
 (defn handle-feed-not-modified
   [feed-id]
   (log/infof "Feed %s has not been modified" feed-id)
-  (let [feed-fields
-        (merge feed-ok-fields
-               {:http_status 304})]
-    (model/update-feed feed-id feed-fields)))
+  (db/sync-feed-ok {:id feed-id
+                    :fields {:http_status 304}}))
 
 
 (defn update-feed [feed-id]
@@ -316,4 +315,6 @@
     (log/infof "Feed %s has been updated" feed-id)
     (catch Throwable e
       (log/errorf e "Feed %s failed to update" feed-id)
-      (model/update-feed feed-id (feed-err-fields e)))))
+      (db/sync-feed-err {:id feed-id
+                         :err-class (-> e class .getName)
+                         :err-message (ex-message e)}))))
