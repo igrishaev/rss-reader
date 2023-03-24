@@ -3,6 +3,7 @@
    java.util.Date
    (java.sql PreparedStatement Timestamp))
   (:require
+   [gosql.core :as gosql]
    [hikari-cp.core :as cp]
    [honey.sql :as honey]
    [mount.core :as mount]
@@ -66,3 +67,8 @@
   Date
   (set-parameter [^Date v ^PreparedStatement s ^long i]
     (.setTimestamp s i (new Timestamp (.getTime v)))))
+
+
+(gosql/from-resource "queries.sql"
+                     {:db (var db)
+                      :builder-fn rs/as-unqualified-maps})

@@ -2,3 +2,4 @@
 - add sql indexes
 - reg domain
 - save enclosures
+- drop updated_at

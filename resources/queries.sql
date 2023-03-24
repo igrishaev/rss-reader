@@ -14,7 +14,7 @@
 {% sql/query get_user_by_id :1 %}
 
     select * from users
-    where id = {% id %}
+    where id = {% sql/? id %}
 
 {% sql/endquery %}
 
@@ -33,7 +33,7 @@
 {% sql/query get_feed_by_id :1 %}
 
     select * from feeds
-    where id = {% id %}
+    where id = {% sql/? id %}
 
 {% sql/endquery %}
 
@@ -52,6 +52,17 @@
     )
     on conflict (feed_id, guid)
     do update set {% sql/excluded fields %}
+    returning *
+
+{% sql/endquery %}
+
+
+{% sql/query upsert_feed :1 %}
+
+    insert into feeds (url_source, {% sql/cols fields %})
+    values ({% sql/? url %}, {% sql/vals fields %})
+    on conflict (url_source)
+    do update set {% sql/excluded fields %}, updated_at = now()
     returning *
 
 {% sql/endquery %}
@@ -108,7 +119,7 @@
     returning
         *
 
-{% sql/ednquery %}
+{% sql/endquery %}
 
 
 {% sql/query subscriptions-to-render %}
@@ -128,7 +139,7 @@
         s.user_id = {% sql/? user-id %}
         and s.feed_id = f.id
 
-{% sql/ednquery %}
+{% sql/endquery %}
 
 
 {% sql/query messages_to_render %}
@@ -156,7 +167,7 @@
     limit
         {% sql/? limit %}
 
-{% sql/ednquery %}
+{% sql/endquery %}
 
 
 {% sql/query get_entires_by_ids
@@ -174,4 +185,4 @@
     where
         id in ({% sql/vals entry-ids %})
 
-{% sql/ednquery %}
+{% sql/endquery %}
