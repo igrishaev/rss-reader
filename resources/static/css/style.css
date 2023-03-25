@@ -354,3 +354,9 @@ p {
 .form-error {
     color: red;
 }
+
+#alert {
+    background-color: lightgrey;
+    padding: 10px;
+    font-weight: bold;
+}

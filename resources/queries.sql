@@ -29,6 +29,14 @@
 {% sql/endquery %}
 
 
+{% sql/query get-user-by-email :1 %}
+
+    select * from users
+    where email = {% sql/? email %}
+
+{% sql/endquery %}
+
+
 {% sql/query update-feed :1 %}
 
     update feed
@@ -330,5 +338,27 @@
         auth_codes
     where
         created_at < now() - interval '10 minutes'
+
+{% sql/endquery %}
+
+
+
+{% sql/query get-auth-code-by-id :1 %}
+
+    select *
+    from auth_codes
+    where id = {% sql/? id %}
+
+{% sql/endquery %}
+
+
+
+{% sql/query upsert-categories %}
+
+    insert into categories ({% sql/cols* rows %})
+    values {% sql/vals* rows %}
+    on conflict (parent_id, category)
+    do update set updated_at = now()
+    return *
 
 {% sql/endquery %}

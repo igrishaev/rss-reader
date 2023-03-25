@@ -19,7 +19,7 @@
     (log/infof "Got %s subsciption(s) to update" (count rows))
     (doseq [{:keys [id feed_id]} rows]
       (log/infof "Syncing subscription %s, feed %s" id feed_id)
-      (model/sync-subsciption id feed_id))))
+      (db/sync-subsciption id feed_id))))
 
 
 (defn task-sync-feeds []

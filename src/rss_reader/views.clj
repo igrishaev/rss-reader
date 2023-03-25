@@ -184,64 +184,70 @@
    [:p "Now check out your mailbox, please."]])
 
 
-(defn index [user]
+(defn index
 
-  (let []
+  ([user]
+   (index user nil))
 
-    [:html {:lang "en"}
-     [:head
-      [:meta {:charset "utf-8"}]
-      [:title "Hello"]
-      [:link {:href "/css/style.css" :rel "stylesheet"}]
-      [:script {:src "https://unpkg.com/htmx.org@1.8.5"
-                :crossorigin "anonymous"}]]
-     [:body
-      [:div#container
+  ([user {:keys [message]}]
 
-       [:div#sidebar
+   (let []
 
-        [:div#sidebar-top-section
-         [:div#sidebar-logo-and-title
-          [:div#sidebar-logo
-           [:img {:src "/img/logo.svg"}]]
-          [:div#sidebar-logo-text
-           [:div#sidebar-logo-title
-            "RSS Simple (dot) DEV"]
-           [:div#sidebar-logo-slogan
-            "An open-source RSS reader written in Clojure & HTMX"]]]
-         [:div#sidebar-main-menu]]
+     [:html {:lang "en"}
+      [:head
+       [:meta {:charset "utf-8"}]
+       [:title "Hello"]
+       [:link {:href "/css/style.css" :rel "stylesheet"}]
+       [:script {:src "https://unpkg.com/htmx.org@1.8.5"
+                 :crossorigin "anonymous"}]]
+      [:body
+       [:div#container
 
-        [:div#sidebar-inner
+        [:div#sidebar
 
-         [:div#sidebar-menu
-          [:div.sidebar-menu-item
-           "Today2"]
-          [:div.sidebar-menu-item
-           "Starred messages"]
-          [:div.sidebar-menu-item
-           "Add feed"]]
+         [:div#sidebar-top-section
+          [:div#sidebar-logo-and-title
+           [:div#sidebar-logo
+            [:img {:src "/img/logo.svg"}]]
+           [:div#sidebar-logo-text
+            [:div#sidebar-logo-title
+             "RSS Simple (dot) DEV"]
+            [:div#sidebar-logo-slogan
+             "An open-source RSS reader written in Clojure & HTMX"]]]
+          [:div#sidebar-main-menu]]
 
-         #_
-         (when user
-           (sidebar-subscriptions/view user))]]
+         [:div#sidebar-inner
 
-       [:div#content
-        [:div#alerts]
-        [:div#content-inner
-
-         [:div#content-actions
-          [:div.flex-separator]
+          [:div#sidebar-menu
+           [:div.sidebar-menu-item
+            "Today2"]
+           [:div.sidebar-menu-item
+            "Starred messages"]
+           [:div.sidebar-menu-item
+            "Add feed"]]
 
           #_
           (when user
-            [:div#user-widget
-             {:class "content-action dropdown"
-              }
-             ])
+            (sidebar-subscriptions/view user))]]
 
-          ]
+        [:div#content
 
+         (when message
+           [:div#alert message])
 
+         [:div#content-inner
 
-         (when-not user
-           (form-auth))]]]]]))
+          [:div#content-actions
+           [:div.flex-separator]
+
+           #_
+           (when user
+             [:div#user-widget
+              {:class "content-action dropdown"
+               }
+              ])
+
+           ]
+
+          (when-not user
+            (form-auth))]]]]])))

@@ -1,8 +1,10 @@
 (ns rss-reader.db
   (:import
+   java.util.UUID
    java.util.Date
    (java.sql PreparedStatement Timestamp))
   (:require
+   [rss-reader.const :as c]
    [gosql.core :as gosql]
    [hikari-cp.core :as cp]
    [honey.sql :as honey]
@@ -72,3 +74,19 @@
 (gosql/from-resource "queries.sql"
                      {:db (var db)
                       :builder-fn rs/as-unqualified-maps})
+
+
+(defn sync-subsciption
+  [^UUID subscription-id ^UUID feed-id]
+  (with-tx nil
+
+    (create-messages-for-subscription
+     {:subscription-id subscription-id
+      :feed-id feed-id
+      :limit c/max-messages-to-create})
+
+    (update-unread-for-subscription
+     {:subscription-id subscription-id})
+
+    (update-sync-next-for-subscription
+     {:subscription-id subscription-id})))
