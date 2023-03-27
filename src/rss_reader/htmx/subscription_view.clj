@@ -1,12 +1,22 @@
 (ns rss-reader.htmx.subscription-view
   (:require
+   [clojure.spec.alpha :as s]
+   [rss-reader.spec :as spec]
    [rss-reader.html :as html]
    [rss-reader.model :as model]))
 
 
-(defn handler [{:keys [subscription-id
-                       cursor]}]
-  (let [subscription
+;; TODO: check if valid
+(defn handler [params]
+
+  (let [params-ok
+        (s/conform ::spec/api-view-subscription params)
+
+        {:keys [subscription-id
+                cursor]}
+        params-ok
+
+        subscription
         (model/get-subscription-by-id subscription-id)
 
         {:keys [more?
