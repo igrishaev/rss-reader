@@ -33,15 +33,18 @@
       (let [{:keys [id]}
             params-ok]
 
-        #_
         (if-let [{:keys [email]}
                  (db/get-auth-code-by-id {:id id})]
 
           (let [user
-                (upsert-user ...)]
+                (db/upsert-user {:email email})
+
+                session-user
+                (select-keys user [:id :email])]
+
             {:status 307
              :headers {"Location" "/"}
-             :session (assoc session :user user)})
+             :session (assoc session :user session-user)})
 
           (html/response
            (views/index user {:message "The authentication link has been expired."})))))))

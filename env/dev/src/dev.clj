@@ -34,7 +34,13 @@
 
 (defn seed []
 
-  (let [{user-id-1 :id}
+  (let [email1
+        "test1@test.com"
+
+        {auth-id :id}
+        (db/add-auth-code {:email email1})
+
+        {user-id-1 :id}
         (db/upsert-user {:email "test1@test.com"})
 
         {user-id-2 :id}
@@ -63,6 +69,8 @@
 
         {sub-id-4 :id}
         (db/upsert-subscription {:fields {:feed_id feed-id-4 :user_id user-id-2}})]
+
+    auth-id
 
     #_
     (sync))

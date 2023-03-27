@@ -5,6 +5,7 @@
    [clojure.spec.alpha :as s]
    [rss-reader.config :as config]
    [rss-reader.model :as model]
+   [rss-reader.db :as db]
    [rss-reader.views :as views]
    [rss-reader.email :as email]
    [rss-reader.html :as html]))
@@ -32,7 +33,7 @@
             "Hello"
 
             {:keys [id]}
-            (model/add-auth-code email)
+            (db/add-auth-code {:email email})
 
             base-url
             (:base-url config/config)

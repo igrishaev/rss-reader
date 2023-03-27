@@ -251,3 +251,85 @@
 
           (when-not user
             (form-auth))]]]]])))
+
+
+(defn message-view [message categories]
+
+  (let [{:keys [entry_id
+                guid
+                link
+                author
+                title
+                summary
+                date_published_at
+                date_updated_at
+                id
+                subscription_id
+                is_read
+                is_marked]}
+        message]
+
+    [:div
+
+     [:div#content-actions
+      [:div.content-action
+       {:hx-post (html/api-url :viewSubscription
+                               {:subscription-id subscription_id})
+        :hx-trigger "click"
+        :hx-target "#content-inner"
+        :hx-swap "innerHTML"}
+       "&larr; Back"]]
+
+     [:div#message-content
+
+      (if link
+        [:h1 [:a {:href link} title]]
+        [:h1 title])
+
+      [:div.message-brief
+
+       (when author
+         [:div.message-author
+          "Author: " author])
+
+       [:div.message-date
+        {:title (str date_published_at)}
+        "Publised: "
+        (html/ago date_published_at)]]
+
+      [:div.message-brief
+       (for [{:keys [category]} categories]
+         [:div.message-tag category])]
+
+      [:div#message-summary
+       summary]
+
+      [:div#message-buttons
+       (when link
+         [:div.button-normal
+          [:a {:href link}
+           "Read more"]])]]]))
+
+
+(defn subscription-row [subscription]
+
+  (let [{:keys [id
+                opt_title
+                unread_count]}
+        subscription]
+
+    [:div
+     {:id (format "uuid-%s-sidebar-item" id)
+      :class "feed-item"
+      :hx-swap-oob "true"
+      :hx-post (html/api-url :viewSubscription
+                             {:subscription-id id})
+      :hx-trigger "click"
+      :hx-target "#content-inner"
+      :hx-swap "innerHTML"}
+     [:div.feed-title
+      "aaaaaaa" ;; TODO: pass proper params
+      #_
+      (or opt_title rss_title)]
+     [:div.feed-unread
+      unread_count]]))

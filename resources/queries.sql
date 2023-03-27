@@ -21,6 +21,15 @@
 {% sql/endquery %}
 
 
+{% sql/query add-auth-code :1 %}
+
+    insert into auth_codes (email)
+    values ({% sql/? email %})
+    returning *
+
+{% sql/endquery %}
+
+
 {% sql/query get-user-by-id :1 %}
 
     select * from users
