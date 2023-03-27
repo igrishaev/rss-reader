@@ -9,8 +9,9 @@
 
 
 (defn index [request]
-  (html/response
-   (views/index nil)))
+  (let [user (some-> request :session :user)]
+    (html/response
+     (views/index user))))
 
 
 (defn auth [request]

@@ -2,6 +2,7 @@
   (:import
    java.util.UUID)
   (:require
+   [rss-reader.db :as db]
    [rss-reader.model :as model]
    [rss-reader.html :as html]))
 
@@ -10,8 +11,14 @@
 
   (let [{:keys [id
                 opt_title
+                rss_title
+                url_source
+                url_website
                 unread_count]}
         subscritpion
+
+        title
+        (or opt_title rss_title url_website url_source)
 
         url
         (html/api-url :viewSubscription {:subscription-id id})]
@@ -25,16 +32,14 @@
       :hx-target "#content-inner"
       :hx-swap "innerHTML"}
 
-     [:div.feed-title
-      opt_title]
-     [:div.feed-unread
-      unread_count]]))
+     [:div.feed-title title]
+     [:div.feed-unread unread_count]]))
 
 
 (defn sidebar-subscriptions
   ([user]
    (let [subscriptions
-         (model/subscriptions-to-render (:id user))]
+         (db/subscriptions-to-render {:user-id (:id user)})]
      (sidebar-subscriptions user subscriptions)))
 
   ([user subscriptions]
@@ -184,6 +189,15 @@
    [:p "Now check out your mailbox, please."]])
 
 
+(defn user-dropdown [user]
+  [:div#user-widget
+   {:class "content-action dropdown"}
+   [:span (:email user)]
+   [:div.dropdown-content
+    [:a {:href "#"} "Settings"]
+    [:a {:href "#"} "Logout"]]])
+
+
 (defn index
 
   ([user]
@@ -226,9 +240,8 @@
            [:div.sidebar-menu-item
             "Add feed"]]
 
-          #_
           (when user
-            (sidebar-subscriptions/view user))]]
+            (sidebar-subscriptions user))]]
 
         [:div#content
 
@@ -239,15 +252,8 @@
 
           [:div#content-actions
            [:div.flex-separator]
-
-           #_
            (when user
-             [:div#user-widget
-              {:class "content-action dropdown"
-               }
-              ])
-
-           ]
+             (user-dropdown user))]
 
           (when-not user
             (form-auth))]]]]])))
