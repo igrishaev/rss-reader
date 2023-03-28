@@ -217,6 +217,81 @@
 {% sql/endquery %}
 
 
+{% sql/query message-to-render :1 %}
+
+    select
+        e.id as entry_id,
+        e.feed_id,
+        e.guid,
+        e.link,
+        e.author,
+        e.title,
+        e.summary,
+        e.date_published_at,
+        e.date_updated_at,
+        m.id,
+        m.subscription_id,
+        m.is_read,
+        m.is_marked
+    from
+        messages m,
+        entries e
+    where
+        m.id = {% sql/? message-id %}
+        and m.entry_id = e.id
+
+{% sql/endquery %}
+
+
+
+{% sql/query mark-message-read :1 %}
+
+    update messages
+    set is_read = {% sql/? flag %},
+        updated_at = now()
+    where id = {% sql/? message-id %}
+    returning *
+
+{% sql/endquery %}
+
+
+{% sql/query dec-subscription-read-counter :1 %}
+
+    update subscriptions
+    set unread_count = unread_count - 1,
+        updated_at = now()
+    where id = {% sql/? subscription-id %}
+
+{% sql/endquery %}
+
+
+{% sql/query get-subscription-by-id :1 %}
+
+    select
+        s.*,
+        f.rss_title,
+        f.url_source,
+        f.url_website,
+        f.rss_domain
+    from
+        subscriptions s,
+        feeds f
+    where
+        s.id = {% sql/? id %}
+        and s.feed_id = f.id
+
+{% sql/endquery %}
+
+
+{% sql/query get-categories-by-parent-id %}
+
+    select *
+    from categories
+    where parent_id = {% sql/? entry-id %}
+
+{% sql/endquery %}
+
+
 {% sql/query subscriptions-to-render %}
 
     select

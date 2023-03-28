@@ -420,7 +420,7 @@
 
 (defn inc-subscription-read-counter
   [^UUID subscription-id]
-  (db/execute-one
+  (dbexecute-one
    {:update [:subscriptions]
     :set {:unread_count [:raw "unread_count + 1"]
           :updated_at :%now}

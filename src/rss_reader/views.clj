@@ -319,10 +319,16 @@
 
 (defn subscription-row [subscription]
 
+  (clojure.pprint/pprint subscription)
+
   (let [{:keys [id
                 opt_title
+                rss_title
                 unread_count]}
-        subscription]
+        subscription
+
+        title
+        (or opt_title rss_title)]
 
     [:div
      {:id (format "uuid-%s-sidebar-item" id)
@@ -333,9 +339,5 @@
       :hx-trigger "click"
       :hx-target "#content-inner"
       :hx-swap "innerHTML"}
-     [:div.feed-title
-      "aaaaaaa" ;; TODO: pass proper params
-      #_
-      (or opt_title rss_title)]
-     [:div.feed-unread
-      unread_count]]))
+     [:div.feed-title title]
+     [:div.feed-unread unread_count]]))
