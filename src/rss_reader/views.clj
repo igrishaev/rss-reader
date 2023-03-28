@@ -319,8 +319,6 @@
 
 (defn subscription-row [subscription]
 
-  (clojure.pprint/pprint subscription)
-
   (let [{:keys [id
                 opt_title
                 rss_title

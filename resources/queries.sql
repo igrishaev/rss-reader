@@ -30,6 +30,15 @@
 {% sql/endquery %}
 
 
+{% sql/query set-messages-unread :count %}
+
+    update messages
+    set is_read = false
+
+{% sql/endquery %}
+
+
+
 {% sql/query get-user-by-id :1 %}
 
     select * from users

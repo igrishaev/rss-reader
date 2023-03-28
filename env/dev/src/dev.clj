@@ -32,6 +32,11 @@
   (cron/task-sync-subscriptions))
 
 
+(defn reset []
+  (db/reset-subscriptions-sync)
+  (db/reset-feeds-sync))
+
+
 (defn seed []
 
   (let [email1
@@ -74,6 +79,11 @@
 
     #_
     (sync))
+  )
+
+
+(defn unread []
+  (db/set-messages-unread)
   )
 
 #_
