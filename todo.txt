@@ -2,6 +2,7 @@
 - add sql indexes
 - reg domain
 
+- change colors to gray/green
 - message / show categories
 - save enclosures
 - subs view / date
