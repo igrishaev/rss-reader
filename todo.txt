@@ -1,5 +1,20 @@
 - configure sentry
 - add sql indexes
 - reg domain
+
+- message / show categories
 - save enclosures
-- drop updated_at
+- subs view / date
+- subs more button
+- sidebar / remove unread title
+- sidebar / remove today
+- sidebar / remove starred
+- message / table borders (https://grishaev.me/en/dynamodb/)
+- subs / empty message
+- sidebar / image logo
+- subs / action bar + user widget
+- message / action bar + user widget
+- user widget / logout button
+- message / li indent (https://ilyabirman.ru/meanwhile/all/listening-61/)
+
+- add feed page
